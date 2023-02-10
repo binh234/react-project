@@ -1,0 +1,1 @@
+export { SubtitleCard as default } from './SubtitleCard';

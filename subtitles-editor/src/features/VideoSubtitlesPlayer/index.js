@@ -1,0 +1,1 @@
+export { VideoSubtitlesPlayer as default } from './VideoSubtitlesPlayer'

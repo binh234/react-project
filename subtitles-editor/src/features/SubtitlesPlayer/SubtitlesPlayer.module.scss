@@ -1,0 +1,18 @@
+.SubtitlesWrapper {
+    position: absolute;
+    width: 80%;
+    max-width: 90vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 0;
+    margin-bottom: 15vh;
+}
+
+.SubtitleItem {
+    padding: 16px 10px;
+    background-color: rgba(#000, 0.8);
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}

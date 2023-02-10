@@ -1,0 +1,1 @@
+export { SubtitlesPlayer as default } from './SubtitlesPlayer';

@@ -1,0 +1,19 @@
+{
+  "contacts": [
+    {
+      "id": "46c93b2c-fd6b-4c0f-9d4b-0535c8bd7525",
+      "name": "Headphone",
+      "email": "binhn@gmail.com"
+    },
+    {
+      "id": "2062e8f1-032e-4b61-9be7-103d3ce54e58",
+      "name": "432",
+      "email": "binhnd234@gmail.com"
+    },
+    {
+      "id": "07df7e92-b07c-4add-aaff-fa90c28d5ea2",
+      "name": "123",
+      "email": "binhnd1111@gmail.com"
+    }
+  ]
+}
