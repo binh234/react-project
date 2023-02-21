@@ -1,31 +1,33 @@
 import "./App.css";
-// import { Button, styled } from "@mui/material";
-// import { Send, Settings } from "@mui/icons-material";
 import Sidebar from "./components/Sidebar";
 import Feed from "./components/Feed";
 import Rightbar from "./components/Rightbar";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
+import AddPost from "./components/AddPost";
+import { useState } from "react";
 
 function App() {
-  // const BlueButton = styled(Button)({
-  //   backgroundColor: "skyblue",
-  //   color: "#555",
-  //   margin: 5,
-  //   "&:hover": {
-  //     backgroundColor: "lightblue"
-  //   }
-  // })
+  const [mode, setMode] = useState("light");
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
 
   return (
-    <Box className="App">
-      <Navbar />
-      <Stack direction="row" spacing={2} justifyContent="space-between">
-        <Sidebar />
-        <Feed />
-        <Rightbar />
-      </Stack>
-    </Box>
+    <ThemeProvider theme={darkTheme}>
+      <Box bgcolor={"background.default"} color={"text.primary"}>
+        <Navbar />
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+          <Sidebar setMode={setMode} mode={mode} />
+          <Feed />
+          <Rightbar />
+        </Stack>
+        <AddPost />
+      </Box>
+    </ThemeProvider>
   );
 }
 

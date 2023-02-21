@@ -74,7 +74,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <AppBar position="sticky">
+    <AppBar>
       <StyledToolbar>
         <Stack direction="row" spacing={2} mr={2} alignItems="center">
           <WebStories />
