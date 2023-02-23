@@ -7,6 +7,7 @@ const auth = getAuth(app);
 
 const AuthContext = React.createContext();
 
+// Export authentication context with the entrire app
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = { user };
 
+  // Other components can access user authentication from value
   return (
     <AuthContext.Provider value={value}>
         {!loading && children}

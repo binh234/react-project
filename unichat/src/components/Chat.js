@@ -18,6 +18,7 @@ const Chat = () => {
     navigate("/");
   };
 
+  // Fetch user avatar from the internet
   const getFile = async (url) => {
     const response = await fetch(url);
     const data = await response.blob();
@@ -26,11 +27,13 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    // Logout if no authenticated user
     if (!user) {
       navigate("/");
       return;
     }
 
+    // Get user's chat session through ChatEngine
     axios
       .get("https://api.chatengine.io/users/me/", {
         headers: {
@@ -54,6 +57,7 @@ const Chat = () => {
           //   console.log(pair[0]+ ', '+ pair[1]); 
           // }
 
+          // Create new user
           axios
             .post("https://api.chatengine.io/users/", formData, {
               headers: { "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY },
