@@ -1,5 +1,5 @@
 import { CheckCircle } from "@mui/icons-material";
-import { Box, CardMedia, Stack, Typography } from "@mui/material";
+import { Box, CardMedia, Stack, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { Link, useParams } from "react-router-dom";
@@ -8,6 +8,8 @@ import ReactMarkdown from "react-markdown";
 import Videos from "./Videos";
 
 const VideoDetail = () => {
+  const theme = useTheme();
+  console.log(theme);
   const { id } = useParams();
   const [videoDetail, setVideoDetail] = useState({});
   const [channelDetail, setChannelDetail] = useState({});
@@ -52,7 +54,10 @@ const VideoDetail = () => {
             {title}
           </Typography>
           <Stack direction="row" justifyContent="space-between" px={2}>
-            <Link to={`/channel/${channelId}`}>
+            <Link
+              to={`/channel/${channelId}`}
+              style={{ color: theme.palette.text.primary }}
+            >
               <Stack direction="row" spacing={2}>
                 <CardMedia
                   component="img"

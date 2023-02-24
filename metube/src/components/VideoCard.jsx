@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react";
 import { CheckCircle } from "@mui/icons-material";
 import { Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ const VideoCard = ({
   //   })
   // }, [videoId])
 
+  const theme = useTheme();
   const [timePassed, setTimePassed] = useState("");
   useEffect(() => {
     const pastDate = new Date(snippet?.publishedAt);
@@ -67,7 +69,7 @@ const VideoCard = ({
         />
       </Link>
       <CardContent sx={{ height: "106px" }}>
-        <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
+        <Link to={videoId ? `/video/${videoId}` : demoVideoUrl} style={{ color: theme.palette.text.primary }}>
           <Typography variant="body2" fontWeight="bold">
             {snippet?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)}
           </Typography>
@@ -78,6 +80,7 @@ const VideoCard = ({
               ? `/channel/${snippet?.channelId}`
               : demoChannelUrl
           }
+          style={{ color: theme.palette.text.primary }}
         >
           <Typography
             variant="subtitle2"

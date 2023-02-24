@@ -1,5 +1,5 @@
 import { CheckCircle } from "@mui/icons-material";
-import { CardContent, CardMedia, Typography } from "@mui/material";
+import { CardContent, CardMedia, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -14,9 +14,10 @@ const ChannelCard = ({
   marginTop
 }) => {
   // console.log(snippet);
+  const theme = useTheme();
   return (
     <Box sx={{ boxShadow: "none", borderRadius: 3, marginTop }}>
-      <Link to={`/channel/${typeof id === "string" ? id : id?.channelId}`}>
+      <Link to={`/channel/${typeof id === "string" ? id : id?.channelId}`} style={{ color: theme.palette.text.primary }}>
         <CardContent className="channel-card">
           <CardMedia
             component="img"

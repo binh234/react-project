@@ -1,10 +1,11 @@
 import React from "react";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { logo } from "../utils/constants";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
+  const theme = useTheme();
   return (
     <Stack
       position="sticky"
@@ -15,7 +16,7 @@ const Navbar = () => {
       p={2}
       top={0}
     >
-      <Link to="/" className="flex-center">
+      <Link to="/" className="flex-center" style={{ color: theme.palette.text.primary }}>
         <Stack direction="row" alignItems="center">
           <img src={logo} alt="logo" height={45} />
           <Typography
