@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# MeTube - A YouTube clone appication using ReactJS, RapidAPI and MUI 5
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
