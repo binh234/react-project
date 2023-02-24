@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Toolbar, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { logo } from "../utils/constants";
 import SearchBar from "./SearchBar";
@@ -10,13 +10,13 @@ const Navbar = () => {
       position="sticky"
       direction="row"
       justifyContent="space-between"
-      alignContent="center"
+      alignItems="center"
       spacing={2}
       p={2}
       top={0}
     >
       <Link to="/" className="flex-center">
-        <Toolbar>
+        <Stack direction="row" alignItems="center">
           <img src={logo} alt="logo" height={45} />
           <Typography
             ml={2}
@@ -26,7 +26,7 @@ const Navbar = () => {
           >
             MeTube
           </Typography>
-        </Toolbar>
+        </Stack>
       </Link>
       <SearchBar />
     </Stack>

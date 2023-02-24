@@ -17,6 +17,7 @@ const VideoCard = ({
     snippet,
   },
 }) => {
+
   // console.log(snippet);
   // const [statistics, setStatistics] = useState({});
   // const [contentDetails, setContentDetails] = useState({});
@@ -29,8 +30,8 @@ const VideoCard = ({
   // }, [videoId])
 
   const [timePassed, setTimePassed] = useState("");
-  const pastDate = new Date(snippet?.publishedAt);
   useEffect(() => {
+    const pastDate = new Date(snippet?.publishedAt);
     const now = new Date();
     const millisecondsPassed = now.getTime() - pastDate.getTime();
     const secondsPassed = Math.floor(millisecondsPassed / 1000);
@@ -43,18 +44,17 @@ const VideoCard = ({
     const yearsPassed = now.getFullYear() - pastDate.getFullYear();
 
     if (minutesPassed < 60) {
-      setTimePassed(`${minutesPassed} minutes ago`)
+      setTimePassed(`${minutesPassed} minutes ago`);
     } else if (hoursPassed < 25) {
-      setTimePassed(`${hoursPassed} hours ago`)
+      setTimePassed(`${hoursPassed} hours ago`);
     } else if (daysPassed < 32) {
-      setTimePassed(`${daysPassed} days ago`)
+      setTimePassed(`${daysPassed} days ago`);
     } else if (monthsPassed < 12) {
-      setTimePassed(`${monthsPassed} months ago`)
+      setTimePassed(`${monthsPassed} months ago`);
     } else {
-      setTimePassed(`${yearsPassed} years ago`)
+      setTimePassed(`${yearsPassed} years ago`);
     }
-
-  }, [])
+  }, [snippet]);
 
   return (
     <Card>
@@ -92,9 +92,7 @@ const VideoCard = ({
         <Stack direction="row" spacing={1} sx={{ opacity: "0.7" }}>
           {/* <Typography variant="caption">{statistics?.viewCount} views</Typography> */}
           {/* {"•"} */}
-          <Typography variant="caption">
-            {timePassed}
-          </Typography>
+          <Typography variant="caption">{timePassed}</Typography>
         </Stack>
       </CardContent>
     </Card>
