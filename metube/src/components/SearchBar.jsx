@@ -1,6 +1,6 @@
 import React, { useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import { Paper, IconButton } from "@mui/material";
+import { Paper, IconButton, TextField, Input } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
 const SearchBar = () => {
@@ -25,10 +25,11 @@ const SearchBar = () => {
         mr: { sm: 5 },
       }}
     >
-      <input
+      <Input
+        id="outlined-label-small"
         className="search-bar"
         placeholder="Search..."
-        ref={inputRef}
+        inputRef={inputRef}
       />
       <IconButton type="submit" sx={{p: '10px'}}>
         <Search />

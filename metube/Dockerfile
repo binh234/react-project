@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install required dependencies
-RUN npm Install
+RUN npm install
 
 # Copy the rest of application to the container
 COPY . .

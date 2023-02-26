@@ -13,11 +13,11 @@ const ChannelCard = ({
   },
   marginTop
 }) => {
-  // console.log(snippet);
   const theme = useTheme();
-  return (
+  const channelId = (typeof id === "string" ? id : id?.channelId);
+    return (
     <Box sx={{ boxShadow: "none", borderRadius: 3, marginTop }}>
-      <Link to={`/channel/${typeof id === "string" ? id : id?.channelId}`} style={{ color: theme.palette.text.primary }}>
+      <Link to={channelId ? `/channel/${channelId}` : "/"} style={{ color: theme.palette.text.primary }}>
         <CardContent className="channel-card">
           <CardMedia
             component="img"

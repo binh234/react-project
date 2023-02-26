@@ -27,9 +27,9 @@ const Feed = () => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        <Typography variant="body2" className="copyright" mt={1.5}>
+        {/* <Typography variant="body2" className="copyright" mt={1.5}>
           Copyright &copy; 2022
-        </Typography>
+        </Typography> */}
       </Box>
 
       <Box p={2} flex={2} sx={{ overflowY: "auto", height: "90vh" }}>

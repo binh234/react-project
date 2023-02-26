@@ -2,6 +2,31 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+**Note**: You should get RAPID API key here ([Youtube-v31](https://rapidapi.com/ytdlfree/api/youtube-v31)) before start the development locally.
+
+## Project Overview
+Images available in `demo` folder
+
+| Main page | Channel Page | Video Page |
+| --------- | ------------ | ---------- |
+| ![Main page](demo/homepage.png) | ![Channel Page](demo/channel-page.png) | ![Video page](demo/video-page.png) |
+
+# Features
+[x] Diffrent video categories
+[x] Video searching
+[x] Video player
+[x] Suggested videos for currently played video
+[x] Channel detail page
+[ ] Playlist detail page
+[ ] Display video comments
+
+## Quickstart with Docker
+```bash
+docker build -t metube .
+docker run -p 3000:3000 -d metube
+```
+Or try it online here: [MeTube](https://animated-tanuki-9d8b63.netlify.app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
