@@ -19,6 +19,7 @@ Images available in `demo` folder
 - [x] Channel detail page
 - [ ] Playlist detail page
 - [ ] Display video comments
+- [ ] Lazy loading
 
 ## Quickstart with Docker
 ```bash
