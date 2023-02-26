@@ -12,13 +12,13 @@ Images available in `demo` folder
 | ![Main page](demo/homepage.png) | ![Channel Page](demo/channel-page.png) | ![Video page](demo/video-page.png) |
 
 # Features
-[x] Diffrent video categories
-[x] Video searching
-[x] Video player
-[x] Suggested videos for currently played video
-[x] Channel detail page
-[ ] Playlist detail page
-[ ] Display video comments
+- [x] Diffrent video categories
+- [x] Video searching
+- [x] Video player
+- [x] Suggested videos for currently playing video
+- [x] Channel detail page
+- [ ] Playlist detail page
+- [ ] Display video comments
 
 ## Quickstart with Docker
 ```bash
