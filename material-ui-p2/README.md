@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Fully responsive and modern social media page using Material UI 5
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+**Frontend**: ReactJS, MUI 5
+![Demo](demo/homepage.png)
+![Darkmode](demo/darkmode.png)
 
 ## Available Scripts
 

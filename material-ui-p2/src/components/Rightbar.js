@@ -22,7 +22,7 @@ const Rightbar = () => {
       <Box
         sx={{
           mb: 2,
-          height: "100vh",
+          height: "92vh",
           overflowY: "auto",
           position: "fixed"
         }}
