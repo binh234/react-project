@@ -27,6 +27,7 @@ Channel Page | Video Page |
 - [x] Suggested videos for currently playing video
 - [x] Channel detail page
 - [x] Light/Dark mode
+- [x] Mobile responsive
 - [ ] Playlist detail page
 - [ ] Display video comments
 - [ ] Lazy loading
