@@ -1,15 +1,24 @@
 # MeTube - A YouTube clone appication using ReactJS, RapidAPI and MUI 5
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Youtube clone application consisting of stunning video sections, custom categories, channel pages, video searching and, most importantly, video player. The video data are mainly fetched from [Rapid API](https://rapidapi.com/hub).  
+
+**Frontend**: ReactJS, React Hooks, MUI 5, RapidAPI
+
+<p align="center">
+    <img src = "demo/homepage.png" alt="homepage">
+    <br />
+    <br />
+    <img src = "demo/dark-theme.png" alt="homepage">
+</p>
 
 **Note**: You should get RAPID API key here ([Youtube-v31](https://rapidapi.com/ytdlfree/api/youtube-v31)) before start the development locally.
 
 ## Project Overview
 Images available in `demo` folder
 
-| Main page | Channel Page | Video Page |
-| --------- | ------------ | ---------- |
-| ![Main page](demo/homepage.png) | ![Channel Page](demo/channel-page.png) | ![Video page](demo/video-page.png) |
+Channel Page | Video Page |
+------------ | ---------- |
+![Channel Page](demo/channel-page.png) | ![Video page](demo/video-page.png) |
 
 # Features
 - [x] Diffrent video categories
@@ -17,6 +26,7 @@ Images available in `demo` folder
 - [x] Video player
 - [x] Suggested videos for currently playing video
 - [x] Channel detail page
+- [x] Light/Dark mode
 - [ ] Playlist detail page
 - [ ] Display video comments
 - [ ] Lazy loading
