@@ -56,7 +56,7 @@ function NavBar() {
               }
               onClick={() => onUpdateActiveLink("skills")}
             >
-              SKills
+              Skills
             </Nav.Link>
             <Nav.Link
               href="#projects"

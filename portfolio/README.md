@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Personal portfolio
+
+In this project, I build a personal portfolio website using React and Animate CSS.\
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+![Demo](demo/banner.png)
 
 ## Available Scripts
 

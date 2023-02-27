@@ -24,7 +24,7 @@ export const Footer = () => {
                 <img src={navIcon3} alt="nav3" />
               </a>
             </div>
-            <p>Copyright 2023. All right reserves</p>
+            <p>Copyright &copy; 2023. All right reserves</p>
           </Col>
         </Row>
       </Container>
