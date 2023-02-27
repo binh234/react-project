@@ -22,6 +22,7 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
   try {
+    // console.log(req.body);
     const prompt = req.body.prompt;
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -41,5 +42,4 @@ app.post("/", async (req, res) => {
   }
 });
 
-
-app.listen(500, () => console.log("Server is running on port 5000, http://localhost:5000"));
+app.listen(5000, () => console.log("Server is running on port 5000, http://localhost:5000"));
