@@ -1,6 +1,17 @@
-# Getting Started with Create React App
+# Unichat - Universal chat application with ReactJS, Firebase and ChatEngine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Build a full-fledged Firebase Chat Application with [ChatEngine](https://chatengine.io) and different social authentication including Google and Facebook using Firebase.
+
+**Technologies**: ReactJS, Firebase (Authentication), ChatEngine
+
+![Demo](https://chatengine.io/_next/image?url=%2Fimages%2Ftutorials%2Fmessenger-chat-engine-tutorial-min.png&w=640&q=75)
+
+## Features
+- [x] Authentication with Google/Facebook
+- [x] Create new chat
+- [x] Group chat
+- [x] Notifications
+- [x] Sending photos, emojis, attachments, etc
 
 ## Available Scripts
 
