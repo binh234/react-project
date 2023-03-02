@@ -1,8 +1,6 @@
-module.exports = {
-  webpack: (config) => {
-    config.node = {
-      fs: 'empty'
-    }
-    return config
-  }
-};
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
+
+module.exports = nextConfig
