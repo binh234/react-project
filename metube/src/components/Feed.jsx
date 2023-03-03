@@ -6,9 +6,9 @@ import { fetchFromRapidAPI } from "../utils/APIConfig";
 
 const Videos = lazy(() => import('./Videos'));
 
-const sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+// const sleep = (ms) => {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// };
 
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
@@ -18,7 +18,7 @@ const Feed = () => {
       const data = await fetchFromRapidAPI(
         `search?part=snippet&q=${selectedCategory}`
       );
-      await sleep(15000); // Lazy loading test
+      // await sleep(15000); // Lazy loading test
       setVideos(data.items);
     }
     fetchData();

@@ -7,12 +7,13 @@ import {
   VideoDetail,
   ChannelDetail,
   SearchFeed,
+  PlaylistDetail,
 } from "./components";
 
 function App() {
   const theme = createTheme({
     palette: {
-      mode: 'dark',
+      mode: 'light',
     },
   });
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" exact element={<Feed />} />
           <Route path="/video/:id" element={<VideoDetail />} />
           <Route path="/channel/:id" element={<ChannelDetail />} />
+          <Route path="/playlist/:id" element={<PlaylistDetail />} />
           <Route path="/search/:searchTerm" element={<SearchFeed />} />
         </Routes>
       </Box>

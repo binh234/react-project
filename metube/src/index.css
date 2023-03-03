@@ -84,6 +84,18 @@ a {
   height: 300px;
 }
 
+.playlist-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.playlist-banner {
+  background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,84,253,1) 100%)
+}
+
 @media screen and (max-width: 900px) {
   .category-btn{
     margin: 10px;

@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { CheckCircle } from "@mui/icons-material";
 import { Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   demoThumbnailUrl,
@@ -10,6 +10,7 @@ import {
   demoChannelUrl,
   demoChannelTitle,
 } from "../utils/constants";
+import { calculateTimePassed } from "../utils/helpers";
 // import { fetchFromRapidAPI } from "../utils/APIConfig";
 
 const VideoCard = ({
@@ -59,36 +60,10 @@ const VideoCard = ({
     };
   }, [ref]);
 
-  const [timePassed, setTimePassed] = useState("");
-  useEffect(() => {
-    const pastDate = new Date(snippet?.publishedAt);
-    const now = new Date();
-    const millisecondsPassed = now.getTime() - pastDate.getTime();
-    const secondsPassed = Math.floor(millisecondsPassed / 1000);
-    const minutesPassed = Math.floor(secondsPassed / 60);
-    const hoursPassed = Math.floor(minutesPassed / 60);
-    const daysPassed = Math.floor(hoursPassed / 24);
-    const monthsPassed =
-      (now.getFullYear() - pastDate.getFullYear()) * 12 +
-      (now.getMonth() - pastDate.getMonth());
-    const yearsPassed = now.getFullYear() - pastDate.getFullYear();
-
-    if (minutesPassed < 60) {
-      setTimePassed(`${minutesPassed} minutes ago`);
-    } else if (hoursPassed < 25) {
-      setTimePassed(`${hoursPassed} hours ago`);
-    } else if (daysPassed < 32) {
-      setTimePassed(`${daysPassed} days ago`);
-    } else if (monthsPassed < 12) {
-      setTimePassed(`${monthsPassed} months ago`);
-    } else {
-      setTimePassed(`${yearsPassed} years ago`);
-    }
-  }, [snippet]);
+  const timePassed = useMemo(() => calculateTimePassed(new Date(snippet?.publishedAt)), [snippet]);
 
   return (
     <Card ref={ref}>
-      
       {isVisible  && <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
         <CardMedia
           component="img"

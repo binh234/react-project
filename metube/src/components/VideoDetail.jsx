@@ -9,7 +9,6 @@ import Videos from "./Videos";
 
 const VideoDetail = () => {
   const theme = useTheme();
-  console.log(theme);
   const { id } = useParams();
   const [videoDetail, setVideoDetail] = useState({});
   const [channelDetail, setChannelDetail] = useState({});
