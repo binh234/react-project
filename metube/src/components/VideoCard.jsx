@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { CheckCircle } from "@mui/icons-material";
 import { Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   demoThumbnailUrl,
@@ -31,6 +31,34 @@ const VideoCard = ({
   // }, [videoId])
 
   const theme = useTheme();
+
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    let observerRefValue = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+      observerRefValue = ref.current;
+    }
+
+    return () => {
+      if (observerRefValue) {
+        observer.unobserve(observerRefValue);
+      }
+    };
+  }, [ref]);
+
   const [timePassed, setTimePassed] = useState("");
   useEffect(() => {
     const pastDate = new Date(snippet?.publishedAt);
@@ -59,16 +87,17 @@ const VideoCard = ({
   }, [snippet]);
 
   return (
-    <Card>
-      <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
+    <Card ref={ref}>
+      
+      {isVisible  && <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
         <CardMedia
           component="img"
-          image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
+          image={ snippet?.thumbnails?.high?.url || demoThumbnailUrl}
           alt={snippet?.title || "thumbnail"}
           sx={{ width: "100%", height: 180, borderRadius: 3 }}
         />
-      </Link>
-      <CardContent sx={{ height: "106px" }}>
+      </Link>}
+      {isVisible  && <CardContent sx={{ height: "106px" }}>
         <Link to={videoId ? `/video/${videoId}` : demoVideoUrl} style={{ color: theme.palette.text.primary }}>
           <Typography variant="body2" fontWeight="bold">
             {snippet?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)}
@@ -97,7 +126,7 @@ const VideoCard = ({
           {/* {"•"} */}
           <Typography variant="caption">{timePassed}</Typography>
         </Stack>
-      </CardContent>
+      </CardContent>}
     </Card>
   );
 };

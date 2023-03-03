@@ -1,8 +1,14 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Sidebar from "./Sidebar";
-import React, { useEffect, useState } from "react";
-import Videos from "./Videos";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+// import Videos from "./Videos";
 import { fetchFromRapidAPI } from "../utils/APIConfig";
+
+const Videos = lazy(() => import('./Videos'));
+
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
@@ -12,6 +18,7 @@ const Feed = () => {
       const data = await fetchFromRapidAPI(
         `search?part=snippet&q=${selectedCategory}`
       );
+      await sleep(15000); // Lazy loading test
       setVideos(data.items);
     }
     fetchData();
@@ -36,7 +43,9 @@ const Feed = () => {
         <Typography variant="h4" fontWeight="bold" mb={2}>
           {selectedCategory} <span className="red-text">videos</span>
         </Typography>
-        <Videos videos={videos}/>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Videos videos={videos} />
+        </Suspense>
       </Box>
     </Stack>
   );

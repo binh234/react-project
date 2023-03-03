@@ -12,7 +12,7 @@ import {
 function App() {
   const theme = createTheme({
     palette: {
-      mode: 'light',
+      mode: 'dark',
     },
   });
   return (
