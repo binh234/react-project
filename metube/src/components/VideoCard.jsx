@@ -10,7 +10,7 @@ import {
   demoChannelUrl,
   demoChannelTitle,
 } from "../utils/constants";
-import { calculateTimePassed } from "../utils/helpers";
+import { dateDiff } from "../utils/helpers";
 // import { fetchFromRapidAPI } from "../utils/APIConfig";
 
 const VideoCard = ({
@@ -60,7 +60,7 @@ const VideoCard = ({
     };
   }, [ref]);
 
-  const timePassed = useMemo(() => calculateTimePassed(new Date(snippet?.publishedAt)), [snippet]);
+  const timePassed = useMemo(() => dateDiff(new Date(snippet?.publishedAt)), [snippet]);
 
   return (
     <Card ref={ref}>

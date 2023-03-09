@@ -9,7 +9,7 @@ const Hero = (props) => (
     <LeftSection>
       <SectionTitle main center>
         Welcome To <br />
-        My Personal Portfolio
+        My Personal Portfolio sdjfhjdsfhlsdkf
       </SectionTitle>
       <SectionText>
         Do minim consequat adipisicing sunt. Sit aute ipsum aliqua veniam Lorem adipisicing adipisicing ad ex ipsum reprehenderit. Quis qui non pariatur dolor enim.

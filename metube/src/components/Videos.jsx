@@ -33,9 +33,14 @@ const Videos = ({ videos }) => {
             <Grid
               item
               key={idx}
-              minWidth={{ xs: 200, md: 270 }}
-              flexGrow={1}
-              maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
+              xs={12}
+              sm={6}
+              tb={4}
+              md={3}
+              lg={2}
+              minWidth={{ xs: 200, md: 250 }}
+              // flexGrow={1}
+              // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
             >
               {theme.palette.mode === "light" ? (
                 <YoutubeFresh />

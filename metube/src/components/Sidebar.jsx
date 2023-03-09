@@ -10,9 +10,10 @@ const Sidebar = ({ selectedCategory, setSelectedCategory }) => {
       direction="row"
       sx={{
         overflowY: "auto",
-        height: { xs: "auto", md: "95%" },
-        flexDirection: { md: "column" },
+        height: { xs: "auto", tb: "95%" },
+        flexDirection: { tb: "column" },
       }}
+      className="no-scrollbar-y"
     >
       {categories.map((category) => {
         return (
