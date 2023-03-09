@@ -28,9 +28,10 @@ Channel Page | Video Page |
 - [x] Channel detail page
 - [x] Light/Dark mode
 - [x] Mobile responsive
+- [x] Display video comments
 - [x] Lazy loading
+- [x] Infinite scrolling
 - [ ] Playlist detail page
-- [ ] Display video comments
 
 ## Quickstart with Docker
 ```bash
