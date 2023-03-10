@@ -1,3 +1,6 @@
+import NoResults from '@/components/NoResults'
+import VideoCard from '@/components/VideoCard'
+import { Video } from '@/types'
 import axios from 'axios'
 import Head from 'next/head'
 // import { Inter } from 'next/font/google'
@@ -5,7 +8,11 @@ import Head from 'next/head'
 
 // const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+interface IProps {
+  videos: Video[]
+}
+
+export default function Home({ videos }: IProps) {
   return (
     <>
       <Head>
@@ -16,9 +23,13 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <h1 className="text-3xl font-bold underline">
-            Hello world!
-          </h1>
+          <div className='flex flex-col gap-10 videos h-full'>
+            {videos.length ? (
+              videos.map((video: Video) => (
+                <VideoCard post={video} key={video._id}/>
+              ))
+            ) : <NoResults text={'No Videos'}/>}
+          </div>
         </div>
       </main>
     </>
@@ -26,7 +37,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = async () => {
-  const { data } = await axios.get(`https://localhost:3000/api/post`);
+  const { data } = await axios.get(`http://localhost:3000/api/post`);
 
   return {
     props: {
