@@ -13,45 +13,50 @@ const Videos = ({ videos }) => {
     <Grid container spacing={{ xs: 2, md: 3 }} justifyContent='center'>
       {videos.length > 0
         ? videos.map((item, idx) => (
-            <Grid
-              item
-              key={idx}
-              minWidth={{ xs: 200, md: 235 }}
-              flexGrow={1}
-              maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
-            >
-              {item.id.videoId ? (
-                <VideoCard videoDetail={item} />
-              ) : item.id.channelId ? (
-                <ChannelCard channelDetail={item} />
-              ) : (
-                <PlaylistCard playlistDetail={item} />
-              )}
-            </Grid>
-          ))
+          <Grid
+            item
+            key={idx}
+            xs={12}
+            sm={6}
+            tb={4}
+            md={3}
+            lg={2}
+            minWidth={{ xs: 200, md: 250 }}
+          // flexGrow={1}
+          // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
+          >
+            {item.id.videoId ? (
+              <VideoCard videoDetail={item} />
+            ) : item.id.channelId ? (
+              <ChannelCard channelDetail={item} />
+            ) : (
+              <PlaylistCard playlistDetail={item} />
+            )}
+          </Grid>
+        ))
         : videoItems.map((_, idx) => (
-            <Grid
-              item
-              key={idx}
-              xs={12}
-              sm={6}
-              tb={4}
-              md={3}
-              lg={2}
-              minWidth={{ xs: 200, md: 250 }}
-              // flexGrow={1}
-              // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
-            >
-              {theme.palette.mode === "light" ? (
-                <YoutubeFresh />
-              ) : (
-                <YoutubeFresh
-                  backgroundColor={theme.palette.grey.A700}
-                  foregroundColor={theme.palette.grey[500]}
-                />
-              )}
-            </Grid>
-          ))}
+          <Grid
+            item
+            key={idx}
+            xs={12}
+            sm={6}
+            tb={4}
+            md={3}
+            lg={2}
+            minWidth={{ xs: 200, md: 250 }}
+          // flexGrow={1}
+          // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
+          >
+            {theme.palette.mode === "light" ? (
+              <YoutubeFresh />
+            ) : (
+              <YoutubeFresh
+                backgroundColor={theme.palette.grey.A700}
+                foregroundColor={theme.palette.grey[500]}
+              />
+            )}
+          </Grid>
+        ))}
     </Grid>
   );
 };
