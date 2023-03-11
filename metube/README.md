@@ -4,6 +4,8 @@ A Youtube clone application consisting of stunning video sections, custom catego
 
 **Frontend**: ReactJS, React Hooks, MUI 5, RapidAPI
 
+###[Live Demo here](https://animated-tanuki-9d8b63.netlify.app/)
+
 <p align="center">
     <img src = "demo/homepage.png" alt="homepage">
     <br />
@@ -51,7 +53,6 @@ Images available in `demo` folder
 docker build -t metube .
 docker run -p 3000:3000 -d metube
 ```
-Or try it online here: [MeTube](https://animated-tanuki-9d8b63.netlify.app/)
 
 ## Available Scripts
 
