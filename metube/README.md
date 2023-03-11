@@ -4,7 +4,7 @@ A Youtube clone application consisting of stunning video sections, custom catego
 
 **Frontend**: ReactJS, React Hooks, MUI 5, RapidAPI
 
-###[Live Demo here](https://metube-animate.netlify.app/)
+### [Live Demo here](https://metube-animate.netlify.app/)
 
 <p align="center">
     <img src = "demo/homepage.png" alt="homepage">
