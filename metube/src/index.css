@@ -51,6 +51,24 @@ a {
   width: 300px;
 }
 
+.settings {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 100%;
+  width: 320px;
+  border-radius: 10px 0 0 10px;
+}
+
+.settings .btn-group {
+  width: 100%;
+}
+
+.settings .btn-group .btn {
+  width: 100%;
+  text-transform: capitalize;
+}
+
 .category-btn {
   font-weight: bold !important;
   text-transform: capitalize;
