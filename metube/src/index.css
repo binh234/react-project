@@ -45,13 +45,13 @@ a {
   width: 100% !important;
 }
 
-.search-bar{
-  border:none;
-  outline:none;
-  width:350px;
+.search-bar {
+  border: none;
+  outline: none;
+  width: 300px;
 }
 
-.category-btn{
+.category-btn {
   font-weight: bold !important;
   text-transform: capitalize;
   display: flex;
@@ -69,16 +69,16 @@ a {
 }
 
 .category-btn:hover {
-  background-color: #FC1503 !important;
+  background-color: #fc1503 !important;
   color: white !important;
 }
 
-.category-btn:hover span{
+.category-btn:hover span {
   color: white !important;
 }
 
 .red-text {
-  color: #FC1503;
+  color: #fc1503;
 }
 
 .channel-card {
@@ -90,7 +90,12 @@ a {
 }
 
 .channel-box {
-  background: linear-gradient(90deg, rgba(0,238,247,1) 0%, rgba(63,216,231,1) 1%, rgba(248,0,255,1) 89%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 238, 247, 1) 0%,
+    rgba(63, 216, 231, 1) 1%,
+    rgba(248, 0, 255, 1) 89%
+  );
   z-index: 10;
   height: 300px;
 }
@@ -104,18 +109,22 @@ a {
 }
 
 .playlist-banner {
-  background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,84,253,1) 100%)
+  background: linear-gradient(
+    0deg,
+    rgba(34, 193, 195, 1) 0%,
+    rgba(45, 84, 253, 1) 100%
+  );
 }
 
 @media screen and (max-width: 900px) {
-  .category-btn{
+  .category-btn {
     margin: 10px;
   }
 }
 
-@media screen and (max-width:800px){
-  .copyright{
-    display:none !important;
+@media screen and (max-width: 800px) {
+  .copyright {
+    display: none !important;
   }
 }
 
@@ -127,7 +136,7 @@ a {
   .react-player {
     height: 45vh !important;
   }
-  .search-bar{
-    width:200px;
+  .search-bar {
+    width: 200px;
   }
 }

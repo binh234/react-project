@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Box, createTheme, ThemeProvider } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   Navbar,
   Feed,
@@ -9,28 +9,18 @@ import {
   SearchFeed,
   PlaylistDetail,
 } from "./components";
+import React from "react";
+import ThemeProviderWrapper from "./theme/ThemeProviderWrapper";
 
 function App() {
-  const theme = createTheme({
-    palette: {
-      mode: "light",
-    },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        tb: 875,
-        md: 1120,
-        lg: 1500,
-        xl: 1888,
-        xxl: 2200,
-      },
-    }
-  });
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Box bgcolor={"background.default"} color={"text.primary"} className="no-scrollbar-y">
+    <ThemeProviderWrapper>
+      <BrowserRouter>
+        <Box
+          bgcolor='background.default'
+          color='text.primary'
+          className='no-scrollbar-y'
+        >
           <Navbar />
           <Routes>
             <Route path='/' exact element={<Feed />} />
@@ -40,8 +30,8 @@ function App() {
             <Route path='/search/:searchTerm' element={<SearchFeed />} />
           </Routes>
         </Box>
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProviderWrapper>
   );
 }
 
