@@ -1,5 +1,5 @@
 import { CheckCircle } from "@mui/icons-material";
-import { Box, CardMedia, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, CardMedia, Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 import { Link, useParams } from "react-router-dom";
@@ -130,6 +130,7 @@ const VideoDetail = () => {
             >
               <Videos videos={relatedVideos} />
             </Box>}
+          <Divider />
           <CommentContainer videoId={id} />
         </Box>
         {!isScreenSmall &&

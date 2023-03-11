@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { fetchFromRapidAPI } from "../utils/APIConfig";
 import ChannelCard from "./ChannelCard";
 import ChannelVideoContainer from "./ChannelVideoContainer";
-import Videos from "./Videos";
 
 const ChannelDetail = () => {
   const { id } = useParams();

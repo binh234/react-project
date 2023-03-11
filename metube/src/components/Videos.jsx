@@ -20,7 +20,7 @@ const Videos = ({ videos }) => {
             sm={6}
             tb={4}
             md={3}
-            lg={2}
+            xl={2}
             minWidth={220}
           // flexGrow={1}
           // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
@@ -42,7 +42,7 @@ const Videos = ({ videos }) => {
             sm={6}
             tb={4}
             md={3}
-            lg={2}
+            xl={2}
             minWidth={220}
           // flexGrow={1}
           // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
