@@ -1,7 +1,7 @@
 import { CheckCircle } from "@mui/icons-material";
 import { Box, CardMedia, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/youtube";
 import { Link, useParams } from "react-router-dom";
 import { fetchFromRapidAPI } from "../utils/APIConfig";
 import ReactMarkdown from "react-markdown";
