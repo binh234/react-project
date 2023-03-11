@@ -16,9 +16,22 @@ A Youtube clone application consisting of stunning video sections, custom catego
 ## Project Overview
 Images available in `demo` folder
 
-Channel Page | Video Page |
------------- | ---------- |
-![Channel Page](demo/channel-page.png) | ![Video page](demo/video-page.png) |
+![Channel Page](demo/channel-page.png)
+![Video page](demo/video-page.png)
+
+<details>
+    <summary>Show more</summary>
+    <img src="demo/comments.png" alt="mobile">
+    <img src="demo/lazy_loading.png" alt="mobile">
+</details>
+
+<details>
+    <summary>Mobile</summary>
+    <img src="demo/mobile.png" alt="mobile">
+    <img src="demo/mobile_dark.png" alt="mobile">
+    <img src="demo/mobile_channel.png" alt="mobile">
+    <img src="demo/mobile_dark_player.png" alt="mobile">
+</details>
 
 # Features
 - [x] Diffrent video categories
