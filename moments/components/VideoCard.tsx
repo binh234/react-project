@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import { GoVerified } from 'react-icons/go';
+import ReactPlayer from 'react-player/lazy'
 
 interface IProps {
   post: Video;
@@ -33,10 +34,11 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
       </div>
 
       <div className='lg:ml-20 flex gap-4 relative'>
-        <div className='rounded-3xl' onMouseEnter={() => {}} onMouseLeave={() => {}}>
+        <div className='rounded-3xl' onMouseEnter={() => { }} onMouseLeave={() => { }}>
           <Link href="/">
-            <video className='lg:w-[600px] w-[200px] h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl cursor-pointer bg-gray-100' src={post.video.asset.url} loop></video>
+            <ReactPlayer className='lg:w-[600px] w-[200px] h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl cursor-pointer bg-gray-100' url={post.video.asset.url} loop controls />
           </Link>
+
         </div>
       </div>
     </div>
