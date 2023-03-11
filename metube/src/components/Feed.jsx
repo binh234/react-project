@@ -14,7 +14,7 @@ const Feed = () => {
   return (
     <Stack flexDirection={{ tb: "row", xs: "column" }}>
       <Box
-        height={{ xs: "auto", md: "89vh" }}
+        height={{ xs: "auto", tb: "89vh" }}
         sx={{ borderRight: "1px solid #3d3d3d", px: { xs: 0, md: 2 } }}
       >
         <Sidebar

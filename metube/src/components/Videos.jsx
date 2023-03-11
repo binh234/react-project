@@ -21,7 +21,7 @@ const Videos = ({ videos }) => {
             tb={4}
             md={3}
             lg={2}
-            minWidth={{ xs: 200, md: 250 }}
+            minWidth={220}
           // flexGrow={1}
           // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
           >
@@ -43,18 +43,14 @@ const Videos = ({ videos }) => {
             tb={4}
             md={3}
             lg={2}
-            minWidth={{ xs: 200, md: 250 }}
+            minWidth={220}
           // flexGrow={1}
           // maxWidth={{ xs: "100%", sm: "50%", md: "33.33%", lg: "25%" }}
           >
-            {theme.palette.mode === "light" ? (
-              <YoutubeFresh />
-            ) : (
-              <YoutubeFresh
-                backgroundColor={theme.palette.grey.A700}
-                foregroundColor={theme.palette.grey[500]}
-              />
-            )}
+            <YoutubeFresh
+              backgroundColor={theme.palette.action.hover}
+              foregroundColor={theme.palette.action.selected}
+            />
           </Grid>
         ))}
     </Grid>

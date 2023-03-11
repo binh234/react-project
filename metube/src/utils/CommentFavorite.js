@@ -2,13 +2,11 @@ import React from 'react'
 import ContentLoader from 'react-content-loader'
 
 const CommentFavorite = props => (
-  <ContentLoader viewBox="0 0 476 124" {...props}>
-    <rect x="48" y="8" width="88" height="6" rx="3" />
-    <rect x="48" y="26" width="52" height="6" rx="3" />
-    <rect x="0" y="56" width="410" height="6" rx="3" />
-    <rect x="0" y="72" width="380" height="6" rx="3" />
-    <rect x="0" y="88" width="178" height="6" rx="3" />
-    <circle cx="20" cy="20" r="20" />
+  <ContentLoader viewBox="0 0 1000 150"{...props}>
+    <circle cx="48" cy="60" r="32" />
+    <rect x="100" y="29.5" width="250" height="24" />
+    <rect x="100" y="65" width="800" height="44" />
+    <rect x="100" y="120" width="320" height="24" />
   </ContentLoader>
 )
 export default CommentFavorite

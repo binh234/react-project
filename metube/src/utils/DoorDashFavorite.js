@@ -1,24 +1,25 @@
-import React from 'react'
-import ContentLoader from 'react-content-loader'
+import React from "react";
+import ContentLoader from "react-content-loader";
 
-const DoorDashFavorite = props => (
+const DoorDashFavorite = (props) => (
   <ContentLoader
-    viewBox="0 0 450 400"
-    backgroundColor="#f0f0f0"
-    foregroundColor="#dedede"
+    viewBox='0 0 1000 142'
     {...props}
   >
-    <rect x="43" y="304" rx="4" ry="4" width="271" height="9" />
-    <rect x="44" y="323" rx="3" ry="3" width="119" height="6" />
-    <rect x="42" y="77" rx="10" ry="10" width="388" height="217" />
+    <rect x='20' y='20' rx='3' ry='3' width='960' height='32' />
+    <circle cx='48' cy='96' r='32' />
+    <rect x='92' y='70' rx='3' ry='3' width='160' height='26' />
+    <rect x='92' y='104' rx='3' ry='3' width='200' height='24' />
+    <rect x='820' y='70' rx='3' ry='3' width='160' height='26' />
+    <rect x='0' y='140' rx='0' ry='0' width='1000' height='1' />
   </ContentLoader>
-)
+);
 
 DoorDashFavorite.metadata = {
-  name: 'Nic Bovee', // My name
-  github: 'ghettifish', // Github username
-  description: 'A simple favorite from the DoorDash local favorites.', // Little tagline
-  filename: 'DoorDashFavorite', // filename of your loader
-}
+  name: "Nic Bovee", // My name
+  github: "ghettifish", // Github username
+  description: "A simple favorite from the DoorDash local favorites.", // Little tagline
+  filename: "DoorDashFavorite", // filename of your loader
+};
 
-export default DoorDashFavorite
+export default DoorDashFavorite;

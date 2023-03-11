@@ -13,6 +13,10 @@ const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+const isEmpty = (item) => {
+  return Object.keys(item).length === 0;
+}
+
 const VideoDetail = () => {
   const theme = useTheme();
   const { id } = useParams();
@@ -55,13 +59,16 @@ const VideoDetail = () => {
     <Box minHeight="95vh" ml={{ xs: 0, sm: 2, md: 5 }}>
       <Stack direction={{ xs: "column", md: "row" }}>
         <Box flex={3} width="100%" sx={{ top: "86px" }}>
-          {Object.keys(videoDetail).length === 0 ? <DoorDashFavorite /> :
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${id}`}
+            className="react-player"
+            controls
+          />
+          {(isEmpty(videoDetail) || isEmpty(channelDetail)) ?
+            <DoorDashFavorite
+              backgroundColor={theme.palette.action.hover}
+              foregroundColor={theme.palette.action.selected} /> :
             <>
-              <ReactPlayer
-                url={`https://www.youtube.com/watch?v=${id}`}
-                className="react-player"
-                controls
-              />
               <Typography variant="h6" p={2}>
                 {title}
               </Typography>

@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { SaveAltOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
@@ -13,6 +14,7 @@ const CommentContainer = ({ videoId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const sampleComments = [1, 2, 3, 4, 5];
   const loaderRef = useRef(null);
+  const theme = useTheme();
 
   const getComments = async (override) => {
     if (!isLoading) {
@@ -73,7 +75,9 @@ const CommentContainer = ({ videoId }) => {
       {comments.length > 0 ? 
         <CommentList comments={comments} /> :
         sampleComments.map((_, i) => (
-          <CommentFavorite key={i} />
+          <CommentFavorite key={i} 
+          backgroundColor={theme.palette.action.hover}
+          foregroundColor={theme.palette.action.selected}/>
         ))
       }
       

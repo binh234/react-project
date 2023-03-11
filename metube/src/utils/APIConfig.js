@@ -7,7 +7,7 @@ const options = {
   params: {
     // part: "id,snippet",
     // type: "video",
-    maxResults: "12",
+    maxResults: "48",
   },
   headers: {
     "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
