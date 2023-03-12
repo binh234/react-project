@@ -16,7 +16,7 @@ const Upload = () => {
   const captionRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
 
-  const { userProfile }: {userProfile: any} = useAuthStore();
+  const { userProfile }: { userProfile: any } = useAuthStore();
 
   if (!userProfile) {
     return <div>Login to continue</div>;
@@ -46,12 +46,13 @@ const Upload = () => {
   const handleDiscard = () => {
     captionRef.current!.value = "";
     categoryRef.current!.value = topics[0].name;
+    setVideoAsset(undefined);
   }
 
   const handlePost = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(userProfile, videoAsset, captionRef.current, categoryRef.current);
     if (userProfile?._id && videoAsset?._id && captionRef.current!.value && categoryRef.current!.value) {
+      setSavingPost(true);
       const document = {
         _type: 'post',
         caption: captionRef.current!.value,
@@ -69,8 +70,23 @@ const Upload = () => {
           _ref: userProfile?._id
         },
       }
-      await axios.post('http://localhost:3000/api/post', document);
-      router.push("/")
+      try {
+        const response = await axios.post('http://localhost:3000/api/post', document);
+        if (response.status === 200) {
+          router.push("/")
+        } else {
+          alert("Something wrong, please try again");
+          setSavingPost(false);
+        }
+      } catch (error: any) {
+        if (error.response) {
+          console.log('Status code:', error.response.status);
+        } else {
+          console.log('Error:', error.message);
+        }
+        alert(error.message);
+        setSavingPost(false);
+      }
     }
   }
 
@@ -123,7 +139,7 @@ const Upload = () => {
           </div>
           <div className='flex flex-col gap-3 pb-10'>
             <label className='text-md font-medium'>Caption</label>
-            <input type="text" className='rounded outline-none text-md border-2 border-gray-200 p-2 w-full' ref={captionRef}/>
+            <input type="text" className='rounded outline-none text-md border-2 border-gray-200 p-2 w-full' ref={captionRef} />
             <label className='text-md font-medium'>Choose a category</label>
             <select className='outline-none border-2 border-gray-200 text-md capitalize p-2 rounded cursor-pointer' ref={categoryRef}>
               {topics.map(topic => (
@@ -131,10 +147,10 @@ const Upload = () => {
               ))}
             </select>
             <div className='flex gap-6 mt-10'>
-              <button className='border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-gray-300 hover:border-gray-500' onClick={handleDiscard}>
+              <button className='border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-gray-300 hover:border-gray-500' onClick={handleDiscard} disabled={savingPost}>
                 Discard
               </button>
-              <button className='bg-[#F51997] text-white border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]' type="submit" onClick={handlePost}>
+              <button className='bg-[#F51997] text-white border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]' type="submit" onClick={handlePost} disabled={savingPost}>
                 Post
               </button>
             </div>

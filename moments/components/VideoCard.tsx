@@ -21,7 +21,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
             </Link>
           </div>
           <div>
-            <Link href="/">
+            <Link href={`/detail/${post._id}`}>
               <div className='flex items-center gap-2'>
                 <p className='flex gap-2 items-center md:text-md text-primary font-bold'>{post.postedBy.userName} {` `}
                   <GoVerified className='text-blue-400 text-md' />
