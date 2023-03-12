@@ -6,6 +6,7 @@ import { topics } from '@/utils/constants';
 import useAuthStore from '@/store/authStore';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const Upload = () => {
   const router = useRouter();
@@ -92,6 +93,10 @@ const Upload = () => {
 
   return (
     <div className="flex w-full h-full pr-10">
+      <Head>
+        <title>Upload</title>
+        <meta name="description" content="Upload video" />
+      </Head>
       <div className="bg-white rounded-lg w-[100%] md:w-[90%]">
         <div>
           <p className='text-2xl font-bold'>Upload Video</p>

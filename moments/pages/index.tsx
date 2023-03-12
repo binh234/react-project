@@ -17,9 +17,6 @@ export default function Home({ videos }: IProps) {
     <>
       <Head>
         <title>Moments</title>
-        <meta name="description" content="Moments - Share your moments" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <div>
