@@ -17,7 +17,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
         <div className='flex gap-3 p-2 cursor-progress font-semibold rounded'>
           <div className='md:w-16 md:h-16 w-10 h-10'>
             <Link href="/">
-              <Image width={60} height={60} className='rounded-full' src={post.postedBy.image} alt={post._id} />
+              <Image width={48} height={48} className='rounded-full' src={post.postedBy.image} alt={post._id} />
             </Link>
           </div>
           <div>
@@ -34,7 +34,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
       </div>
 
       <div className='lg:ml-20 flex gap-4 relative'>
-        <div className='rounded-3xl' onMouseEnter={() => { }} onMouseLeave={() => { }}>
+        <div className='rounded-3xl'>
           <Link href="/">
             <ReactPlayer className='lg:w-[600px] w-[200px] h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl cursor-pointer bg-gray-100' url={post.video.asset.url} loop controls />
           </Link>

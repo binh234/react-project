@@ -18,6 +18,7 @@ const Navbar = () => {
   const handleLogout = () => {
     googleLogout();
     removeUser();
+    setIsOpen(false);
   }
 
   function handleClick() {
@@ -53,7 +54,7 @@ const Navbar = () => {
         {userProfile ? (
           <div className='flex gap-5 md:gap-10'>
             <Link href="/upload">
-              <button className='border-2 rounded-full md:rounded-lg p-2 md:px-4 text-md font-semibold flex items-center gap-2'>
+              <button className='border-2 rounded-full md:rounded-lg p-2 md:px-4 text-md font-semibold flex items-center gap-2 hover:bg-gray-300'>
                 <IoMdAdd className='text-xl' /> {` `}
                 <span className='hidden md:block'>Upload</span>
               </button>
@@ -66,7 +67,7 @@ const Navbar = () => {
                 {isOpen && (
                   <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-lg z-10">
                     <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={handleClose}>Your Profile</div>
-                    <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={handleClose}>Sign out</div>
+                    <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={handleLogout}>Sign out</div>
                     <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={handleClose}>Settings</div>
                   </div>
                 )}

@@ -1,6 +1,3 @@
-import useAuthStore from '@/store/authStore';
-import { createOrGetUser } from '@/utils';
-import { GoogleLogin } from '@react-oauth/google';
 import Link from 'next/link';
 import React, { useState } from 'react'
 import { AiFillHome, AiOutlineMenu } from 'react-icons/ai';
@@ -11,7 +8,6 @@ import SuggestedAccount from './SuggestedAccount';
 
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(true);
-  const {userProfile, addUser} = useAuthStore();
   const normalLink = 'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#F51997] rounded'
 
   return (
@@ -29,20 +25,6 @@ const Sidebar = () => {
               </div>
             </Link>
           </div>
-          {userProfile === null && (
-            <div className='px-2 py-4 hidden xl:block'>
-              {/* <p className='text-gray-400'>Login</p> */}
-              <div className='pr-4'>
-                <GoogleLogin
-                  onSuccess={credentialResponse => {
-                    createOrGetUser(credentialResponse, addUser);
-                  }}
-                  onError={() => {
-                    console.log('Login Failed');
-                  }} />
-              </div>
-            </div>
-          )}
           <Discover />
           <SuggestedAccount />
           <Footer />
