@@ -33,14 +33,11 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
         </div>
       </div>
 
-      <div className='lg:ml-20 flex gap-4 relative'>
-        <div className='rounded-3xl'>
-          <Link href="/">
-            <ReactPlayer className='lg:w-[600px] w-[200px] h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl cursor-pointer bg-gray-100' url={post.video.asset.url} loop controls />
-          </Link>
-
+      <Link href={`/detail/${post._id}`}>
+        <div className='lg:ml-20 mr-4 flex gap-4 relative rounded-3xl lg:w-[600px] w-auto h-[300px] md:h-[400px] lg:h-[500px] cursor-pointer bg-gray-100 items-center'>
+          <video src={post.video.asset.url} loop controls />
         </div>
-      </div>
+      </Link>
     </div>
   )
 }

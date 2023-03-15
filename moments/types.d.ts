@@ -1,3 +1,12 @@
+export interface IComment {
+  comment: string
+  length?: number
+  _key: string
+  postedBy: {
+    _id: string
+    _ref: string
+  }
+}
 export interface Video {
   caption: string
   video: {
@@ -19,13 +28,7 @@ export interface Video {
       image: string
     }
   }[]
-  comments: {
-    comment: string
-    _key: string
-    postedBy: {
-      _ref: string
-    }
-  }[]
+  comments: IComment[]
   userId: string
 }
 
