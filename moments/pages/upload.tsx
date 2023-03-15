@@ -7,6 +7,7 @@ import useAuthStore from '@/store/authStore';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { BASE_URL } from '@/utils';
 
 const Upload = () => {
   const router = useRouter();
@@ -72,7 +73,7 @@ const Upload = () => {
         },
       }
       try {
-        const response = await axios.post('http://localhost:3000/api/post', document);
+        const response = await axios.post(`${BASE_URL}/api/post`, document);
         if (response.status === 200) {
           router.push("/")
         } else {
