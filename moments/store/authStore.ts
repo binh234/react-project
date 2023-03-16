@@ -2,7 +2,7 @@ import {persist} from 'zustand/middleware'
 import {create} from 'zustand'
 import {BASE_URL} from '@/utils'
 import axios from 'axios'
-import { shuffle } from '@/utils/helpers'
+import {shuffle} from '@/utils/helpers'
 
 const authStore = (set: any) => ({
   userProfile: null,
@@ -16,7 +16,7 @@ const authStore = (set: any) => ({
     set({allUsers: response.data})
   },
   fetchSuggestedUsers: async () => {
-    const { data } = await axios.get(`${BASE_URL}/api/suggested-user`, {
+    const {data} = await axios.get(`${BASE_URL}/api/suggested-user`, {
       params: {maxResults: 50},
     })
     shuffle(data)

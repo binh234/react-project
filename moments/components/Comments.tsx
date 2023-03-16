@@ -51,9 +51,9 @@ const Comments = ({comments, addComment, isPostingComment}: IProps) => {
                     </Link>
                     <p className="text-base font-normal">{comment}</p>
                   </div>
-                  <div className='flex flex-row gap-3 pl-2'>
-                    <p className='text-xs font-bold'>Like</p>
-                    <p className='text-xs font-bold'>Reply</p>
+                  <div className="flex flex-row gap-3 pl-2">
+                    <p className="text-xs font-bold">Like</p>
+                    <p className="text-xs font-bold">Reply</p>
                   </div>
                 </div>
               </div>

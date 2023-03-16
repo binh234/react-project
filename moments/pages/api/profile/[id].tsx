@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json({
         user: users[0],
         userVideos,
-        userLikedVideos
+        userLikedVideos,
       })
     } catch (e) {
       console.log('Error when retrieve user data: ', e)
