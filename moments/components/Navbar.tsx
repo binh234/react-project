@@ -11,7 +11,7 @@ import useAuthStore from '@/store/authStore'
 import { AiOutlineLogout } from 'react-icons/ai';
 
 const Navbar = () => {
-  const { userProfile, addUser, removeUser } = useAuthStore();
+  const { userProfile, addUser, removeUser }: any = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

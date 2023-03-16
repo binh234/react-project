@@ -1,12 +1,14 @@
+interface IPostedBy {
+  _id: string
+  userName: string
+  image: string
+}
+
 export interface IComment {
   comment: string
   length?: number
   _key: string
-  postedBy: {
-    _id: string
-    userName: string
-    image: string
-  }
+  postedBy: IPostedBy
 }
 export interface Video {
   caption: string
@@ -17,17 +19,9 @@ export interface Video {
     }
   }
   _id: string
-  postedBy: {
-    _id: string
-    userName: string
-    image: string
-  }
+  postedBy: IPostedBy
   likes: {
-    postedBy: {
-      _id: string
-      userName: string
-      image: string
-    }
+    postedBy: IPostedBy
   }[]
   comments: IComment[]
   userId: string
