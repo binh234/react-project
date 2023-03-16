@@ -4,7 +4,8 @@ export interface IComment {
   _key: string
   postedBy: {
     _id: string
-    _ref: string
+    userName: string
+    image: string
   }
 }
 export interface Video {

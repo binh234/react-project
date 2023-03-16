@@ -18,8 +18,8 @@ const Discover = () => {
         {topics.map((item) => (
           <Link href={`/?topic=${item.name}`} key={item.name}>
             <div className={topic === item.name ? activeTopicStyle : topicStyle}>
-              <span className='font-bold text-2l xl:text-md'>{item.icon}</span>
-              <span className='font-medium text-md hidden xl:block capitalize'>{item.name}</span>
+              <span className='font-bold text-2l xl:text-base'>{item.icon}</span>
+              <span className='font-medium text-base hidden xl:block capitalize'>{item.name}</span>
             </div>
           </Link>
         ))}

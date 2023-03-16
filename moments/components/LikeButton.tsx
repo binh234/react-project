@@ -30,11 +30,11 @@ const LikeButton = ({handleLike, likes}: IProps) => {
             <MdFavorite className='text-base md:text-lg' />
           </div>
         ) : (
-          <div className='bg-primary rounded-full p-2 md:p-4' onClick={() => handleLike(true)}>
+          <div className='bg-primary rounded-full p-2 md:p-3' onClick={() => handleLike(true)}>
             <MdFavorite className='text-base md:text-lg' />
           </div>
         )}
-        <p className='text-md font-semibold'>{likes?.length | 0}</p>
+        <p className='text-base font-semibold'>{likes?.length | 0}</p>
       </div>
     </div>
   )

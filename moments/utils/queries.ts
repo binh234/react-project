@@ -16,18 +16,12 @@ export const allPostsQuery = () => {
       },
     likes,
     comments[]{
-      comment,
       _key,
-      postedBy->{
-      _id,
-      userName,
-      image
-    },
     }
-  }`;
+  }`
 
-  return query;
-};
+  return query
+}
 
 export const postDetailQuery = (postId: string | string[]) => {
   const query = `*[_type == "post" && _id == '${postId}']{
@@ -45,18 +39,19 @@ export const postDetailQuery = (postId: string | string[]) => {
       userName,
       image
     },
-     likes,
+    likes,
     comments[]{
       comment,
       _key,
       postedBy->{
-        _ref,
-      _id,
-    },
+        _id,
+        userName,
+        image
+      },
     }
-  }`;
-  return query;
-};
+  }`
+  return query
+}
 
 export const searchPostsQuery = (searchTerm: string | string[]) => {
   const query = `*[_type == "post" && caption match '${searchTerm}*' || topic match '${searchTerm}*'] {
@@ -74,7 +69,7 @@ export const searchPostsQuery = (searchTerm: string | string[]) => {
       userName,
       image
     },
-likes,
+    likes,
     comments[]{
       comment,
       _key,
@@ -84,21 +79,27 @@ likes,
       image
     },
     }
-  }`;
-  return query;
-};
+  }`
+  return query
+}
 
 export const singleUserQuery = (userId: string | string[]) => {
-  const query = `*[_type == "user" && _id == '${userId}']`;
+  const query = `*[_type == "user" && _id == '${userId}']`
 
-  return query;
-};
+  return query
+}
 
 export const allUsersQuery = () => {
-  const query = `*[_type == "user"]`;
+  const query = `*[_type == "user"]`
 
-  return query;
-};
+  return query
+}
+
+export const suggestedUsersQuery = (maxResults: number) => {
+  const query = `*[_type == "user"][0..${maxResults - 1}]`
+
+  return query
+}
 
 export const userCreatedPostsQuery = (userId: string | string[]) => {
   const query = `*[ _type == 'post' && userId == '${userId}'] | order(_createdAt desc){
@@ -116,21 +117,20 @@ export const userCreatedPostsQuery = (userId: string | string[]) => {
       userName,
       image
     },
- likes,
-
+    likes,
     comments[]{
       comment,
       _key,
       postedBy->{
-      _id,
-      userName,
-      image
-    },
+        _id,
+        userName,
+        image
+      },
     }
-  }`;
+  }`
 
-  return query;
-};
+  return query
+}
 
 export const userLikedPostsQuery = (userId: string | string[]) => {
   const query = `*[_type == 'post' && '${userId}' in likes[]._ref ] | order(_createdAt desc) {
@@ -148,21 +148,20 @@ export const userLikedPostsQuery = (userId: string | string[]) => {
       userName,
       image
     },
- likes,
-
+    likes,
     comments[]{
       comment,
       _key,
       postedBy->{
-      _id,
-      userName,
-      image
-    },
+        _id,
+        userName,
+        image
+      },
     }
-  }`;
+  }`
 
-  return query;
-};
+  return query
+}
 
 export const topicPostsQuery = (topic: string | string[]) => {
   const query = `*[_type == "post" && topic match '${topic}*'] {
@@ -180,18 +179,17 @@ export const topicPostsQuery = (topic: string | string[]) => {
       userName,
       image
     },
- likes,
-
+    likes,
     comments[]{
       comment,
       _key,
       postedBy->{
-      _id,
-      userName,
-      image
-    },
+        _id,
+        userName,
+        image
+      },
     }
-  }`;
+  }`
 
-  return query;
-};
+  return query
+}

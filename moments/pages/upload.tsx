@@ -66,7 +66,7 @@ const Upload = () => {
             _ref: videoAsset?._id
           }
         },
-        user: userProfile?._id,
+        userId: userProfile?._id,
         postedBy: {
           _type: 'postedBy',
           _ref: userProfile?._id
@@ -101,7 +101,7 @@ const Upload = () => {
       <div className="bg-white rounded-lg w-[100%] md:w-[90%]">
         <div>
           <p className='text-2xl font-bold'>Upload Video</p>
-          <p className='text-md text-gray-400 mt-1'>Post a video to your account</p>
+          <p className='text-base text-gray-400 mt-1'>Post a video to your account</p>
         </div>
         <div className='flex flex-col lg:flex-row  gap-6 justify-center mt-10'>
           <div className='border-dashed rounded-xl border-4 border-gray-200 flex flex-col flex-grow justify-center items-center outline-none h-[460px] p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100'>
@@ -130,7 +130,7 @@ const Upload = () => {
                         Up to 10 minutes <br />
                         Less then 100MB
                       </p>
-                      <p className='bg-[#F51997] text-center mt-10 rounded text-white text-md font-medium p-2 w-52 outline-none hover:bg-[#da1685]'>
+                      <p className='bg-[#F51997] text-center mt-10 rounded text-white text-base font-medium p-2 w-52 outline-none hover:bg-[#da1685]'>
                         Select File
                       </p>
                     </div>
@@ -144,19 +144,19 @@ const Upload = () => {
             )}
           </div>
           <div className='flex flex-col gap-3 pb-10'>
-            <label className='text-md font-medium'>Caption</label>
-            <input type="text" className='rounded outline-none text-md border-2 border-gray-200 p-2 w-full' ref={captionRef} />
-            <label className='text-md font-medium'>Choose a category</label>
-            <select className='outline-none border-2 border-gray-200 text-md capitalize p-2 rounded cursor-pointer' ref={categoryRef}>
+            <label className='text-base font-medium'>Caption</label>
+            <input type="text" className='rounded outline-none text-base border-2 border-gray-200 p-2 w-full' ref={captionRef} />
+            <label className='text-base font-medium'>Choose a category</label>
+            <select className='outline-none border-2 border-gray-200 text-base capitalize p-2 rounded cursor-pointer' ref={categoryRef}>
               {topics.map(topic => (
                 <option key={topic.name}>{topic.name}</option>
               ))}
             </select>
             <div className='flex gap-6 mt-10'>
-              <button className='border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-gray-300 hover:border-gray-500' onClick={handleDiscard} disabled={savingPost}>
+              <button className='border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-gray-300 hover:border-gray-500' onClick={handleDiscard} disabled={savingPost}>
                 Discard
               </button>
-              <button className='bg-[#F51997] text-white border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]' type="submit" onClick={handlePost} disabled={savingPost}>
+              <button className='bg-[#F51997] text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]' type="submit" onClick={handlePost} disabled={savingPost}>
                 Post
               </button>
             </div>
