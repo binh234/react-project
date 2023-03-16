@@ -1,19 +1,19 @@
-import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
+import Navbar from '@/components/Navbar'
+import Sidebar from '@/components/Sidebar'
 import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-import { useState, useEffect } from 'react'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import Head from 'next/head';
+import type {AppProps} from 'next/app'
+import {useState, useEffect} from 'react'
+import {GoogleOAuthProvider} from '@react-oauth/google'
+import Head from 'next/head'
 
-export default function App({ Component, pageProps }: AppProps) {
-  const [isSSR, setIsSSR] = useState(true);
+export default function App({Component, pageProps}: AppProps) {
+  const [isSSR, setIsSSR] = useState(true)
 
   useEffect(() => {
     setIsSSR(false)
   }, [])
 
-  if (isSSR) return null;
+  if (isSSR) return null
 
   return (
     <GoogleOAuthProvider clientId={`${process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN}`}>
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="Moments - Share your moments" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className='xl:w-[1200px] m-auto overflow-hidden h-[100vh]'>
+      <div className="xl:w-[1280px] 2xl:w-[1400px] m-auto overflow-hidden h-[100vh]">
         <Navbar />
         <div className="flex gap-6 md:gap-20">
           <div className="h-92vh overflow-hidden xl:hover:overflow-auto">
