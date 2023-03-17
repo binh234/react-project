@@ -110,7 +110,7 @@ const Upload = () => {
           <p className="text-base text-gray-400 mt-1">Post a video to your account</p>
         </div>
         <div className="flex flex-col lg:flex-row xl:flex-wrap gap-6 justify-center mt-10">
-          <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col flex-grow justify-center items-center outline-none h-[460px] p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
+          <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] w-[300px] flex-grow p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
             {isLoading ? (
               <p>Uploading..</p>
             ) : (
@@ -177,7 +177,7 @@ const Upload = () => {
             </select>
             <div className="flex gap-6 mt-10">
               <button
-                className="border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-gray-300 hover:border-gray-500"
+                className="border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-primary hover:border-gray-500"
                 onClick={handleDiscard}
                 disabled={savingPost}
               >

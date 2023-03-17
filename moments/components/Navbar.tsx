@@ -9,16 +9,27 @@ import Logo from '@/utils/tiktik-logo.png'
 import {createOrGetUser} from '@/utils'
 import useAuthStore from '@/store/authStore'
 import {AiOutlineLogout} from 'react-icons/ai'
+import {BiSearch} from 'react-icons/bi'
 
 const Navbar = () => {
   const {userProfile, addUser, removeUser}: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const handleLogout = () => {
     googleLogout()
     removeUser()
     setIsOpen(false)
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (searchInputRef.current!.value) {
+      router.push(`/search/${searchInputRef.current!.value}`)
+    }
   }
 
   function handleClick() {
@@ -49,7 +60,19 @@ const Navbar = () => {
           <Image className="cursor-pointer" src={Logo} alt="tiktik" />
         </div>
       </Link>
-      <div>Search</div>
+      <div className="relative hidden md:block">
+        <form onSubmit={handleSearch} className="absolute md:static top-10 -left-20 bg-white">
+          <input
+            type="text"
+            placeholder="Search"
+            ref={searchInputRef}
+            className="p-2 px-3 md:text-base border-gray-200 rounded-full border-2 focus:outline-none focus:border-gray-500 w-[300px] md:w-[350px] md:top-0"
+          />
+          <button className="absolute md:right-5 right-6 top-4 border-l-2 pl-4 text-gray-800">
+            <BiSearch />
+          </button>
+        </form>
+      </div>
       <div>
         {userProfile ? (
           <div className="flex gap-5 md:gap-10">

@@ -1,10 +1,10 @@
 import NoResults from '@/components/NoResults'
 import VideoCard from '@/components/VideoCard'
-import {Video} from '@/types'
-import {BASE_URL} from '@/utils'
+import { Video } from '@/types'
+import { BASE_URL } from '@/utils'
 import axios from 'axios'
 import Head from 'next/head'
-import {MdOutlineVideocamOff} from 'react-icons/md'
+import { MdOutlineVideocamOff } from 'react-icons/md'
 // import { Inter } from 'next/font/google'
 // import styles from '@/styles/Home.module.css'
 
@@ -14,7 +14,7 @@ interface IProps {
   videos: Video[]
 }
 
-export default function Home({videos}: IProps) {
+export default function Home({ videos }: IProps) {
   return (
     <>
       <Head>
@@ -35,8 +35,15 @@ export default function Home({videos}: IProps) {
   )
 }
 
-export const getServerSideProps = async () => {
-  const {data} = await axios.get(`${BASE_URL}/api/post`)
+export const getServerSideProps = async ({ query: { topic } }: { query: { topic: string } }) => {
+  let response = null
+  if (topic) {
+    response = await axios.get(`${BASE_URL}/api/discover/${topic}`)
+  } else {
+    response = await axios.get(`${BASE_URL}/api/post`)
+  }
+
+  const {data} = response
 
   return {
     props: {

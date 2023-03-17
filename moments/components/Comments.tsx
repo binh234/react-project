@@ -78,7 +78,11 @@ const Comments = ({comments, addComment, isPostingComment}: IProps) => {
               className="bg-primary px-4 py-2 text-base border-2 rounded-full w-full"
               ref={commentRef}
             />
-            <button className="text-lg text-gray-400" disabled={isPostingComment}>
+            <button
+              className="text-lg text-gray-400 hidden md:block"
+              type="submit"
+              disabled={isPostingComment}
+            >
               <MdSend />
             </button>
           </form>
