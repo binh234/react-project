@@ -1,7 +1,7 @@
-import {footerList1, footerList2, footerList3} from '@/utils/constants'
+import { footerList1, footerList2, footerList3 } from '@/utils/constants'
 import React from 'react'
 
-const List = ({items, mt}: {items: string[]; mt: boolean}) => (
+const List = ({ items, mt }: { items: string[]; mt: boolean }) => (
   <div className={`flex flex-wrap gap-2 ${mt && 'mt-5'}`}>
     {items.map((item) => (
       <p key={item} className="text-gray-400 text-sm hover:underline cursor-pointer">

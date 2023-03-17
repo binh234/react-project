@@ -43,7 +43,7 @@ export const getServerSideProps = async ({ query: { topic } }: { query: { topic:
     response = await axios.get(`${BASE_URL}/api/post`)
   }
 
-  const {data} = response
+  const { data } = response
 
   return {
     props: {

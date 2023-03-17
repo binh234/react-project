@@ -5,7 +5,7 @@ interface IProps {
   icon: React.ReactNode
 }
 
-const NoResults = ({text, icon}: IProps) => {
+const NoResults = ({ text, icon }: IProps) => {
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
       <p className="text-8xl">{icon}</p>

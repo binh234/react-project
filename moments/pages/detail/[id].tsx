@@ -2,49 +2,49 @@ import Comments from '@/components/Comments'
 import LikeButton from '@/components/LikeButton'
 import comment from '@/moments-backend/schemas/comment'
 import useAuthStore from '@/store/authStore'
-import {Video} from '@/types'
-import {BASE_URL} from '@/utils'
+import { Video } from '@/types'
+import { BASE_URL } from '@/utils'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
-import React, {useState} from 'react'
-import {GoVerified} from 'react-icons/go'
-import {MdOutlineCancel} from 'react-icons/md'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { GoVerified } from 'react-icons/go'
+import { MdOutlineCancel } from 'react-icons/md'
 import ReactPlayer from 'react-player/lazy'
 
 interface IProps {
   postDetails: Video
 }
 
-const Detail = ({postDetails}: IProps) => {
+const Detail = ({ postDetails }: IProps) => {
   const [post, setPost] = useState(postDetails)
   const router = useRouter()
-  const {userProfile}: any = useAuthStore()
+  const { userProfile }: any = useAuthStore()
   const [isPostingComment, setIsPostingComment] = useState(false)
 
   if (!post) return null
 
   const handleLike = async (like: boolean) => {
     if (userProfile) {
-      const {data} = await axios.put(`${BASE_URL}/api/like`, {
+      const { data } = await axios.put(`${BASE_URL}/api/like`, {
         userId: userProfile._id,
         postId: post._id,
         like: like,
       })
-      setPost({...post, likes: data.likes})
+      setPost({ ...post, likes: data.likes })
     }
   }
 
   const addComment = async (comment: string) => {
     if (userProfile && comment) {
       setIsPostingComment(true)
-      const {data} = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
+      const { data } = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
         userId: userProfile._id,
         comment: comment,
       })
 
-      setPost({...post, comments: data.comments})
+      setPost({ ...post, comments: data.comments })
       setIsPostingComment(false)
     }
   }
@@ -108,8 +108,8 @@ const Detail = ({postDetails}: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({params: {id}}: {params: {id: string}}) => {
-  const {data} = await axios.get(`${BASE_URL}/api/post/${id}`)
+export const getServerSideProps = async ({ params: { id } }: { params: { id: string } }) => {
+  const { data } = await axios.get(`${BASE_URL}/api/post/${id}`)
 
   return {
     props: {

@@ -1,17 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import {client} from '@/utils/client'
-import type {NextApiRequest, NextApiResponse} from 'next'
-import {v4 as uuidv4} from 'uuid'
+import { client } from '@/utils/client'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { v4 as uuidv4 } from 'uuid'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
-    const {userId, postId, like} = req.body
+    const { userId, postId, like } = req.body
 
     try {
       const data = like
         ? await client
             .patch(postId)
-            .setIfMissing({likes: []})
+            .setIfMissing({ likes: [] })
             .insert('after', 'likes[-1]', [
               {
                 _key: uuidv4(),

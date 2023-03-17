@@ -1,13 +1,13 @@
-import {client} from '@/utils/client'
-import React, {FormEvent, useRef, useState} from 'react'
-import {FaCloudUploadAlt} from 'react-icons/fa'
-import {SanityAssetDocument} from '@sanity/client'
-import {topics} from '@/utils/constants'
+import { client } from '@/utils/client'
+import React, { FormEvent, useRef, useState } from 'react'
+import { FaCloudUploadAlt } from 'react-icons/fa'
+import { SanityAssetDocument } from '@sanity/client'
+import { topics } from '@/utils/constants'
 import useAuthStore from '@/store/authStore'
 import axios from 'axios'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import {BASE_URL} from '@/utils'
+import { BASE_URL } from '@/utils'
 
 const Upload = () => {
   const router = useRouter()
@@ -18,7 +18,7 @@ const Upload = () => {
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
 
-  const {userProfile}: {userProfile: any} = useAuthStore()
+  const { userProfile }: { userProfile: any } = useAuthStore()
 
   if (!userProfile) {
     return <div>Login to continue</div>

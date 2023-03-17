@@ -1,16 +1,16 @@
-import {Video} from '@/types'
-import {NextPage} from 'next'
+import { Video } from '@/types'
+import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import {GoVerified} from 'react-icons/go'
+import { GoVerified } from 'react-icons/go'
 import ReactPlayer from 'react-player/lazy'
 
 interface IProps {
   post: Video
 }
 
-const VideoCard: NextPage<IProps> = ({post}) => {
+const VideoCard: NextPage<IProps> = ({ post }) => {
   return (
     <div className="flex flex-col gap-2 border-b-2 border-gray-200 pb-6">
       <div className="flex gap-3 p-2 cursor-progress font-semibold rounded">
@@ -40,11 +40,16 @@ const VideoCard: NextPage<IProps> = ({post}) => {
         </div>
       </div>
 
-      <div className='px-2 text-small md:text-base'>{post.caption}</div>
+      <div className="px-2 text-small md:text-base">{post.caption}</div>
 
       <Link href={`/detail/${post._id}`}>
         <div className="mr-4 flex relative">
-          <video className='lg:w-[600px] h-[300px] md:h-[400px] lg:h-[480px] w-auto rounded-3xl cursor-pointer bg-gray-100' src={post.video.asset.url} loop controls />
+          <video
+            className="lg:w-[600px] h-[300px] md:h-[400px] lg:h-[480px] w-auto rounded-3xl cursor-pointer bg-gray-100"
+            src={post.video.asset.url}
+            loop
+            controls
+          />
         </div>
       </Link>
     </div>

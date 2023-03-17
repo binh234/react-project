@@ -1,12 +1,12 @@
 import NoResults from '@/components/NoResults'
 import VideoCard from '@/components/VideoCard'
-import {IUser, Video} from '@/types'
-import {BASE_URL} from '@/utils'
+import { IUser, Video } from '@/types'
+import { BASE_URL } from '@/utils'
 import axios from 'axios'
 import Image from 'next/image'
-import React, {useEffect, useMemo, useState} from 'react'
-import {GoVerified} from 'react-icons/go'
-import {MdOutlineVideocamOff} from 'react-icons/md'
+import React, { useEffect, useMemo, useState } from 'react'
+import { GoVerified } from 'react-icons/go'
+import { MdOutlineVideocamOff } from 'react-icons/md'
 
 interface IProps {
   data: {
@@ -16,7 +16,7 @@ interface IProps {
   }
 }
 
-const Profile = ({data: {user, userVideos, userLikedVideos}}: IProps) => {
+const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
   const [displayTab, setDisplayTab] = useState('Videos')
   const [videoList, setVideoList] = useState<Video[]>([])
   const tabs = useMemo(() => ['Videos', 'Liked'], [])
@@ -79,11 +79,11 @@ const Profile = ({data: {user, userVideos, userLikedVideos}}: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({params: {id}}: {params: {id: string}}) => {
+export const getServerSideProps = async ({ params: { id } }: { params: { id: string } }) => {
   const res = await axios.get(`${BASE_URL}/api/profile/${id}`)
 
   return {
-    props: {data: res.data},
+    props: { data: res.data },
   }
 }
 

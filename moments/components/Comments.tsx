@@ -1,11 +1,11 @@
 import useAuthStore from '@/store/authStore'
-import {IComment} from '@/types'
+import { IComment } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, {useRef} from 'react'
-import {BiCommentX} from 'react-icons/bi'
-import {GoVerified} from 'react-icons/go'
-import {MdSend} from 'react-icons/md'
+import React, { useRef } from 'react'
+import { BiCommentX } from 'react-icons/bi'
+import { GoVerified } from 'react-icons/go'
+import { MdSend } from 'react-icons/md'
 import NoResults from './NoResults'
 
 interface IProps {
@@ -14,8 +14,8 @@ interface IProps {
   comments: IComment[]
 }
 
-const Comments = ({comments, addComment, isPostingComment}: IProps) => {
-  const {userProfile}: any = useAuthStore()
+const Comments = ({ comments, addComment, isPostingComment }: IProps) => {
+  const { userProfile }: any = useAuthStore()
   const commentRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,7 +28,7 @@ const Comments = ({comments, addComment, isPostingComment}: IProps) => {
     <div className="border-t-2 border-gray-200 mt-4 pt-4 pl-6 pr-4 border-b-2 lg:pb-0 pb-100px">
       <div className="overflow-scroll lg:h-[400px]">
         {comments?.length ? (
-          comments.map(({comment, _key, postedBy}, idx) => (
+          comments.map(({ comment, _key, postedBy }, idx) => (
             <div key={_key} className="py-2 items-center">
               <div className="flex gap-3 cursor-pointer font-semibold rounded">
                 <Link href={`/profile/${postedBy._id}`}>

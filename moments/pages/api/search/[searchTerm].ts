@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
-      const { searchTerm = "" } = req.query
+      const { searchTerm = '' } = req.query
       const videosQuery = searchPostsQuery(searchTerm)
 
       const data = await client.fetch(videosQuery)

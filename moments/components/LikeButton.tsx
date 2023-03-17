@@ -1,17 +1,17 @@
 import useAuthStore from '@/store/authStore'
-import {BASE_URL} from '@/utils'
+import { BASE_URL } from '@/utils'
 import axios from 'axios'
-import React, {useEffect, useState} from 'react'
-import {MdFavorite} from 'react-icons/md'
+import React, { useEffect, useState } from 'react'
+import { MdFavorite } from 'react-icons/md'
 
 interface IProps {
   handleLike: (like: boolean) => Promise<void>
   likes: any[]
 }
 
-const LikeButton = ({handleLike, likes}: IProps) => {
+const LikeButton = ({ handleLike, likes }: IProps) => {
   const [alreadyLiked, setAlreadyLiked] = useState(false)
-  const {userProfile}: any = useAuthStore()
+  const { userProfile }: any = useAuthStore()
   const filterLikes = likes?.filter((item) => item._ref === userProfile?._id)
 
   useEffect(() => {

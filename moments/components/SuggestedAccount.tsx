@@ -1,12 +1,12 @@
 import useAuthStore from '@/store/authStore'
-import {IUser} from '@/types'
+import { IUser } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, {useEffect} from 'react'
-import {GoVerified} from 'react-icons/go'
+import React, { useEffect } from 'react'
+import { GoVerified } from 'react-icons/go'
 
 const SuggestedAccount = () => {
-  const {fetchSuggestedUsers, suggestedUsers} = useAuthStore()
+  const { fetchSuggestedUsers, suggestedUsers } = useAuthStore()
 
   useEffect(() => {
     fetchSuggestedUsers()

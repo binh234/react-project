@@ -1,18 +1,18 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
-import {IoMdAdd} from 'react-icons/io'
-import {GoogleLogin, googleLogout} from '@react-oauth/google'
+import { useRouter } from 'next/router'
+import { IoMdAdd } from 'react-icons/io'
+import { GoogleLogin, googleLogout } from '@react-oauth/google'
 
 import Logo from '@/utils/tiktik-logo.png'
-import {createOrGetUser} from '@/utils'
+import { createOrGetUser } from '@/utils'
 import useAuthStore from '@/store/authStore'
-import {AiOutlineLogout} from 'react-icons/ai'
-import {BiSearch} from 'react-icons/bi'
+import { AiOutlineLogout } from 'react-icons/ai'
+import { BiSearch } from 'react-icons/bi'
 
 const Navbar = () => {
-  const {userProfile, addUser, removeUser}: any = useAuthStore()
+  const { userProfile, addUser, removeUser }: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
