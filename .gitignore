@@ -157,4 +157,7 @@ sketch
 # Test directory
 test/
 
+# TODO
+TODO.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/react,node
