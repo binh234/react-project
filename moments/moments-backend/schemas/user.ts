@@ -7,6 +7,7 @@ export default {
       name: 'userName',
       title: 'User Name',
       type: 'string',
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'image',

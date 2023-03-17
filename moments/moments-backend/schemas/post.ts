@@ -20,11 +20,13 @@ export default {
       name: 'userId',
       title: 'UserId',
       type: 'string',
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'postedBy',
       title: 'Posted By',
       type: 'postedBy',
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'likes',
@@ -47,6 +49,7 @@ export default {
       name: 'topic',
       title: 'Topic',
       type: 'string',
+      validation: (Rule: any) => Rule.required(),
     },
   ],
 }
