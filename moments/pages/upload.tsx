@@ -8,6 +8,9 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { BASE_URL } from '@/utils'
+import { ClipLoader } from 'react-spinners'
+import BeatLoader from 'react-spinners/BeatLoader'
+import { PortableTextEditor } from '@sanity/portable-text-editor'
 
 const Upload = () => {
   const router = useRouter()
@@ -46,10 +49,21 @@ const Upload = () => {
     }
   }
 
-  const handleDiscard = () => {
+  const deleteVideo = async (id: string) => {
+    try {
+      await client.delete(id)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleDiscard = async () => {
     captionRef.current!.value = ''
     categoryRef.current!.value = topics[0].name
-    setVideoAsset(undefined)
+    if (videoAsset) {
+      await deleteVideo(videoAsset._id)
+      setVideoAsset(undefined)
+    }
   }
 
   const handlePost = async (e: FormEvent) => {
@@ -109,10 +123,21 @@ const Upload = () => {
           <p className="text-2xl font-bold">Upload Video</p>
           <p className="text-base text-gray-400 mt-1">Post a video to your account</p>
         </div>
-        <div className="flex flex-col lg:flex-row xl:flex-wrap gap-6 justify-center mt-10">
-          <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] w-[300px] flex-grow p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
+        <form
+          className="flex flex-col lg:flex-row gap-6 justify-center mt-10"
+          onSubmit={handlePost}
+        >
+          <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] lg:w-[300px] lg:flex-grow p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
             {isLoading ? (
-              <p>Uploading..</p>
+              <>
+                <BeatLoader
+                  color="fuchsia"
+                  size={50}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+                <p className="p-2">Uploading..</p>
+              </>
             ) : (
               <div>
                 {videoAsset ? (
@@ -154,7 +179,7 @@ const Upload = () => {
               </div>
             )}
             {wrongFileType && (
-              <p className="text-center text-xl text-red-400 font-semibold mt-4 w-[250px]">
+              <p className="text-center text-xl text-red-500 font-semibold mt-4 w-[250px]">
                 Please select a video file
               </p>
             )}
@@ -166,6 +191,8 @@ const Upload = () => {
               className="rounded outline-none text-base border-2 border-gray-200 p-2 w-full"
               ref={captionRef}
             />
+            <label className="text-base font-medium">Content</label>
+            <PortableTextEditor onChange={() => {}} />
             <label className="text-base font-medium">Choose a category</label>
             <select
               className="outline-none border-2 border-gray-200 text-base capitalize p-2 rounded cursor-pointer"
@@ -183,17 +210,30 @@ const Upload = () => {
               >
                 Discard
               </button>
-              <button
-                className="bg-[#F51997] text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]"
-                type="submit"
-                onClick={handlePost}
-                disabled={savingPost}
-              >
-                Post
-              </button>
+              {savingPost ? (
+                <button
+                  className=" flex flex-row items-center bg-gray-400 text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none"
+                  disabled
+                >
+                  <ClipLoader
+                    color="fuchsia"
+                    size={30}
+                    aria-label="Saving Spinner"
+                    data-testid="saver"
+                  />{' '}
+                  <p>Saving..</p>
+                </button>
+              ) : (
+                <button
+                  className="bg-[#F51997] text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]"
+                  type="submit"
+                >
+                  Post
+                </button>
+              )}
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )

@@ -9,6 +9,16 @@ export default {
       type: 'string',
     },
     {
+      name: 'content',
+      title: 'Content',
+      type: 'array',
+      of: [
+        {
+          type: 'block'
+        }
+      ]
+    },
+    {
       name: 'video',
       title: 'Video',
       type: 'file',

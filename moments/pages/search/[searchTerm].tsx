@@ -1,17 +1,21 @@
+import AccountCard from '@/components/AccountCard'
 import NoResults from '@/components/NoResults'
 import VideoCard from '@/components/VideoCard'
-import { Video } from '@/types'
+import { IUser, Video } from '@/types'
 import { BASE_URL } from '@/utils'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import { MdOutlineVideocamOff } from 'react-icons/md'
+import { MdOutlineNoAccounts, MdOutlineVideocamOff } from 'react-icons/md'
 
 interface IProps {
-  videos: Video[]
+  data: {
+    videos: Video[]
+    accounts: IUser[]
+  }
 }
 
-const Search = ({ videos }: IProps) => {
+const Search = ({ data: { videos, accounts } }: IProps) => {
   const [displayTab, setDisplayTab] = useState('Accounts')
   const tabs = useMemo(() => ['Accounts', 'Videos'], [])
   const router = useRouter()
@@ -35,15 +39,25 @@ const Search = ({ videos }: IProps) => {
             </p>
           ))}
         </div>
-        <div className="flex gap-6 flex-col md:justify-start">
-          {videos.length > 0 ? (
-            videos.map((post: Video) => <VideoCard post={post} key={post._id} />)
-          ) : (
-            <NoResults
-              text={`No ${displayTab} found for ${searchTerm}`}
-              icon={<MdOutlineVideocamOff />}
-            />
-          )}
+        <div className="flex gap-4 flex-col md:justify-start">
+          {displayTab === tabs[0] &&
+            (accounts.length > 0 ? (
+              accounts.map((user) => <AccountCard user={user} key={user._id} />)
+            ) : (
+              <NoResults
+                text={`No ${displayTab} found for ${searchTerm}`}
+                icon={<MdOutlineNoAccounts />}
+              />
+            ))}
+          {displayTab === tabs[1] &&
+            (videos.length > 0 ? (
+              videos.map((post: Video) => <VideoCard post={post} key={post._id} />)
+            ) : (
+              <NoResults
+                text={`No ${displayTab} found for ${searchTerm}`}
+                icon={<MdOutlineVideocamOff />}
+              />
+            ))}
         </div>
       </div>
     </div>
@@ -55,10 +69,13 @@ export const getServerSideProps = async ({
 }: {
   params: { searchTerm: string }
 }) => {
-  const res = await axios.get(`${BASE_URL}/api/search/${searchTerm}`)
+  const res = await axios.get(`${BASE_URL}/api/search/${searchTerm.toLowerCase()}`)
+  console.log(res.data)
 
   return {
-    props: { videos: res.data },
+    props: {
+      data: res.data,
+    },
   }
 }
 

@@ -28,7 +28,7 @@ const Comments = ({ comments, addComment, isPostingComment }: IProps) => {
     <div className="border-t-2 border-gray-200 mt-4 pt-4 pl-6 pr-4 border-b-2 lg:pb-0 pb-100px">
       <div className="overflow-scroll lg:h-[400px]">
         {comments?.length ? (
-          comments.map(({ comment, _key, postedBy }, idx) => (
+          comments.map(({ comment, _key, postedBy }) => (
             <div key={_key} className="py-2 items-center">
               <div className="flex gap-3 cursor-pointer font-semibold rounded">
                 <Link href={`/profile/${postedBy._id}`}>

@@ -10,6 +10,7 @@ import { createOrGetUser } from '@/utils'
 import useAuthStore from '@/store/authStore'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
+import { MdAccountCircle, MdLogout, MdSettings } from 'react-icons/md'
 
 const Navbar = () => {
   const { userProfile, addUser, removeUser }: any = useAuthStore()
@@ -95,23 +96,28 @@ const Navbar = () => {
                 </button>
                 {isOpen && (
                   <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-lg z-10">
+                    <Link href={`/profile/${userProfile?._id}`} >
+                      <div
+                        className="px-4 py-2 flex flex-row items-center gap-4 text-gray-800 hover:bg-primary"
+                        onClick={handleClose}
+                      >
+                        <MdAccountCircle className='text-2xl' />
+                        <p>Your Profile</p>
+                      </div>
+                    </Link>
                     <div
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                      onClick={handleClose}
-                    >
-                      Your Profile
-                    </div>
-                    <div
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                      className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-gray-800 hover:bg-primary"
                       onClick={handleLogout}
                     >
-                      Sign out
+                      <MdLogout className='text-2xl' />
+                      <p>Sign out</p>
                     </div>
                     <div
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                      className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-gray-800 hover:bg-primary"
                       onClick={handleClose}
                     >
-                      Settings
+                      <MdSettings className='text-2xl' />
+                      <p>Settings</p>
                     </div>
                   </div>
                 )}
