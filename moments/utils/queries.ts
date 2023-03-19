@@ -1,7 +1,8 @@
 const post = `{
   _id,
    caption,
-     video{
+   content,
+   video{
       asset->{
         _id,
         url
@@ -28,6 +29,7 @@ const post = `{
 const postWithoutComments = `{
   _id,
    caption,
+   content,
      video{
       asset->{
         _id,

@@ -12,6 +12,7 @@ export interface IComment {
 }
 export interface Video {
   caption: string
+  content: string
   video: {
     asset: {
       _id: string

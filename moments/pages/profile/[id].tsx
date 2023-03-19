@@ -31,6 +31,12 @@ const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
     }
   }, [displayTab, tabs, userVideos, userLikedVideos])
 
+  async function deletePost(id: string) {
+    await axios.delete(`${BASE_URL}/api/post/${id}`)
+    userVideos.filter((item) => item._id !== id)
+    userLikedVideos.filter((item) => item._id !== id)
+  }
+
   return (
     <div className="w-full">
       <div className="flex gap-6 md:gap-10 mb-4 bg-white w-full">
@@ -69,7 +75,7 @@ const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
         </div>
         <div className="flex gap-6 flex-col md:justify-start">
           {videoList.length > 0 ? (
-            videoList.map((post: Video) => <VideoCard post={post} key={post._id} />)
+            videoList.map((post: Video) => <VideoCard post={post} key={post._id} deletePost={deletePost} />)
           ) : (
             <NoResults text="No videos yet" icon={<MdOutlineVideocamOff />} />
           )}

@@ -9,6 +9,14 @@ import { useRouter } from 'next/router'
 import { BASE_URL } from '@/utils'
 import { ClipLoader } from 'react-spinners'
 import BeatLoader from 'react-spinners/BeatLoader'
+import rehypeSanitize from 'rehype-sanitize'
+import '@uiw/react-md-editor/markdown-editor.css'
+import "@uiw/react-markdown-preview/markdown.css"
+import dynamic from 'next/dynamic'
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
+  ssr: false,
+})
 
 const VideoForm = () => {
   const router = useRouter()
@@ -16,8 +24,16 @@ const VideoForm = () => {
   const [videoAsset, setVideoAsset] = useState<SanityAssetDocument | undefined>()
   const [wrongFileType, setWrongFileType] = useState(false)
   const [savingPost, setSavingPost] = useState(false)
+  const [content, setContent] = React.useState('**Hello world!!!**')
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
+
+
+  const handleChange = (newContent: string | undefined) => {
+    if (newContent) {
+      setContent(newContent)
+    }
+  }
 
   const { userProfile }: { userProfile: any } = useAuthStore()
 
@@ -69,6 +85,7 @@ const VideoForm = () => {
     if (
       userProfile?._id &&
       videoAsset?._id &&
+      content &&
       captionRef.current!.value &&
       categoryRef.current!.value
     ) {
@@ -76,6 +93,7 @@ const VideoForm = () => {
       const document = {
         _type: 'post',
         caption: captionRef.current!.value,
+        content: content,
         topic: categoryRef.current!.value,
         video: {
           _type: 'file',
@@ -110,13 +128,13 @@ const VideoForm = () => {
     }
   }
   return (
-    <form className="flex flex-col lg:flex-row gap-6 justify-center mt-10" onSubmit={handlePost}>
-      <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] lg:w-[300px] lg:flex-grow p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
+    <form className="flex flex-col gap-6 justify-center mt-10" onSubmit={handlePost}>
+      <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
         {isLoading ? (
           <>
             <BeatLoader
               color="fuchsia"
-              size={50}
+              size={15}
               aria-label="Loading Spinner"
               data-testid="loader"
             />
@@ -168,7 +186,17 @@ const VideoForm = () => {
         <input
           type="text"
           className="rounded outline-none text-base border-2 border-gray-200 p-2 w-full"
+          maxLength={100}
           ref={captionRef}
+        />
+        <label className="text-base font-medium">Content</label>
+        <MDEditor
+          value={content}
+          onChange={handleChange}
+          className='ml-1'
+          previewOptions={{
+            rehypePlugins: [[rehypeSanitize]],
+          }}
         />
         <label className="text-base font-medium">Choose a category</label>
         <select
@@ -189,7 +217,7 @@ const VideoForm = () => {
           </button>
           {savingPost ? (
             <button
-              className=" flex flex-row items-center bg-gray-400 text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none"
+              className=" flex flex-row gap-2 items-center justify-center bg-gray-400 text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none"
               disabled
             >
               <ClipLoader

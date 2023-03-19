@@ -4,24 +4,44 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { GoVerified } from 'react-icons/go'
-import { PortableText } from '@portabletext/react'
-import { MdDeleteForever, MdEdit, MdMoreHoriz } from 'react-icons/md'
-import axios from 'axios'
-import { BASE_URL } from '@/utils'
+import {
+  MdOutlineEdit,
+  MdMoreHoriz,
+  MdOutlineDeleteForever,
+  MdErrorOutline,
+  MdClose,
+} from 'react-icons/md'
 import useAuthStore from '@/store/authStore'
-import { useRouter } from 'next/router'
+import Modal from 'react-modal'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface IProps {
   post: Video
+  deletePost?: (id: string) => Promise<void>
 }
 
-const VideoCard: NextPage<IProps> = ({ post }) => {
+const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const { userProfile }: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const ref = useRef(null)
-  const router = useRouter()
+
+  function toggleModal() {
+    setIsModalOpen((open) => !open)
+    setIsOpen(false)
+  }
+
+  function hideModal() {
+    setIsModalOpen(false)
+  }
+
+  function handleDelete() {
+    // handle delete action
+    setIsModalOpen(false)
+  }
 
   function handleClick() {
     setIsOpen((open) => !open)
@@ -29,12 +49,6 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
 
   function handleClose() {
     setIsOpen(false)
-  }
-
-  async function deletePost(id: string) {
-    handleClose()
-    await axios.delete(`${BASE_URL}/api/post/${id}`)
-    router.reload()
   }
 
   function handleClickOutside(event: MouseEvent) {
@@ -105,7 +119,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                 </Link>
               </div>
             </div>
-            {userProfile && userProfile?._id === post.postedBy._id && (
+            {deletePost && userProfile && userProfile?._id === post.postedBy._id && (
               <div ref={menuRef} className="relative">
                 <button className="rounded-full hover:bg-primary p-2" onClick={handleClick}>
                   <MdMoreHoriz className="text-2xl" />
@@ -117,24 +131,74 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                         className="px-4 py-2 flex flex-row items-center gap-4 text-gray-800 hover:bg-primary"
                         onClick={handleClose}
                       >
-                        <MdEdit className="text-xl" />
+                        <MdOutlineEdit className="text-2xl" />
                         <p>Edit post</p>
                       </div>
                     </Link>
                     <div
-                      className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-gray-800 hover:bg-primary"
-                      onClick={() => deletePost(post._id)}
+                      className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-red-500 hover:bg-primary"
+                      onClick={toggleModal}
                     >
-                      <MdDeleteForever className="text-xl" />
+                      <MdOutlineDeleteForever className="text-2xl" />
                       <p>Delete</p>
                     </div>
                   </div>
                 )}
+                <Modal
+                  isOpen={isModalOpen}
+                  onRequestClose={hideModal}
+                  id="delete-modal"
+                  className="fixed top-1/3 left-0 md:left-1/4 lg:left-1/3 p-4 overflow-x-hidden overflow-y-auto"
+                >
+                  <div className="relative w-full h-full max-w-md md:h-auto bg-white rounded-lg shadow dark:bg-gray-700">
+                    <button
+                      type="button"
+                      className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                      onClick={hideModal}
+                    >
+                      <MdClose className="w-5 h-5" />
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                    <div className="p-6 text-center">
+                      <MdErrorOutline className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" />
+                      <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                        Are you sure you want to delete this post?
+                      </h3>
+                      <button
+                        onClick={handleDelete}
+                        type="button"
+                        className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={hideModal}
+                        type="button"
+                        className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                      >
+                        No, cancel
+                      </button>
+                    </div>
+                  </div>
+                </Modal>
               </div>
             )}
           </div>
 
-          <div className="px-2 text-small md:text-base">{post.caption}</div>
+          {/* <div className="px-2 text-small md:text-base">{post.caption}</div> */}
+          <div className="px-2 text-small md:text-base">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Map `a` to use blue foreground color.
+                a: ({ node, ...props }) => (
+                  <a {...props} className="text-blue-500 hover:underline" />
+                ),
+              }}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </div>
 
           <Link href={`/detail/${post._id}`}>
             <div className="mr-4 flex relative">
