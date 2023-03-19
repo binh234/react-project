@@ -1,8 +1,8 @@
-import { IUser, Video } from '@/types'
+import { Video } from '@/types'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { GoVerified } from 'react-icons/go'
 import {
   MdOutlineEdit,
@@ -15,19 +15,35 @@ import useAuthStore from '@/store/authStore'
 import Modal from 'react-modal'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { dateDiff, formatDate } from '@/utils/helpers'
 
 interface IProps {
   post: Video
   deletePost?: (id: string) => Promise<void>
 }
 
+const MAX_LENGTH = 60
+
 const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const { userProfile }: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [showMore, setShowMore] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const ref = useRef(null)
+
+  if (!post.content) {
+    post.content = ''
+  }
+
+  const contentLength = post.content.split(' ').length
+  const shouldTruncate = contentLength > MAX_LENGTH
+  const truncatedContent = shouldTruncate
+    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_LENGTH))
+    : post.content
+  const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt)), [post])
+  // const formattedFullDate = useMemo(() => formatDate(new Date(post._createdAt)), [post])
 
   function toggleModal() {
     setIsModalOpen((open) => !open)
@@ -105,7 +121,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
                   />
                 </Link>
               </div>
-              <div>
+              <div className="flex flex-col justify-center items-start">
                 <Link href={`/profile/${post.postedBy._id}`}>
                   <div className="flex items-center gap-2">
                     <p className="flex gap-2 items-center md:text-lg text-primary font-bold">
@@ -117,6 +133,9 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
                     </p>
                   </div>
                 </Link>
+                <p className="text-sm text-gray-600 hover:underline">
+                  {publishedTime}
+                </p>
               </div>
             </div>
             {deletePost && userProfile && userProfile?._id === post.postedBy._id && (
@@ -186,18 +205,28 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
           </div>
 
           {/* <div className="px-2 text-small md:text-base">{post.caption}</div> */}
-          <div className="px-2 text-small md:text-base">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                // Map `a` to use blue foreground color.
-                a: ({ node, ...props }) => (
-                  <a {...props} className="text-blue-500 hover:underline" />
-                ),
-              }}
-            >
-              {post.content}
-            </ReactMarkdown>
+          <div className="px-2 rounded-lg relative">
+            <div className="text-small md:text-base">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  // Map `a` to use blue foreground color.
+                  a: ({ node, ...props }) => (
+                    <a {...props} className="text-blue-500 hover:underline" />
+                  ),
+                }}
+              >
+                {showMore ? post.content : truncatedContent}
+              </ReactMarkdown>
+            </div>
+            {shouldTruncate && (
+              <button
+                className="font-medium cursor-pointer hover:underline text-sm"
+                onClick={() => setShowMore((prev) => !prev)}
+              >
+                {showMore ? 'Show Less' : 'Show More'}
+              </button>
+            )}
           </div>
 
           <Link href={`/detail/${post._id}`}>

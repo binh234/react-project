@@ -2,7 +2,6 @@
 import { client } from '@/utils/client'
 import { postDetailQuery } from '@/utils/queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { v4 as uuidv4 } from 'uuid'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {

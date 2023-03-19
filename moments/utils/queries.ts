@@ -1,14 +1,16 @@
 const post = `{
   _id,
+  _createdAt,
    caption,
    content,
+   topic,
    video{
       asset->{
         _id,
         url
       }
     },
-    userId,
+  userId,
   postedBy->{
     _id,
     userName,
@@ -28,7 +30,9 @@ const post = `{
 
 const postWithoutComments = `{
   _id,
-   caption,
+  _createdAt,
+  caption,
+  topic,
    content,
      video{
       asset->{

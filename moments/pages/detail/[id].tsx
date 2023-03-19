@@ -1,6 +1,5 @@
 import Comments from '@/components/Comments'
 import LikeButton from '@/components/LikeButton'
-import comment from '@/moments-backend/schemas/comment'
 import useAuthStore from '@/store/authStore'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
@@ -51,7 +50,7 @@ const Detail = ({ postDetails }: IProps) => {
 
   return (
     <div className="flex w-full h-full absolute left-0 top-0 bg-white flex-wrap lg:flex-nowrap">
-      <div className="relative flex-2 w-full lg:w-9/12 flex justify-center items-center bg-black">
+      <div className="relative w-full lg:w-9/12 flex justify-center items-center bg-black">
         <div className="absolute top-6 left-2 lg:left-6 flex gap-6 z-50">
           <p
             className="cursor-pointer text-white hover:text-gray-200"

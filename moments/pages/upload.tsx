@@ -1,23 +1,15 @@
-import { client } from '@/utils/client'
 import React, { FormEvent, useRef, useState } from 'react'
-import { FaCloudUploadAlt } from 'react-icons/fa'
-import { SanityAssetDocument } from '@sanity/client'
-import { topics } from '@/utils/constants'
 import useAuthStore from '@/store/authStore'
-import axios from 'axios'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { BASE_URL } from '@/utils'
-import { ClipLoader } from 'react-spinners'
-import BeatLoader from 'react-spinners/BeatLoader'
 import VideoForm from '@/components/VideoForm'
+import NoResults from '@/components/NoResults'
+import { MdErrorOutline } from 'react-icons/md'
 
 const Upload = () => {
-
   const { userProfile }: { userProfile: any } = useAuthStore()
 
   if (!userProfile) {
-    return <div>Login to continue</div>
+    return <NoResults text="Please login to continue" icon={<MdErrorOutline />} />
   }
 
   return (

@@ -1,44 +1,58 @@
 import { client } from '@/utils/client'
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { FaCloudUploadAlt } from 'react-icons/fa'
 import { SanityAssetDocument } from '@sanity/client'
 import { topics } from '@/utils/constants'
 import useAuthStore from '@/store/authStore'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { BASE_URL } from '@/utils'
 import { ClipLoader } from 'react-spinners'
 import BeatLoader from 'react-spinners/BeatLoader'
 import rehypeSanitize from 'rehype-sanitize'
 import '@uiw/react-md-editor/markdown-editor.css'
-import "@uiw/react-markdown-preview/markdown.css"
+import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
+import { Video } from '@/types'
+import { MdOutlineCancel } from 'react-icons/md'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
 })
+interface IProps {
+  post?: Video
+}
 
-const VideoForm = () => {
+const VideoForm = ({ post }: IProps) => {
   const router = useRouter()
+  const { userProfile }: { userProfile: any } = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
   const [videoAsset, setVideoAsset] = useState<SanityAssetDocument | undefined>()
+  const [videoUrl, setVideoUrl] = useState('')
   const [wrongFileType, setWrongFileType] = useState(false)
   const [savingPost, setSavingPost] = useState(false)
   const [content, setContent] = React.useState('**Hello world!!!**')
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
 
+  // Update route
+  useEffect(() => {
+    if (post) {
+      setContent(post.content)
+      if (captionRef.current) {
+        captionRef.current.value = post.caption
+      }
+      if (categoryRef.current) {
+        categoryRef.current.value = post.topic
+      }
+      setVideoUrl(post.video.asset.url)
+    }
+  }, [post])
 
   const handleChange = (newContent: string | undefined) => {
     if (newContent) {
       setContent(newContent)
     }
-  }
-
-  const { userProfile }: { userProfile: any } = useAuthStore()
-
-  if (!userProfile) {
-    return <div>Login to continue</div>
   }
 
   const uploadVideo = async (e: any) => {
@@ -63,31 +77,33 @@ const VideoForm = () => {
     }
   }
 
-  const deleteVideo = async (id: string) => {
-    try {
-      await client.delete(id)
-    } catch (e) {
-      console.log(e)
+  const discardVideo = async () => {
+    if (videoAsset) {
+      try {
+        await client.delete(videoAsset._id)
+      } catch (e) {
+        console.log(e)
+      }
+      setVideoAsset(undefined)
     }
+    setVideoUrl('')
   }
 
   const handleDiscard = async () => {
     captionRef.current!.value = ''
     categoryRef.current!.value = topics[0].name
-    if (videoAsset) {
-      await deleteVideo(videoAsset._id)
-      setVideoAsset(undefined)
-    }
+    setContent('')
+    await discardVideo()
   }
 
   const handlePost = async (e: FormEvent) => {
     e.preventDefault()
     if (
       userProfile?._id &&
-      videoAsset?._id &&
       content &&
       captionRef.current!.value &&
-      categoryRef.current!.value
+      categoryRef.current!.value &&
+      (videoAsset?._id || videoUrl !== '')
     ) {
       setSavingPost(true)
       const document = {
@@ -99,7 +115,7 @@ const VideoForm = () => {
           _type: 'file',
           asset: {
             _type: 'reference',
-            _ref: videoAsset?._id,
+            _ref: (videoAsset?._id || post?.video.asset._id),
           },
         },
         userId: userProfile?._id,
@@ -109,7 +125,12 @@ const VideoForm = () => {
         },
       }
       try {
-        const response = await axios.post(`${BASE_URL}/api/post`, document)
+        let response: AxiosResponse
+        if (post) {
+          response = await axios.put(`${BASE_URL}/api/post/${post._id}`, document)
+        } else {
+          response = await axios.post(`${BASE_URL}/api/post`, document)
+        }
         if (response.status === 200) {
           router.push('/')
         } else {
@@ -129,7 +150,7 @@ const VideoForm = () => {
   }
   return (
     <form className="flex flex-col gap-6 justify-center mt-10" onSubmit={handlePost}>
-      <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100">
+      <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] p-10 hover:border-red-300 hover:bg-gray-100">
         {isLoading ? (
           <>
             <BeatLoader
@@ -141,15 +162,23 @@ const VideoForm = () => {
             <p className="p-2">Uploading..</p>
           </>
         ) : (
-          <div>
-            {videoAsset ? (
-              <div>
+          <>
+            {videoAsset || videoUrl !== '' ? (
+              <div className="relative">
+                <div className="absolute top-2 left-2 z-50">
+                  <p
+                    className="cursor-pointer text-[#F51997] hover:text-[#da1685]"
+                    onClick={discardVideo}
+                  >
+                    <MdOutlineCancel className="text-[32px]" />
+                  </p>
+                </div>
                 <video
                   className="rounded-xl h-[400px] bg-black"
-                  src={videoAsset.url}
+                  src={videoAsset?.url || post?.video.asset.url}
                   loop
                   controls
-                ></video>
+                />
               </div>
             ) : (
               <label className="cursor-pointer">
@@ -173,7 +202,7 @@ const VideoForm = () => {
                 <input type="file" name="upload-video" className="w-0 h-0" onChange={uploadVideo} />
               </label>
             )}
-          </div>
+          </>
         )}
         {wrongFileType && (
           <p className="text-center text-xl text-red-500 font-semibold mt-4 w-[250px]">
@@ -193,7 +222,7 @@ const VideoForm = () => {
         <MDEditor
           value={content}
           onChange={handleChange}
-          className='ml-1'
+          className="ml-1"
           previewOptions={{
             rehypePlugins: [[rehypeSanitize]],
           }}
@@ -233,7 +262,7 @@ const VideoForm = () => {
               className="bg-[#F51997] text-white border-gray-300 border-2 text-base font-medium p-2 rounded w-28 lg:w-44 outline-none hover:bg-[#da1685]"
               type="submit"
             >
-              Post
+              Save
             </button>
           )}
         </div>

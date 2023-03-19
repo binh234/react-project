@@ -11,15 +11,17 @@ export interface IComment {
   postedBy: IPostedBy
 }
 export interface Video {
+  _id: string
+  _createdAt: string
   caption: string
   content: string
+  topic: string
   video: {
     asset: {
       _id: string
       url: string
     }
   }
-  _id: string
   postedBy: IPostedBy
   likes: {
     postedBy: IPostedBy
