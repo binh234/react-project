@@ -9,9 +9,9 @@ interface IProps {
 
 const LikeButton = ({ handleLike, likes }: IProps) => {
   const [alreadyLiked, setAlreadyLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
-  
 
   useEffect(() => {
     if (userProfile && likes) {
@@ -21,8 +21,21 @@ const LikeButton = ({ handleLike, likes }: IProps) => {
       } else {
         setAlreadyLiked(false)
       }
+      setLikeCount(likes.length)
     }
   }, [likes, userProfile])
+
+  const toggleLike = (like: boolean) => {
+    setAlreadyLiked(like)
+    handleLike(like)
+    setLikeCount((likeCount) => {
+      if (like) {
+        return likeCount + 1
+      } else {
+        return likeCount - 1
+      }
+    })
+  }
 
   return (
     <div className="flex gap-6">
@@ -30,16 +43,16 @@ const LikeButton = ({ handleLike, likes }: IProps) => {
         {alreadyLiked ? (
           <div
             className="bg-primary rounded-full p-2 md:p-3 text-[#F51997]"
-            onClick={() => handleLike(false)}
+            onClick={() => toggleLike(false)}
           >
             <MdFavorite className="text-base md:text-lg" />
           </div>
         ) : (
-          <div className="bg-primary rounded-full p-2 md:p-3" onClick={() => handleLike(true)}>
+          <div className="bg-primary rounded-full p-2 md:p-3" onClick={() => toggleLike(true)}>
             <MdFavorite className="text-base md:text-lg" />
           </div>
         )}
-        <p className="text-base font-semibold">{likes?.length | 0}</p>
+        <p className="text-base font-semibold">{likeCount}</p>
       </div>
     </div>
   )

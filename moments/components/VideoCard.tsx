@@ -16,13 +16,12 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { dateDiff, formatDate } from '@/utils/helpers'
 import { useSession } from 'next-auth/react'
+import { MAX_CONTENT } from '@/utils/config'
 
 interface IProps {
   post: Video
   deletePost?: (id: string) => Promise<void>
 }
-
-const MAX_LENGTH = 60
 
 const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const { data: session } = useSession()
@@ -40,9 +39,9 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   }
 
   const contentLength = post.content.split(' ').length
-  const shouldTruncate = contentLength > MAX_LENGTH
+  const shouldTruncate = contentLength > MAX_CONTENT
   const truncatedContent = shouldTruncate
-    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_LENGTH))
+    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_CONTENT))
     : post.content
   const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt)), [post])
   // const formattedFullDate = useMemo(() => formatDate(new Date(post._createdAt)), [post])
@@ -58,6 +57,9 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
 
   function handleDelete() {
     // handle delete action
+    if (deletePost) {
+      deletePost(post._id)
+    }
     setIsModalOpen(false)
   }
 

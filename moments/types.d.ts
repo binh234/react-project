@@ -6,9 +6,9 @@ interface IPostedBy {
 
 export interface IComment {
   comment: string
-  length?: number
-  _key: string
+  _id: string
   postedBy: IPostedBy
+  _createdAt: string
 }
 export interface Video {
   _id: string

@@ -2,6 +2,7 @@ import NoResults from '@/components/NoResults'
 import VideoCard from '@/components/VideoCard'
 import { IUser, Video } from '@/types'
 import { BASE_URL } from '@/utils'
+import { deleteDocument } from '@/utils/client'
 import axios from 'axios'
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -32,9 +33,9 @@ const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
   }, [displayTab, tabs, userVideos, userLikedVideos])
 
   async function deletePost(id: string) {
-    await axios.delete(`${BASE_URL}/api/post/${id}`)
-    userVideos.filter((item) => item._id !== id)
-    userLikedVideos.filter((item) => item._id !== id)
+    await deleteDocument(id)
+    userVideos = userVideos.filter((item) => item._id !== id)
+    userLikedVideos = userLikedVideos.filter((item) => item._id !== id)
   }
 
   return (

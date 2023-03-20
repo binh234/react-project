@@ -15,5 +15,12 @@ export default {
       type: 'string',
       validation: (Rule: any) => Rule.required(),
     },
+    {
+      name: 'post',
+      title: 'Post',
+      type: 'reference',
+      to: [{type: 'post'}],
+      validation: (Rule: any) => Rule.required(),
+    }
   ],
 }

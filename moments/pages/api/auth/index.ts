@@ -1,22 +1,21 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { client } from '@/utils/client'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextApiHandler } from 'next/types'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const user = req.body
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method === 'POST') {
+//     const user = req.body
 
-    try {
-      await client.createIfNotExists(user)
-      res.status(200).json('Login successfully')
-    } catch (e) {
-      console.log('Login failed: ', e)
-      res.status(404).json('Login failed')
-    }
-  }
-}
+//     try {
+//       await client.createIfNotExists(user)
+//       res.status(200).json('Login successfully')
+//     } catch (e) {
+//       console.log('Login failed: ', e)
+//       res.status(404).json('Login failed')
+//     }
+//   }
+// }
 
 export function generateToken(payload: string | object | Buffer): string {
   return jwt.sign(payload, process.env.NEXT_PUBLIC_SECRET_KEY!, {expiresIn: '7d'})

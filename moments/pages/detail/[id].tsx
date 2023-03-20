@@ -44,7 +44,7 @@ const Detail = ({ postDetails }: IProps) => {
         comment: comment,
       })
 
-      setPost({ ...post, comments: data.comments })
+      // setPost({ ...post, comments: data.comments })
       setIsPostingComment(false)
     }
   }
@@ -66,7 +66,7 @@ const Detail = ({ postDetails }: IProps) => {
           </div>
         </div>
       </div>
-      <div className="relative w-full lg:w-3/12 lg:min-w-[360px]">
+      <div className="relative w-full lg:w-3/12 lg:min-w-[360px] flex flex-col">
         <div className="flex gap-1 p-2 cursor-progress font-semibold rounded mt-10">
           <div className="md:w-16 md:h-16 w-10 h-10 ml-3">
             <Link href="/">
@@ -98,11 +98,7 @@ const Detail = ({ postDetails }: IProps) => {
         <div className="mt-4 px-6">
           {userProfile && <LikeButton handleLike={handleLike} likes={post.likes} />}
         </div>
-        <Comments
-          comments={post.comments}
-          addComment={addComment}
-          isPostingComment={isPostingComment}
-        />
+        <Comments postId={post._id}/>
       </div>
     </div>
   )

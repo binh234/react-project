@@ -16,7 +16,9 @@ export function dateDiff(pastDate: Date) {
     (now.getFullYear() - pastDate.getFullYear()) * 12 + (now.getMonth() - pastDate.getMonth())
   const yearsPassed = now.getFullYear() - pastDate.getFullYear()
 
-  if (minutesPassed < 60) {
+  if (secondsPassed < 60) {
+    return `${secondsPassed} seconds`
+  } else if (minutesPassed < 60) {
     return `${minutesPassed} minutes`
   } else if (hoursPassed < 25) {
     return `${hoursPassed} hours`
@@ -42,4 +44,9 @@ export function formatDate(date: Date) {
 
   const formatter = new Intl.DateTimeFormat('en-US', options)
   return formatter.format(date)
+}
+
+export function getCurrentDateTime(): string {
+  const currentDateTime = new Date().toISOString();
+  return currentDateTime;
 }

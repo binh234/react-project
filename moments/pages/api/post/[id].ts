@@ -15,26 +15,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('Error when retrieve post data: ', e)
       res.status(404).json(e)
     }
-  } else if (req.method === 'PUT') {
-      const document = req.body
-      const { id }: any = req.query
-
-      try {
-        const data = await client.patch(id).set(document).commit()
-        res.status(200).json(data)
-      } catch (e) {
-        console.log('Error when updating post: ', e)
-        res.status(404).json(e)
-      }
-  } else if (req.method === 'DELETE') {
-      const { id }: any = req.query
-
-      try {
-        await client.delete(id)
-        res.status(200).json({ message: 'delete successful' })
-      } catch (e) {
-        console.log('Error when deleting post: ', e)
-        res.status(404).json(e)
-      }
   }
 }

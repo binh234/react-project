@@ -15,16 +15,7 @@ const post = `{
     userName,
     image
   },
-  likes,
-  comments[]{
-    comment,
-    _key,
-    postedBy->{
-      _id,
-      userName,
-      image
-    },
-  }
+  likes
 }`
 
 const postWithoutComments = `{
@@ -44,20 +35,19 @@ const postWithoutComments = `{
     userName,
     image
   },
-  likes,
-  comments[]{
-    _key,
-  }
+  likes
 }`
 
 const comment = `{
+  _id,
+  _createdAt,
   comment,
-  _key,
   postedBy->{
     _id,
     userName,
     image
   },
+  post
 }
 
 `
@@ -66,8 +56,8 @@ export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string, l
   let query = ''
   if (lastCreatedAt && lastId) {
     query = `*[_type == "post" && (
-      createdAt > ${lastCreatedAt}
-      || (createdAt == ${lastCreatedAt} && _id > ${lastId})
+      createdAt < '${lastCreatedAt}'
+      || (createdAt == '${lastCreatedAt}' && _id > ${lastId})
     )] | order(_createdAt desc)`
   } else {
     query = `*[_type == "post"] | order(_createdAt desc)`
@@ -83,6 +73,24 @@ export const postDetailQuery = (postId: string | string[], userId?: string | str
   return `*[_type == "post" && _id == '${postId}']${post}`
 }
 
+export const postCommentsQuery = (postId: string | string[], maxResults: number = 30, lastCreatedAt?: string) => {
+  let query = ''
+  if (lastCreatedAt) {
+    query = `*[_type == "comment" && post._ref == '${postId}' && _createdAt < '${lastCreatedAt}']`
+  } else {
+    query = `*[_type == "comment" && post._ref == '${postId}']`
+  }
+
+  return `${query} | order(_createdAt desc) [0..${maxResults}]${comment}`
+}
+
+export const postCommentSubscriptionQuery = (postId: string | string[], lastCreatedAt: string) => {
+  let query = `*[_type == "comment" && post._ref == '${postId}' && _createdAt > '${lastCreatedAt}']`
+
+  return `${query}`
+}
+
+
 export const searchPostsQuery = (
   searchTerm: string | string[],
   maxResults: number = 50,
@@ -93,14 +101,14 @@ export const searchPostsQuery = (
     query = `*[_type == "post" && (
       caption match "${searchTerm}" || topic match "${searchTerm}"
     ) && (
-      _createdAt > ${lastCreatedAt}
+      _createdAt < '${lastCreatedAt}'
     )]`
   } else {
     query = `*[_type == "post" && (
       caption match "${searchTerm}" || topic match "${searchTerm}"
     )]`
   }
-  return `${query}[0..${maxResults}]${postWithoutComments}`
+  return `${query} | order(_createdAt desc) [0..${maxResults}]${postWithoutComments}`
 }
 
 export const searchUsersQuery = (
@@ -142,7 +150,7 @@ export const suggestedUsersQuery = (maxResults: number) => {
 }
 
 export const userCreatedPostsQuery = (userId: string | string[]) => {
-  const query = `*[ _type == 'post' && postedBy._ref in *[_type=="user" && _id=='${userId}']._id] | order(_createdAt desc)${postWithoutComments}`
+  const query = `*[ _type == 'post' && postedBy._ref == ${userId} | order(_createdAt desc)${postWithoutComments}`
 
   return query
 }

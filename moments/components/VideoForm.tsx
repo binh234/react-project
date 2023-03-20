@@ -1,11 +1,9 @@
-import { client } from '@/utils/client'
+import { createDocument, deleteDocument, updateDocument, uploadAsset } from '@/utils/client'
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { FaCloudUploadAlt, FaMarkdown } from 'react-icons/fa'
 import { SanityAssetDocument } from '@sanity/client'
 import { topics } from '@/utils/constants'
-import axios, { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
-import { BASE_URL } from '@/utils'
 import { ClipLoader } from 'react-spinners'
 import BeatLoader from 'react-spinners/BeatLoader'
 import rehypeSanitize from 'rehype-sanitize'
@@ -13,8 +11,10 @@ import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
 import { Video } from '@/types'
-import { MdOutlineCancel } from 'react-icons/md'
+import { MdErrorOutline, MdOutlineCancel } from 'react-icons/md'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import NoResults from './NoResults'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -33,6 +33,7 @@ const VideoForm = ({ post }: IProps) => {
   const [content, setContent] = React.useState('**Hello world!!!**')
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
+  const { data: session } = useSession()
 
   // Update route
   useEffect(() => {
@@ -48,26 +49,26 @@ const VideoForm = ({ post }: IProps) => {
     }
   }, [post])
 
+  if (!session) {
+    return <NoResults text="Please login to continue" icon={<MdErrorOutline />} />
+  }
+  const { user } = session
+
   const handleChange = (newContent: string | undefined) => {
     if (newContent) {
       setContent(newContent)
     }
   }
 
-  const uploadVideo = async (e: any) => {
+  const handleUpload = async (e: any) => {
     const selectedFile = e.target.files[0]
     const fileTypes = ['video/mp4', 'video/webm', 'video/ogg']
 
     if (fileTypes.includes(selectedFile.type)) {
-      client.assets
-        .upload('file', selectedFile, {
-          contentType: selectedFile.type,
-          filename: selectedFile.name,
-        })
-        .then((data) => {
-          setVideoAsset(data)
-          setIsLoading(false)
-        })
+      uploadAsset(selectedFile).then((data) => {
+        setVideoAsset(data)
+        setIsLoading(false)
+      })
       setIsLoading(true)
       setWrongFileType(false)
     } else {
@@ -79,7 +80,7 @@ const VideoForm = ({ post }: IProps) => {
   const discardVideo = async () => {
     if (videoAsset) {
       try {
-        await client.delete(videoAsset._id)
+        await deleteDocument(videoAsset._id)
       } catch (e) {
         console.log(e)
       }
@@ -116,32 +117,27 @@ const VideoForm = ({ post }: IProps) => {
             _ref: videoAsset?._id || post?.video.asset._id,
           },
         },
-        postedBy: {},
+        postedBy: {
+          _type: 'postedBy',
+          _ref: user._id,
+        },
       }
-      try {
-        let response: AxiosResponse
-        if (post) {
-          response = await axios.put(`${BASE_URL}/api/post/${post._id}`, document)
-        } else {
-          response = await axios.post(`${BASE_URL}/api/post`, document)
-        }
-        if (response.status === 200) {
-          router.push('/')
-        } else {
-          alert('Something wrong, please try again')
-          setSavingPost(false)
-        }
-      } catch (error: any) {
-        if (error.response) {
-          console.log('Status code:', error.response.status)
-        } else {
-          console.log('Error:', error.message)
-        }
-        alert(error.message)
+      let action
+      if (post) {
+        action = updateDocument(post._id, document)
+      } else {
+        action = createDocument(document)
+      }
+      action.then(() => {
+        router.push('/')
+      }).catch((e) => {
+        alert('Something wrong, please try again')
         setSavingPost(false)
-      }
+        console.log(e)
+      })
     }
   }
+
   return (
     <form className="flex flex-col gap-6 justify-center mt-10" onSubmit={handlePost}>
       <div className="border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center outline-none h-[460px] p-10 hover:border-red-300 hover:bg-gray-100">
@@ -193,7 +189,12 @@ const VideoForm = ({ post }: IProps) => {
                     Select File
                   </p>
                 </div>
-                <input type="file" name="upload-video" className="w-0 h-0" onChange={uploadVideo} />
+                <input
+                  type="file"
+                  name="upload-video"
+                  className="w-0 h-0"
+                  onChange={handleUpload}
+                />
               </label>
             )}
           </>

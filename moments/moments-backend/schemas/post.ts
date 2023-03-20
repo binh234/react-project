@@ -22,11 +22,6 @@ export default {
       },
     },
     {
-      name: 'userId',
-      title: 'UserId',
-      type: 'string',
-    },
-    {
       name: 'postedBy',
       title: 'Posted By',
       type: 'postedBy',
@@ -43,12 +38,12 @@ export default {
         },
       ],
     },
-    {
-      name: 'comments',
-      title: 'Comments',
-      type: 'array',
-      of: [{type: 'comment'}],
-    },
+    // {
+    //   name: 'comments',
+    //   title: 'Comments',
+    //   type: 'array',
+    //   of: [{type: 'comment'}],
+    // },
     {
       name: 'topic',
       title: 'Topic',
