@@ -172,6 +172,7 @@ const Comments = ({ postId }: IProps) => {
             onClick={() => {
               setShowMore((more) => !more)
             }}
+            disabled={showMore}
           >
             {showMore ? 'Loading...' : 'Show more'}
           </button>
