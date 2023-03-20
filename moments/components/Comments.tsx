@@ -1,5 +1,5 @@
-import useAuthStore from '@/store/authStore'
 import { IComment } from '@/types'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useRef } from 'react'
@@ -15,7 +15,8 @@ interface IProps {
 }
 
 const Comments = ({ comments, addComment, isPostingComment }: IProps) => {
-  const { userProfile }: any = useAuthStore()
+  const { data: session } = useSession()
+  const { user: userProfile } = session || {}
   const commentRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -66,13 +67,15 @@ const Comments = ({ comments, addComment, isPostingComment }: IProps) => {
       {userProfile && (
         <div className="absolute bottom-0 left-0 pb-4 px-2 md:px-4 w-full">
           <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
-            <Image
-              width={40}
-              height={40}
-              className="rounded-full h-10"
-              src={userProfile.image}
-              alt={userProfile._id}
-            />
+            {userProfile.image && (
+              <Image
+                width={40}
+                height={40}
+                className="rounded-full h-10 hidden md:block"
+                src={userProfile.image}
+                alt={userProfile._id}
+              />
+            )}
             <input
               placeholder="Add comment"
               className="bg-primary px-4 py-2 text-base border-2 rounded-full w-full"

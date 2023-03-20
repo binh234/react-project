@@ -25,7 +25,6 @@ export default {
       name: 'userId',
       title: 'UserId',
       type: 'string',
-      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'postedBy',

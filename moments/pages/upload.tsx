@@ -1,14 +1,14 @@
 import React, { FormEvent, useRef, useState } from 'react'
-import useAuthStore from '@/store/authStore'
 import Head from 'next/head'
 import VideoForm from '@/components/VideoForm'
 import NoResults from '@/components/NoResults'
 import { MdErrorOutline } from 'react-icons/md'
+import { useSession } from 'next-auth/react'
 
 const Upload = () => {
-  const { userProfile }: { userProfile: any } = useAuthStore()
+  const { data: session } = useSession()
 
-  if (!userProfile) {
+  if (!session) {
     return <NoResults text="Please login to continue" icon={<MdErrorOutline />} />
   }
 

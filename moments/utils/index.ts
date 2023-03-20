@@ -1,4 +1,6 @@
 import axios from 'axios'
+// import { generateToken } from '@/pages/api/auth/index'
+// import Cookies from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
@@ -16,5 +18,10 @@ export const createOrGetUser = async (response: any, addUser: any) => {
   }
 
   await axios.post(`${BASE_URL}/api/auth`, user)
+  // // Generate JWT token for logged in user
+  // const authToken = generateToken(user)
+
+  // Store auth token in cookies for later use
+  // Cookies.set("auth-token", authToken, { expires: 7 })
   addUser(user)
 }

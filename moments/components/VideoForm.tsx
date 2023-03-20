@@ -1,9 +1,8 @@
 import { client } from '@/utils/client'
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
-import { FaCloudUploadAlt } from 'react-icons/fa'
+import { FaCloudUploadAlt, FaMarkdown } from 'react-icons/fa'
 import { SanityAssetDocument } from '@sanity/client'
 import { topics } from '@/utils/constants'
-import useAuthStore from '@/store/authStore'
 import axios, { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import { BASE_URL } from '@/utils'
@@ -15,6 +14,7 @@ import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
 import { Video } from '@/types'
 import { MdOutlineCancel } from 'react-icons/md'
+import Link from 'next/link'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -25,7 +25,6 @@ interface IProps {
 
 const VideoForm = ({ post }: IProps) => {
   const router = useRouter()
-  const { userProfile }: { userProfile: any } = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
   const [videoAsset, setVideoAsset] = useState<SanityAssetDocument | undefined>()
   const [videoUrl, setVideoUrl] = useState('')
@@ -99,7 +98,6 @@ const VideoForm = ({ post }: IProps) => {
   const handlePost = async (e: FormEvent) => {
     e.preventDefault()
     if (
-      userProfile?._id &&
       content &&
       captionRef.current!.value &&
       categoryRef.current!.value &&
@@ -115,14 +113,10 @@ const VideoForm = ({ post }: IProps) => {
           _type: 'file',
           asset: {
             _type: 'reference',
-            _ref: (videoAsset?._id || post?.video.asset._id),
+            _ref: videoAsset?._id || post?.video.asset._id,
           },
         },
-        userId: userProfile?._id,
-        postedBy: {
-          _type: 'postedBy',
-          _ref: userProfile?._id,
-        },
+        postedBy: {},
       }
       try {
         let response: AxiosResponse
@@ -218,7 +212,16 @@ const VideoForm = ({ post }: IProps) => {
           maxLength={100}
           ref={captionRef}
         />
-        <label className="text-base font-medium">Content</label>
+        <div className="flex flex-row justify-between">
+          <label className="text-base font-medium">Content</label>
+          <Link
+            href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+            className="flex flex-row gap-0.5 items-center text-sm hover:text-blue-500 hover:underline"
+          >
+            <FaMarkdown className="text-base" />
+            Markdown supported
+          </Link>
+        </div>
         <MDEditor
           value={content}
           onChange={handleChange}

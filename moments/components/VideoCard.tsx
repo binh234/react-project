@@ -11,11 +11,11 @@ import {
   MdErrorOutline,
   MdClose,
 } from 'react-icons/md'
-import useAuthStore from '@/store/authStore'
 import Modal from 'react-modal'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { dateDiff, formatDate } from '@/utils/helpers'
+import { useSession } from 'next-auth/react'
 
 interface IProps {
   post: Video
@@ -25,13 +25,15 @@ interface IProps {
 const MAX_LENGTH = 60
 
 const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
-  const { userProfile }: any = useAuthStore()
+  const { data: session } = useSession()
+  const { user: userProfile } = session || {}
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const ref = useRef(null)
+  const isOnHome = deletePost && userProfile && userProfile._id === post.postedBy._id
 
   if (!post.content) {
     post.content = ''
@@ -138,7 +140,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
                 </p>
               </div>
             </div>
-            {deletePost && userProfile && userProfile?._id === post.postedBy._id && (
+            {isOnHome && (
               <div ref={menuRef} className="relative">
                 <button className="rounded-full hover:bg-primary p-2" onClick={handleClick}>
                   <MdMoreHoriz className="text-2xl" />

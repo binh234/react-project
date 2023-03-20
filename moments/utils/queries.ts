@@ -10,7 +10,6 @@ const post = `{
         url
       }
     },
-  userId,
   postedBy->{
     _id,
     userName,
@@ -40,7 +39,6 @@ const postWithoutComments = `{
         url
       }
     },
-    userId,
   postedBy->{
     _id,
     userName,
@@ -51,6 +49,18 @@ const postWithoutComments = `{
     _key,
   }
 }`
+
+const comment = `{
+  comment,
+  _key,
+  postedBy->{
+    _id,
+    userName,
+    image
+  },
+}
+
+`
 
 export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string, lastId?: string) => {
   let query = ''
@@ -66,9 +76,11 @@ export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string, l
   return `${query}[0..${maxResults}]${postWithoutComments}`
 }
 
-export const postDetailQuery = (postId: string | string[]) => {
-  const query = `*[_type == "post" && _id == '${postId}']${post}`
-  return query
+export const postDetailQuery = (postId: string | string[], userId?: string | string[]) => {
+  if (userId) {
+    return `*[_type == "post" && _id == '${postId}' && postedBy._ref == '${userId}']${post}`
+  }
+  return `*[_type == "post" && _id == '${postId}']${post}`
 }
 
 export const searchPostsQuery = (
@@ -111,6 +123,12 @@ export const singleUserQuery = (userId: string | string[]) => {
   return query
 }
 
+export const findUserWithEmailQuery = (email: string) => {
+  const query = `*[_type == "user" && email == "${email}"][0]`
+
+  return query
+}
+
 export const allUsersQuery = () => {
   const query = `*[_type == "user"]`
 
@@ -124,7 +142,7 @@ export const suggestedUsersQuery = (maxResults: number) => {
 }
 
 export const userCreatedPostsQuery = (userId: string | string[]) => {
-  const query = `*[ _type == 'post' && userId == '${userId}'] | order(_createdAt desc)${postWithoutComments}`
+  const query = `*[ _type == 'post' && postedBy._ref in *[_type=="user" && _id=='${userId}']._id] | order(_createdAt desc)${postWithoutComments}`
 
   return query
 }

@@ -1,9 +1,9 @@
 import Comments from '@/components/Comments'
 import LikeButton from '@/components/LikeButton'
-import useAuthStore from '@/store/authStore'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
 import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -19,8 +19,9 @@ interface IProps {
 const Detail = ({ postDetails }: IProps) => {
   const [post, setPost] = useState(postDetails)
   const router = useRouter()
-  const { userProfile }: any = useAuthStore()
   const [isPostingComment, setIsPostingComment] = useState(false)
+  const { data: session } = useSession()
+  const { user: userProfile } = session || {}
 
   if (!post) return null
 

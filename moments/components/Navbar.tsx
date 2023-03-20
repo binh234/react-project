@@ -3,26 +3,33 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { IoMdAdd } from 'react-icons/io'
-import { GoogleLogin, googleLogout } from '@react-oauth/google'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 import Logo from '@/utils/tiktik-logo.png'
-import { createOrGetUser } from '@/utils'
-import useAuthStore from '@/store/authStore'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import { MdAccountCircle, MdLogout, MdSettings } from 'react-icons/md'
 
+// import { GoogleLogin, googleLogout } from '@react-oauth/google'
+// import Cookies from 'js-cookie'
+// import { createOrGetUser } from '@/utils'
+// import useAuthStore from '@/store/authStore'
+
 const Navbar = () => {
-  const { userProfile, addUser, removeUser }: any = useAuthStore()
+  // const { userProfile, addUser, removeUser }: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const { data: session } = useSession()
+  const { user: userProfile } = session || {}
 
   const handleLogout = () => {
-    googleLogout()
-    removeUser()
     setIsOpen(false)
+    // googleLogout()
+    // removeUser()
+    // Cookies.remove("auth-token")
+    signOut()
   }
 
   const handleSearch = (e: React.FormEvent) => {
@@ -83,7 +90,7 @@ const Navbar = () => {
                 <span className="hidden md:block">Upload</span>
               </button>
             </Link>
-            {userProfile?.image ? (
+            {userProfile.image ? (
               <div ref={menuRef} className="relative">
                 <button onClick={handleClick}>
                   <Image
@@ -96,12 +103,12 @@ const Navbar = () => {
                 </button>
                 {isOpen && (
                   <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <Link href={`/profile/${userProfile?._id}`} >
+                    <Link href={`/profile/${userProfile?._id}`}>
                       <div
                         className="px-4 py-2 flex flex-row items-center gap-4 text-gray-800 hover:bg-primary"
                         onClick={handleClose}
                       >
-                        <MdAccountCircle className='text-2xl' />
+                        <MdAccountCircle className="text-2xl" />
                         <p>Your Profile</p>
                       </div>
                     </Link>
@@ -109,35 +116,34 @@ const Navbar = () => {
                       className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-gray-800 hover:bg-primary"
                       onClick={handleLogout}
                     >
-                      <MdLogout className='text-2xl' />
+                      <MdLogout className="text-2xl" />
                       <p>Sign out</p>
                     </div>
                     <div
                       className="px-4 py-2 flex flex-row items-center gap-4 cursor-pointer text-gray-800 hover:bg-primary"
                       onClick={handleClose}
                     >
-                      <MdSettings className='text-2xl' />
+                      <MdSettings className="text-2xl" />
                       <p>Settings</p>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              <></>
+              <button className="px-4 rounded-full border-2" onClick={handleLogout}>
+                <AiOutlineLogout className="text-xl" color="red" />
+              </button>
             )}
-            <button className="px-2 rounded-full border-2" onClick={handleLogout}>
-              <AiOutlineLogout className="text-xl" color="red" />
-            </button>
           </div>
         ) : (
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              createOrGetUser(credentialResponse, addUser)
-            }}
-            onError={() => {
-              console.log('Login Failed')
-            }}
-          />
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
+            onClick={() => signIn()}
+          >
+            <span className="relative px-4 lg:px-6 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+              Login
+            </span>
+          </button>
         )}
       </div>
     </div>

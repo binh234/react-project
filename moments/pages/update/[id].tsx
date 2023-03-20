@@ -1,23 +1,24 @@
 import NoResults from '@/components/NoResults'
-import useAuthStore from '@/store/authStore'
 import { BASE_URL } from '@/utils'
 import axios from 'axios'
 import React from 'react'
 import Head from 'next/head'
 import VideoForm from '@/components/VideoForm'
 import { MdErrorOutline } from 'react-icons/md'
-import { Video } from '@/types'
+import { ISessionUser, Video } from '@/types'
+import { GetServerSidePropsContext } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../api/auth/[...nextauth]'
 
 interface IProps {
   post: Video
+  user: ISessionUser
 }
 
-const Update = ({ post }: IProps) => {
-  const { userProfile }: { userProfile: any } = useAuthStore()
-
-  if (!userProfile) {
+const Update = ({ post, user }: IProps) => {
+  if (!user) {
     return <NoResults text="Please login to continue" icon={<MdErrorOutline />} />
-  } else if (!(userProfile?._id === post.userId)) {
+  } else if (!post) {
     return (
       <NoResults
         text="This post doesn't exist or you don't have permission to do this action"
@@ -42,12 +43,24 @@ const Update = ({ post }: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({ params: { id } }: { params: { id: string } }) => {
-  const { data } = await axios.get(`${BASE_URL}/api/post/${id}`)
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  const { user } = session
+  const { id }: any = context.params
+  const { data } = await axios.get(`${BASE_URL}/api/post/${id}?userId=${user._id}`)
 
   return {
     props: {
       post: data,
+      user: user,
     },
   }
 }

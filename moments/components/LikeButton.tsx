@@ -1,7 +1,5 @@
-import useAuthStore from '@/store/authStore'
-import { BASE_URL } from '@/utils'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { MdFavorite } from 'react-icons/md'
 
 interface IProps {
@@ -11,16 +9,20 @@ interface IProps {
 
 const LikeButton = ({ handleLike, likes }: IProps) => {
   const [alreadyLiked, setAlreadyLiked] = useState(false)
-  const { userProfile }: any = useAuthStore()
-  const filterLikes = likes?.filter((item) => item._ref === userProfile?._id)
+  const { data: session } = useSession()
+  const { user: userProfile } = session || {}
+  
 
   useEffect(() => {
-    if (filterLikes?.length > 0) {
-      setAlreadyLiked(true)
-    } else {
-      setAlreadyLiked(false)
+    if (userProfile && likes) {
+      const filterLikes = likes.filter((item) => item._ref === userProfile._id)
+      if (filterLikes.length > 0) {
+        setAlreadyLiked(true)
+      } else {
+        setAlreadyLiked(false)
+      }
     }
-  }, [filterLikes, likes])
+  }, [likes, userProfile])
 
   return (
     <div className="flex gap-6">

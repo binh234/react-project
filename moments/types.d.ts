@@ -27,12 +27,17 @@ export interface Video {
     postedBy: IPostedBy
   }[]
   comments: IComment[]
-  userId: string
 }
 
 export interface IUser {
   _id: string
   _type: string
   userName: string
+  image: string
+}
+export interface ISessionUser {
+  _id: string
+  name: string
+  email: string
   image: string
 }
