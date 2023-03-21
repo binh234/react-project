@@ -15,6 +15,7 @@ import { MdErrorOutline, MdOutlineCancel } from 'react-icons/md'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import NoResults from './NoResults'
+import { FileUploader } from 'react-drag-drop-files'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -28,12 +29,13 @@ const VideoForm = ({ post }: IProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [videoAsset, setVideoAsset] = useState<SanityAssetDocument | undefined>()
   const [videoUrl, setVideoUrl] = useState('')
-  const [wrongFileType, setWrongFileType] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [savingPost, setSavingPost] = useState(false)
   const [content, setContent] = React.useState('')
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
   const { data: session } = useSession()
+  const fileTypes = ['mp4', 'webm', 'ogg']
 
   // Update route
   useEffect(() => {
@@ -60,20 +62,18 @@ const VideoForm = ({ post }: IProps) => {
     }
   }
 
-  const handleUpload = async (e: any) => {
-    const selectedFile = e.target.files[0]
-    const fileTypes = ['video/mp4', 'video/webm', 'video/ogg']
-
-    if (fileTypes.includes(selectedFile.type)) {
-      uploadAsset(selectedFile).then((data) => {
+  const handleUpload = async (file: File) => {
+    const fileType = file.type.split("/")[1]
+    if (fileTypes.includes(fileType)) {
+      uploadAsset(file).then((data) => {
         setVideoAsset(data)
         setIsLoading(false)
       })
       setIsLoading(true)
-      setWrongFileType(false)
+      setErrorMessage('')
     } else {
       setIsLoading(false)
-      setWrongFileType(true)
+      setErrorMessage('Please select a video file')
     }
   }
 
@@ -128,13 +128,15 @@ const VideoForm = ({ post }: IProps) => {
       } else {
         action = createDocument(document)
       }
-      action.then(() => {
-        router.push('/')
-      }).catch((e) => {
-        alert('Something wrong, please try again')
-        setSavingPost(false)
-        console.log(e)
-      })
+      action
+        .then(() => {
+          router.push('/')
+        })
+        .catch((e) => {
+          alert('Something wrong, please try again')
+          setSavingPost(false)
+          console.log(e)
+        })
     }
   }
 
@@ -171,13 +173,25 @@ const VideoForm = ({ post }: IProps) => {
                 />
               </div>
             ) : (
-              <label className="cursor-pointer">
-                <div className="flex flex-col items-center justify-center h-full">
+              <FileUploader
+                types={fileTypes}
+                onTypeError={() => {
+                  setErrorMessage('Please select a video file')
+                }}
+                maxSize={10}
+                onSizeError={() => {
+                  setErrorMessage('Please select a file less than 100MB')
+                }}
+                name="upload-video"
+                handleChange={handleUpload}
+                classes="w-full"
+              >
+                <div className="flex flex-col items-center justify-center h-full cursor-pointer">
                   <div className="flex flex-col items-center justify-center">
                     <p className="font-bold text-xl">
                       <FaCloudUploadAlt className="text-gray-300 text-6xl" />
                     </p>
-                    <p className="text-xl font-semibold">Upload video</p>
+                    <p className="text-xl font-semibold">Drop your video here</p>
                   </div>
                   <p className="text-gray-400 text-center mt-10 text-sm leading-10">
                     MP4 or WebM or ogg <br />
@@ -189,19 +203,13 @@ const VideoForm = ({ post }: IProps) => {
                     Select File
                   </p>
                 </div>
-                <input
-                  type="file"
-                  name="upload-video"
-                  className="w-0 h-0"
-                  onChange={handleUpload}
-                />
-              </label>
+              </FileUploader>
             )}
           </>
         )}
-        {wrongFileType && (
-          <p className="text-center text-xl text-red-500 font-semibold mt-4 w-[250px]">
-            Please select a video file
+        {errorMessage !== '' && (
+          <p className="text-center text-xl text-red-500 font-semibold mt-4 w-auto">
+            {errorMessage}
           </p>
         )}
       </div>
