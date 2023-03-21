@@ -3,7 +3,6 @@ import { client } from '@/utils/client'
 import { MAX_COMMENT_RESULT } from '@/utils/config'
 import { postCommentsQuery } from '@/utils/queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { v4 as uuidv4 } from 'uuid'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -17,25 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const data = await client.fetch(query)
       return res.status(200).json(data)
 
-    } else if (req.method === 'PUT') {
-      const { comment, userId } = req.body
-      const { id }: any = req.query
-
-      const data = await client
-        .patch(id)
-        .setIfMissing({ comments: [] })
-        .insert('after', 'comments[-1]', [
-          {
-            comment: comment,
-            _key: uuidv4(),
-            postedBy: {
-              _type: 'postedBy',
-              _ref: userId,
-            },
-          },
-        ])
-        .commit()
-      res.status(200).json(data)
     }
   } catch (e) {
     console.log('Error when adding comment: ', e)

@@ -32,18 +32,15 @@ const comment = `{
 
 `
 
-export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string, lastId?: string) => {
+export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string) => {
   let query = ''
-  if (lastCreatedAt && lastId) {
-    query = `*[_type == "post" && (
-      createdAt < '${lastCreatedAt}'
-      || (createdAt == '${lastCreatedAt}' && _id > ${lastId})
-    )] | order(_createdAt desc)`
+  if (lastCreatedAt) {
+    query = `*[_type == "post" && _createdAt < '${lastCreatedAt}']`
   } else {
-    query = `*[_type == "post"] | order(_createdAt desc)`
+    query = `*[_type == "post"]`
   }
 
-  return `${query}[0..${maxResults}]${post}`
+  return `${query} | order(_createdAt desc)[0..${maxResults}]${post}`
 }
 
 export const postDetailQuery = (postId: string | string[], userId?: string | string[]) => {
@@ -53,7 +50,11 @@ export const postDetailQuery = (postId: string | string[], userId?: string | str
   return `*[_type == "post" && _id == '${postId}']${post}`
 }
 
-export const postCommentsQuery = (postId: string | string[], maxResults: number = 30, lastCreatedAt?: string) => {
+export const postCommentsQuery = (
+  postId: string | string[],
+  maxResults: number = 30,
+  lastCreatedAt?: string
+) => {
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "comment" && post._ref == '${postId}' && _createdAt < '${lastCreatedAt}']`
@@ -69,7 +70,6 @@ export const postCommentSubscriptionQuery = (postId: string | string[], lastCrea
 
   return `${query}`
 }
-
 
 export const searchPostsQuery = (
   searchTerm: string | string[],
@@ -141,8 +141,17 @@ export const userLikedPostsQuery = (userId: string | string[]) => {
   return query
 }
 
-export const topicPostsQuery = (topic: string | string[]) => {
-  const query = `*[_type == "post" && topic match '${topic}*'] ${post}`
+export const topicPostsQuery = (
+  topic: string | string[],
+  maxResults: number = 50,
+  lastCreatedAt?: string
+) => {
+  let query = ''
+  if (lastCreatedAt) {
+    query = `*[_type == "post" && topic match '${topic}*' && _createdAt < '${lastCreatedAt}']`
+  } else {
+    query = `*[_type == "post" && topic match '${topic}*']`
+  }
 
-  return query
+  return `${query} | order(_createdAt desc) [0..${maxResults}]${post}`
 }

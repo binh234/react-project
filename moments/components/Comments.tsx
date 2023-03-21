@@ -12,6 +12,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BiCommentX } from 'react-icons/bi'
 import { GoVerified } from 'react-icons/go'
 import { MdSend } from 'react-icons/md'
+import { SkewLoader } from 'react-spinners'
 import NoResults from './NoResults'
 
 interface IProps {
@@ -35,7 +36,7 @@ const Comments = ({ postId }: IProps) => {
 
   const getComments = async (first: boolean) => {
     if (!lastCreatedAt && !first) {
-      return []
+      return
     }
     const { data } = (await axios.get(`${BASE_URL}/api/comment/${postId}`, {
       params: { maxResults: MAX_COMMENT_RESULT, lastCreatedAt: lastCreatedAt },
@@ -63,10 +64,11 @@ const Comments = ({ postId }: IProps) => {
     // addComment(commentRef.current!.value)
     if (userProfile) {
       setIsPostingComment(true)
+      const text = commentRef.current!.value
       commentRef.current!.value = ''
       await createDocument({
         _type: 'comment',
-        comment: commentRef.current!.value,
+        comment: text,
         postedBy: {
           _type: 'postedBy',
           _ref: userProfile._id,
@@ -184,13 +186,13 @@ const Comments = ({ postId }: IProps) => {
               className="bg-primary px-4 py-2 text-base border-2 rounded-full w-full"
               ref={commentRef}
             />
-            <button
-              className="text-lg text-gray-400 hidden md:block"
-              type="submit"
-              disabled={isPostingComment}
-            >
-              <MdSend />
-            </button>
+            {isPostingComment ? (
+              <SkewLoader color="fuchsia" size={10} aria-label="Comment Spinner" />
+            ) : (
+              <button className="text-lg text-gray-400 hidden md:block" type="submit">
+                <MdSend />
+              </button>
+            )}
           </form>
         </div>
       )}
