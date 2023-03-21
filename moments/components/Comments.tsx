@@ -1,6 +1,6 @@
 import { IComment } from '@/types'
 import { BASE_URL } from '@/utils'
-import { client, createDocument, subscribe } from '@/utils/client'
+import { createDocument, subscribe } from '@/utils/client'
 import { COMMENT_MAX_RESULT } from '@/utils/config'
 import { getCurrentDateTime } from '@/utils/helpers'
 import { postCommentSubscriptionQuery, singleUserQuery } from '@/utils/queries'
@@ -32,7 +32,6 @@ const Comments = ({ postId }: IProps) => {
   const [comments, setComments] = useState<IComment[]>([])
   const commentRef = useRef<HTMLInputElement>(null)
   const [lastCreatedAt, setLastCreatedAt] = useState<string | null>(null)
-  const userCache = new Map<string, any>()
 
   const getComments = async (first: boolean) => {
     if (!lastCreatedAt && !first) {
@@ -47,12 +46,6 @@ const Comments = ({ postId }: IProps) => {
         setLastCreatedAt(null)
       } else {
         setLastCreatedAt(data[data.length - 1]._createdAt)
-      }
-      for (let comment of data) {
-        userCache.set(comment.postedBy._id, {
-          image: comment.postedBy.image,
-          userName: comment.postedBy.userName,
-        })
       }
     } else {
       setLastCreatedAt(null) // Reached the end
@@ -80,6 +73,8 @@ const Comments = ({ postId }: IProps) => {
           _type: 'post',
           _ref: postId,
         },
+        userName: userProfile.name,
+        image: userProfile.image
       })
     }
     commentRef.current!.value = ''
@@ -100,23 +95,15 @@ const Comments = ({ postId }: IProps) => {
   useEffect(() => {
     const subscription = commentSubscription(postId).subscribe(async (newRecords) => {
       const comment = newRecords.result
-      console.log(comment)
       if (comment) {
-        const postedBy = comment.postedBy
-        let user
-        if (userCache.has(postedBy._ref)) {
-          user = userCache.get(postedBy._ref)
-        } else {
-          user = await client.fetch(singleUserQuery(postedBy._ref))
-        }
         const parseComment: IComment = {
           _id: comment._id,
           _createdAt: comment._createdAt,
           comment: comment.comment,
           postedBy : {
-            _id: postedBy._ref,
-            userName: user?.userName,
-            image: user?.image
+            _id: comment.postedBy._ref,
+            userName: comment.userName,
+            image: comment.image
           }
         }
         setComments(comments => [parseComment, ...comments])

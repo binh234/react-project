@@ -54,11 +54,12 @@ export const authOptions: CustomAuthOptions = {
           client.createOrReplace(user)
         } else {
           token._id = user._id
+          token.name = user.userName
         }
       }
       return token
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
       session.user._id = token._id
       return session

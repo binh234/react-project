@@ -30,7 +30,7 @@ const VideoForm = ({ post }: IProps) => {
   const [videoUrl, setVideoUrl] = useState('')
   const [wrongFileType, setWrongFileType] = useState(false)
   const [savingPost, setSavingPost] = useState(false)
-  const [content, setContent] = React.useState('**Hello world!!!**')
+  const [content, setContent] = React.useState('')
   const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
   const { data: session } = useSession()

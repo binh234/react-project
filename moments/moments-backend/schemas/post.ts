@@ -1,3 +1,5 @@
+import { Rule } from "sanity";
+
 export default {
   name: 'post',
   title: 'Post',
@@ -25,7 +27,7 @@ export default {
       name: 'postedBy',
       title: 'Posted By',
       type: 'postedBy',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: 'likes',
@@ -48,7 +50,7 @@ export default {
       name: 'topic',
       title: 'Topic',
       type: 'string',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
   ],
 }
