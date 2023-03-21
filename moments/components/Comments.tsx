@@ -1,7 +1,7 @@
 import { IComment } from '@/types'
 import { BASE_URL } from '@/utils'
 import { createDocument, subscribe } from '@/utils/client'
-import { COMMENT_MAX_RESULT } from '@/utils/config'
+import { MAX_COMMENT_RESULT } from '@/utils/config'
 import { getCurrentDateTime } from '@/utils/helpers'
 import { postCommentSubscriptionQuery, singleUserQuery } from '@/utils/queries'
 import axios from 'axios'
@@ -37,12 +37,12 @@ const Comments = ({ postId }: IProps) => {
     if (!lastCreatedAt && !first) {
       return []
     }
-    const { data } = await axios.get(`${BASE_URL}/api/comment/${postId}`, {
-      params: { maxResults: COMMENT_MAX_RESULT, lastCreatedAt: lastCreatedAt },
-    }) as {data: IComment[]}
+    const { data } = (await axios.get(`${BASE_URL}/api/comment/${postId}`, {
+      params: { maxResults: MAX_COMMENT_RESULT, lastCreatedAt: lastCreatedAt },
+    })) as { data: IComment[] }
 
     if (data.length > 0) {
-      if (data.length <= COMMENT_MAX_RESULT) {
+      if (data.length <= MAX_COMMENT_RESULT) {
         setLastCreatedAt(null)
       } else {
         setLastCreatedAt(data[data.length - 1]._createdAt)
@@ -58,11 +58,13 @@ const Comments = ({ postId }: IProps) => {
     setShowMore(false)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     // addComment(commentRef.current!.value)
     if (userProfile) {
-      createDocument({
+      setIsPostingComment(true)
+      commentRef.current!.value = ''
+      await createDocument({
         _type: 'comment',
         comment: commentRef.current!.value,
         postedBy: {
@@ -74,10 +76,10 @@ const Comments = ({ postId }: IProps) => {
           _ref: postId,
         },
         userName: userProfile.name,
-        image: userProfile.image
+        image: userProfile.image,
       })
+      setIsPostingComment(false)
     }
-    commentRef.current!.value = ''
   }
 
   useEffect(() => {
@@ -100,13 +102,13 @@ const Comments = ({ postId }: IProps) => {
           _id: comment._id,
           _createdAt: comment._createdAt,
           comment: comment.comment,
-          postedBy : {
+          postedBy: {
             _id: comment.postedBy._ref,
             userName: comment.userName,
-            image: comment.image
-          }
+            image: comment.image,
+          },
         }
-        setComments(comments => [parseComment, ...comments])
+        setComments((comments) => [parseComment, ...comments])
       }
     })
 

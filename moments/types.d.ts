@@ -24,7 +24,7 @@ export interface Video {
   }
   postedBy: IPostedBy
   likes: {
-    postedBy: IPostedBy
+    _ref: string
   }[]
   comments: IComment[]
 }

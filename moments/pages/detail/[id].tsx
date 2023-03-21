@@ -1,5 +1,6 @@
 import Comments from '@/components/Comments'
 import LikeButton from '@/components/LikeButton'
+import NoResults from '@/components/NoResults'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
 import axios from 'axios'
@@ -9,7 +10,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { GoVerified } from 'react-icons/go'
-import { MdOutlineCancel } from 'react-icons/md'
+import { MdErrorOutline, MdOutlineCancel } from 'react-icons/md'
 import ReactPlayer from 'react-player/lazy'
 
 interface IProps {
@@ -19,11 +20,10 @@ interface IProps {
 const Detail = ({ postDetails }: IProps) => {
   const [post, setPost] = useState(postDetails)
   const router = useRouter()
-  const [isPostingComment, setIsPostingComment] = useState(false)
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
 
-  if (!post) return null
+  if (!post) return <NoResults text="This post doesn't exist" icon={<MdErrorOutline />} />
 
   const handleLike = async (like: boolean) => {
     if (userProfile) {
@@ -33,19 +33,6 @@ const Detail = ({ postDetails }: IProps) => {
         like: like,
       })
       setPost({ ...post, likes: data.likes })
-    }
-  }
-
-  const addComment = async (comment: string) => {
-    if (userProfile && comment) {
-      setIsPostingComment(true)
-      const { data } = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
-        userId: userProfile._id,
-        comment: comment,
-      })
-
-      // setPost({ ...post, comments: data.comments })
-      setIsPostingComment(false)
     }
   }
 
@@ -98,7 +85,7 @@ const Detail = ({ postDetails }: IProps) => {
         <div className="mt-4 px-6">
           {userProfile && <LikeButton handleLike={handleLike} likes={post.likes} />}
         </div>
-        <Comments postId={post._id}/>
+        <Comments postId={post._id} />
       </div>
     </div>
   )

@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import NoResults from './NoResults'
 import { FileUploader } from 'react-drag-drop-files'
+import { MAX_FILE_SIZE } from '@/utils/config'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
   ssr: false,
@@ -178,9 +179,9 @@ const VideoForm = ({ post }: IProps) => {
                 onTypeError={() => {
                   setErrorMessage('Please select a video file')
                 }}
-                maxSize={10}
+                maxSize={MAX_FILE_SIZE}
                 onSizeError={() => {
-                  setErrorMessage('Please select a file less than 100MB')
+                  setErrorMessage(`Please select a file less than ${MAX_FILE_SIZE}MB`)
                 }}
                 name="upload-video"
                 handleChange={handleUpload}

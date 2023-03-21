@@ -18,26 +18,6 @@ const post = `{
   likes
 }`
 
-const postWithoutComments = `{
-  _id,
-  _createdAt,
-  caption,
-  topic,
-   content,
-     video{
-      asset->{
-        _id,
-        url
-      }
-    },
-  postedBy->{
-    _id,
-    userName,
-    image
-  },
-  likes
-}`
-
 const comment = `{
   _id,
   _createdAt,
@@ -63,7 +43,7 @@ export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string, l
     query = `*[_type == "post"] | order(_createdAt desc)`
   }
 
-  return `${query}[0..${maxResults}]${postWithoutComments}`
+  return `${query}[0..${maxResults}]${post}`
 }
 
 export const postDetailQuery = (postId: string | string[], userId?: string | string[]) => {
@@ -108,7 +88,7 @@ export const searchPostsQuery = (
       caption match "${searchTerm}" || topic match "${searchTerm}"
     )]`
   }
-  return `${query} | order(_createdAt desc) [0..${maxResults}]${postWithoutComments}`
+  return `${query} | order(_createdAt desc) [0..${maxResults}]${post}`
 }
 
 export const searchUsersQuery = (
@@ -150,19 +130,19 @@ export const suggestedUsersQuery = (maxResults: number) => {
 }
 
 export const userCreatedPostsQuery = (userId: string | string[]) => {
-  const query = `*[ _type == 'post' && postedBy._ref == ${userId} | order(_createdAt desc)${postWithoutComments}`
+  const query = `*[ _type == 'post' && postedBy._ref == ${userId} | order(_createdAt desc)${post}`
 
   return query
 }
 
 export const userLikedPostsQuery = (userId: string | string[]) => {
-  const query = `*[_type == 'post' && '${userId}' in likes[]._ref ] | order(_createdAt desc) ${postWithoutComments}`
+  const query = `*[_type == 'post' && '${userId}' in likes[]._ref ] | order(_createdAt desc) ${post}`
 
   return query
 }
 
 export const topicPostsQuery = (topic: string | string[]) => {
-  const query = `*[_type == "post" && topic match '${topic}*'] ${postWithoutComments}`
+  const query = `*[_type == "post" && topic match '${topic}*'] ${post}`
 
   return query
 }

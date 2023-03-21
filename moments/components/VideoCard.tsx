@@ -3,20 +3,25 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { GoVerified } from 'react-icons/go'
+import { GoComment, GoVerified } from 'react-icons/go'
 import {
   MdOutlineEdit,
   MdMoreHoriz,
   MdOutlineDeleteForever,
   MdErrorOutline,
   MdClose,
+  MdFavorite,
+  MdOutlineFavoriteBorder,
 } from 'react-icons/md'
+import { RiShareForwardLine } from 'react-icons/ri'
 import Modal from 'react-modal'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { dateDiff, formatDate } from '@/utils/helpers'
 import { useSession } from 'next-auth/react'
 import { MAX_CONTENT } from '@/utils/config'
+import axios from 'axios'
+import { BASE_URL } from '@/utils'
 
 interface IProps {
   post: Video
@@ -26,6 +31,8 @@ interface IProps {
 const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
+  const [likes, setLikes] = useState(post.likes || [])
+  const [alreadyLiked, setAlreadyLiked] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -45,6 +52,29 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
     : post.content
   const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt)), [post])
   // const formattedFullDate = useMemo(() => formatDate(new Date(post._createdAt)), [post])
+
+  useEffect(() => {
+    if (userProfile && likes) {
+      const filterLikes = likes.filter((item) => item._ref === userProfile._id)
+      if (filterLikes.length > 0) {
+        setAlreadyLiked(true)
+      } else {
+        setAlreadyLiked(false)
+      }
+    }
+  }, [likes, userProfile])
+
+  const handleLike = async (like: boolean) => {
+    if (userProfile) {
+      setAlreadyLiked(like)
+      const { data } = await axios.put(`${BASE_URL}/api/like`, {
+        userId: userProfile._id,
+        postId: post._id,
+        like: like,
+      })
+      setLikes(data.likes)
+    }
+  }
 
   function toggleModal() {
     setIsModalOpen((open) => !open)
@@ -111,7 +141,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   return (
     <div ref={ref}>
       {isVisible && (
-        <div className="flex flex-col gap-2 border-b-2 border-gray-200 pb-6">
+        <div className="flex flex-col gap-2 border-b-2 border-gray-200 pb-4">
           <div className="flex justify-between gap-3 p-2 rounded">
             <div className="flex gap-3 cursor-progress font-semibold rounded">
               <div className="md:w-12 md:h-12 w-10 h-10">
@@ -137,9 +167,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
                     </p>
                   </div>
                 </Link>
-                <p className="text-sm text-gray-600 hover:underline">
-                  {publishedTime}
-                </p>
+                <p className="text-sm text-gray-600 hover:underline">{publishedTime}</p>
               </div>
             </div>
             {isOnHome && (
@@ -243,6 +271,45 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
               />
             </div>
           </Link>
+
+          {likes.length > 0 && (
+            <div className="text-base text-gray-500 flex flex-row gap-1 items-center">
+              <MdFavorite className="text-lg md:text-xl text-[#F51997]" />
+              {alreadyLiked ? (
+                likes.length > 1 ? (
+                  <p>{'You and ' + (likes.length - 1).toLocaleString()} Other</p>
+                ) : (
+                  <p>You</p>
+                )
+              ) : (
+                <p>{likes.length.toLocaleString()}</p>
+              )}
+            </div>
+          )}
+
+          <div className="grid grid-cols-3 gap-2 w-auto lg:w-[600px] border-t-2">
+            <div
+              className="flex flex-row items-center justify-center gap-2 py-2 rounded-lg cursor-pointer hover:bg-primary"
+              onClick={() => handleLike(!alreadyLiked)}
+            >
+              {alreadyLiked ? (
+                <MdFavorite className="text-lg md:text-xl text-[#F51997]" />
+              ) : (
+                <MdOutlineFavoriteBorder className="text-lg md:text-xl" />
+              )}
+              <p className="font-semibold text-gray-600">Like</p>
+            </div>
+            <Link href={`/detail/${post._id}`}>
+              <div className="flex flex-row items-center justify-center gap-2 py-2 rounded-lg cursor-pointer hover:bg-primary">
+                <GoComment className="text-lg md:text-xl" />
+                <p className="font-semibold text-gray-600">Comment</p>
+              </div>
+            </Link>
+            <div className="flex flex-row items-center justify-center gap-2 py-2 rounded-lg cursor-pointer hover:bg-primary">
+              <RiShareForwardLine className="text-lg md:text-xl" />
+              <p className="font-semibold text-gray-600">Share</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
