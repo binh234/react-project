@@ -44,7 +44,7 @@ const UserComment = ({postId} : IProps) => {
       }
     }
   return (
-        <div className="absolute bottom-0 left-0 py-2 px-2 border-t-2 md:px-4 w-full">
+        <div className="relative lg:absolute lg:bottom-0 lg:left-0 py-2 px-2 border-t-2 md:px-4 w-full">
           <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
             {userProfile.image && (
               <Image

@@ -86,7 +86,7 @@ const Comments = ({ postId }: IProps) => {
   }, [postId])
 
   return (
-    <div className="border-gray-200 mt-4 pl-6 border-t-2 mb-12 lg:flex-grow overflow-scroll">
+    <div className="border-gray-200 mt-4 pl-6 border-t-2 mb-2 lg:mb-12 h-4/5 md:h-1/2 lg:flex-grow overflow-scroll">
       {comments?.length ? (
         comments.map((comment) => <Comment key={comment._id} commentDetail={comment} />)
       ) : (
