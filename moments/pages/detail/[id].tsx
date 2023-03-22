@@ -3,7 +3,8 @@ import LikeButton from '@/components/LikeButton'
 import NoResults from '@/components/NoResults'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
-import { dateDiff } from '@/utils/helpers'
+import { MAX_CONTENT } from '@/utils/config'
+import { dateDiffShort } from '@/utils/helpers'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -13,6 +14,9 @@ import React, { useMemo, useState } from 'react'
 import { GoVerified } from 'react-icons/go'
 import { MdErrorOutline, MdOutlineCancel } from 'react-icons/md'
 import ReactPlayer from 'react-player/lazy'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import UserComment from '@/components/UserComment'
 
 interface IProps {
   post: Video
@@ -22,9 +26,20 @@ const Detail = ({ post }: IProps) => {
   const router = useRouter()
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
-  const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt), "en", true), [post])
+  const [showMore, setShowMore] = useState(false)
+  const publishedTime = useMemo(() => dateDiffShort(new Date(post._createdAt), 'en'), [post])
 
   if (!post) return <NoResults text="This post doesn't exist" icon={<MdErrorOutline />} />
+
+  if (!post.content) {
+    post.content = ''
+  }
+
+  const contentLength = post.content.split(' ').length
+  const shouldTruncate = contentLength > MAX_CONTENT
+  const truncatedContent = shouldTruncate
+    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_CONTENT)) + '...'
+    : post.content
 
   return (
     <div className="flex w-full h-full absolute left-0 top-0 bg-white flex-wrap lg:flex-nowrap">
@@ -44,8 +59,8 @@ const Detail = ({ post }: IProps) => {
         </div>
       </div>
       <div className="relative w-full lg:w-3/12 lg:min-w-[360px] flex flex-col">
-        <div className="flex gap-1 p-2 cursor-progress font-semibold rounded mt-10">
-          <div className="md:w-16 md:h-16 w-10 h-10 ml-3">
+        <div className="flex gap-4 p-2 cursor-progress font-semibold rounded mt-4">
+          <div className="md:w-12 md:h-12 w-10 h-10 ml-3">
             <Link href="/">
               <Image
                 width={48}
@@ -69,11 +84,33 @@ const Detail = ({ post }: IProps) => {
           </div>
         </div>
 
-        <p className="px-6 text-base text-gray-600">{post.caption}</p>
-        <div className="mt-4 px-6">
-          {userProfile && <LikeButton postId={post._id} postLikes={post.likes} />}
+        {/* <p className="px-6 text-base text-gray-600">{post.caption}</p> */}
+        <div className="pl-6 pr-4 rounded-lg relative">
+          <div className="text-small md:text-base text-gray-800">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Map `a` to use blue foreground color.
+                a: ({ node, ...props }) => (
+                  <a {...props} className="text-blue-500 hover:underline" />
+                ),
+              }}
+            >
+              {showMore ? post.content : truncatedContent}
+            </ReactMarkdown>
+          </div>
+          {shouldTruncate && (
+            <button
+              className="font-medium cursor-pointer hover:underline text-sm block lg:hidden"
+              onClick={() => setShowMore((prev) => !prev)}
+            >
+              {showMore ? 'Show less' : 'Show more'}
+            </button>
+          )}
         </div>
+        {userProfile && <LikeButton postId={post._id} postLikes={post.likes} />}
         <Comments postId={post._id} />
+        <UserComment postId={post._id} />
       </div>
     </div>
   )

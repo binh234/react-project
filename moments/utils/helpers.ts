@@ -26,8 +26,8 @@ export function shuffle(array: any[]) {
   }
 }
 
-export function dateDiff(pastDate: Date, lang: string = 'en', short: boolean = false) {
-  const selectedTimeUnit = short ? timeUnit['en']['short'] : timeUnit['en']['long']
+export function dateDiff(pastDate: Date, lang: string = 'en') {
+  const selectedTimeUnit = timeUnit['en']['long']
   const now = new Date()
   const millisecondsPassed = now.getTime() - pastDate.getTime()
   const secondsPassed = Math.floor(millisecondsPassed / 1000)
@@ -50,6 +50,33 @@ export function dateDiff(pastDate: Date, lang: string = 'en', short: boolean = f
     return `${monthsPassed} ${selectedTimeUnit['month']}`
   } else {
     return `${yearsPassed} ${selectedTimeUnit['year']}`
+  }
+}
+
+export function dateDiffShort(pastDate: Date, lang: string = 'en') {
+  const selectedTimeUnit = timeUnit['en']['short']
+  const now = new Date()
+  const millisecondsPassed = now.getTime() - pastDate.getTime()
+  const secondsPassed = Math.floor(millisecondsPassed / 1000)
+  const minutesPassed = Math.floor(secondsPassed / 60)
+  const hoursPassed = Math.floor(minutesPassed / 60)
+  const daysPassed = Math.floor(hoursPassed / 24)
+  const monthsPassed =
+    (now.getFullYear() - pastDate.getFullYear()) * 12 + (now.getMonth() - pastDate.getMonth())
+  const yearsPassed = now.getFullYear() - pastDate.getFullYear()
+
+  if (secondsPassed < 60) {
+    return `${secondsPassed}${selectedTimeUnit['second']}`
+  } else if (minutesPassed < 60) {
+    return `${minutesPassed}${selectedTimeUnit['minute']}`
+  } else if (hoursPassed < 24) {
+    return `${hoursPassed}${selectedTimeUnit['hour']}`
+  } else if (daysPassed < 31) {
+    return `${daysPassed}${selectedTimeUnit['day']}`
+  } else if (monthsPassed < 12) {
+    return `${monthsPassed}${selectedTimeUnit['month']}`
+  } else {
+    return `${yearsPassed}${selectedTimeUnit['year']}`
   }
 }
 

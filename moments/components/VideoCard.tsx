@@ -48,7 +48,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const contentLength = post.content.split(' ').length
   const shouldTruncate = contentLength > MAX_CONTENT
   const truncatedContent = shouldTruncate
-    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_CONTENT))
+    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_CONTENT)) + '...'
     : post.content
   const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt)), [post])
   // const formattedFullDate = useMemo(() => formatDate(new Date(post._createdAt)), [post])
