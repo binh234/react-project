@@ -123,22 +123,40 @@ export const allUsersQuery = () => {
   return query
 }
 
-export const suggestedUsersQuery = (maxResults: number) => {
+export const suggestedUsersQuery = (maxResults: number = 50) => {
   const query = `*[_type == "user"][0..${maxResults}]`
 
   return query
 }
 
-export const userCreatedPostsQuery = (userId: string | string[]) => {
-  const query = `*[ _type == 'post' && postedBy._ref == ${userId} | order(_createdAt desc)${post}`
+export const userCreatedPostsQuery = (
+  userId: string | string[],
+  maxResults: number = 50,
+  lastCreatedAt?: string
+) => {
+  let query = ''
+  if (lastCreatedAt) {
+    query = `*[ _type == 'post' && postedBy._ref == ${userId} && _createdAt < '${lastCreatedAt}']`
+  } else {
+    query = `*[_type == 'post' && postedBy._ref == ${userId}]`
+  }
 
-  return query
+  return `${query} | order(_createdAt desc)${post}[0..${maxResults}]`
 }
 
-export const userLikedPostsQuery = (userId: string | string[]) => {
-  const query = `*[_type == 'post' && '${userId}' in likes[]._ref ] | order(_createdAt desc) ${post}`
+export const userLikedPostsQuery = (
+  userId: string | string[],
+  maxResults: number = 50,
+  lastCreatedAt?: string
+) => {
+  let query = ''
+  if (lastCreatedAt) {
+    query = `*[ _type == 'post' && '${userId}' in likes[]._ref && _createdAt < '${lastCreatedAt}']`
+  } else {
+    query = `*[_type == 'post' && '${userId}' in likes[]._ref]`
+  }
 
-  return query
+  return `${query} | order(_createdAt desc)${post}[0..${maxResults}]`
 }
 
 export const topicPostsQuery = (
