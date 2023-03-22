@@ -198,7 +198,7 @@ const VideoForm = ({ post }: IProps) => {
                     MP4 or WebM or ogg <br />
                     720x1280 or higher <br />
                     Up to 10 minutes <br />
-                    Less then 100MB
+                    Less then {MAX_FILE_SIZE}MB
                   </p>
                   <p className="bg-[#F51997] text-center mt-10 rounded text-white text-base font-medium p-2 w-52 outline-none hover:bg-[#da1685]">
                     Select File

@@ -20,8 +20,7 @@ import remarkGfm from 'remark-gfm'
 import { dateDiff, formatDate } from '@/utils/helpers'
 import { useSession } from 'next-auth/react'
 import { MAX_CONTENT } from '@/utils/config'
-import axios from 'axios'
-import { BASE_URL } from '@/utils'
+import { likePost } from '@/utils/client'
 
 interface IProps {
   post: Video
@@ -32,6 +31,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
   const [likes, setLikes] = useState(post.likes || [])
+  const [likeCount, setLikeCount] = useState(likes.length)
   const [alreadyLiked, setAlreadyLiked] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -61,17 +61,21 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
       } else {
         setAlreadyLiked(false)
       }
+      setLikeCount(likes.length)
     }
   }, [likes, userProfile])
 
   const handleLike = async (like: boolean) => {
     if (userProfile) {
       setAlreadyLiked(like)
-      const { data } = await axios.put(`${BASE_URL}/api/like`, {
-        userId: userProfile._id,
-        postId: post._id,
-        like: like,
+      setLikeCount((likeCount) => {
+        if (like) {
+          return likeCount + 1
+        } else {
+          return likeCount - 1
+        }
       })
+      const data = await likePost(like, userProfile._id, post._id)
       setLikes(data.likes)
     }
   }
@@ -272,17 +276,17 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
             </div>
           </Link>
 
-          {likes.length > 0 && (
+          {likeCount > 0 && (
             <div className="text-base text-gray-500 flex flex-row gap-1 items-center">
               <MdFavorite className="text-lg md:text-xl text-[#F51997]" />
               {alreadyLiked ? (
-                likes.length > 1 ? (
-                  <p>{'You and ' + (likes.length - 1).toLocaleString()} Other</p>
+                likeCount > 1 ? (
+                  <p>{'You and ' + (likeCount - 1).toLocaleString()} Other</p>
                 ) : (
                   <p>You</p>
                 )
               ) : (
-                <p>{likes.length.toLocaleString()}</p>
+                <p>{likeCount.toLocaleString()}</p>
               )}
             </div>
           )}

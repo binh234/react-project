@@ -1,11 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { client } from '@/utils/client'
+import { MAX_RESULT } from '@/utils/config'
 import { singleUserQuery, userCreatedPostsQuery, userLikedPostsQuery } from '@/utils/queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    const { id } = req.query
+    let { id, maxResults, lastCreatedAt } = req.query
+    const parsedMaxResults = maxResults ? parseInt(maxResults as string, 10) : MAX_RESULT
+    if (Array.isArray(lastCreatedAt)) {
+      lastCreatedAt = lastCreatedAt[0]
+    }
     const query = singleUserQuery(id!)
     const userVideosQuery = userCreatedPostsQuery(id!)
     const userLikedVideosQuery = userLikedPostsQuery(id!)

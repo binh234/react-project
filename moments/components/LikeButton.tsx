@@ -1,14 +1,16 @@
+import { likePost } from '@/utils/client'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { MdFavorite } from 'react-icons/md'
 
 interface IProps {
-  handleLike: (like: boolean) => Promise<void>
-  likes: any[]
+  postId: string
+  postLikes: any[]
 }
 
-const LikeButton = ({ handleLike, likes }: IProps) => {
+const LikeButton = ({ postId, postLikes }: IProps) => {
   const [alreadyLiked, setAlreadyLiked] = useState(false)
+  const [likes, setLikes] = useState(postLikes || [])
   const [likeCount, setLikeCount] = useState(0)
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
@@ -25,16 +27,19 @@ const LikeButton = ({ handleLike, likes }: IProps) => {
     }
   }, [likes, userProfile])
 
-  const toggleLike = (like: boolean) => {
-    setAlreadyLiked(like)
-    handleLike(like)
-    setLikeCount((likeCount) => {
-      if (like) {
-        return likeCount + 1
-      } else {
-        return likeCount - 1
-      }
-    })
+  const toggleLike = async (like: boolean) => {
+    if (userProfile) {
+      setAlreadyLiked(like)
+      setLikeCount((likeCount) => {
+        if (like) {
+          return likeCount + 1
+        } else {
+          return likeCount - 1
+        }
+      })
+      const data = await likePost(like, userProfile._id, postId)
+      setLikes(data.likes || [])
+    }
   }
 
   return (
@@ -52,7 +57,15 @@ const LikeButton = ({ handleLike, likes }: IProps) => {
             <MdFavorite className="text-base md:text-lg" />
           </div>
         )}
-        <p className="text-base font-semibold">{likeCount}</p>
+        {likeCount > 0 && (
+          <p className="text-base text-gray-600">
+            {alreadyLiked
+              ? likeCount > 1
+                ? `You and ${(likeCount - 1).toLocaleString()} Other`
+                : 'You'
+              : likeCount.toLocaleString()}
+          </p>
+        )}
       </div>
     </div>
   )

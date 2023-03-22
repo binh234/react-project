@@ -3,38 +3,28 @@ import LikeButton from '@/components/LikeButton'
 import NoResults from '@/components/NoResults'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
+import { dateDiff } from '@/utils/helpers'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { GoVerified } from 'react-icons/go'
 import { MdErrorOutline, MdOutlineCancel } from 'react-icons/md'
 import ReactPlayer from 'react-player/lazy'
 
 interface IProps {
-  postDetails: Video
+  post: Video
 }
 
-const Detail = ({ postDetails }: IProps) => {
-  const [post, setPost] = useState(postDetails)
+const Detail = ({ post }: IProps) => {
   const router = useRouter()
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
+  const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt), "en", true), [post])
 
   if (!post) return <NoResults text="This post doesn't exist" icon={<MdErrorOutline />} />
-
-  const handleLike = async (like: boolean) => {
-    if (userProfile) {
-      const { data } = await axios.put(`${BASE_URL}/api/like`, {
-        userId: userProfile._id,
-        postId: post._id,
-        like: like,
-      })
-      setPost({ ...post, likes: data.likes })
-    }
-  }
 
   return (
     <div className="flex w-full h-full absolute left-0 top-0 bg-white flex-wrap lg:flex-nowrap">
@@ -69,13 +59,11 @@ const Detail = ({ postDetails }: IProps) => {
           <div>
             <Link href={`/detail/${post._id}`}>
               <div className="flex flex-col gap-1">
-                <p className="flex gap-1 items-center md:text-base text-primary font-bold">
+                <p className="flex gap-1 items-center text-sm md:text-base text-primary font-bold">
                   {post.postedBy.userName} {` `}
                   <GoVerified className="text-blue-400 text-base" />
                 </p>
-                <p className="capitalize font-medium text-xs text-gray-500 hidden md:block">
-                  {post.postedBy.userName}
-                </p>
+                <p className="text-xs md:text-sm text-gray-600 hover:underline">{publishedTime}</p>
               </div>
             </Link>
           </div>
@@ -83,7 +71,7 @@ const Detail = ({ postDetails }: IProps) => {
 
         <p className="px-6 text-base text-gray-600">{post.caption}</p>
         <div className="mt-4 px-6">
-          {userProfile && <LikeButton handleLike={handleLike} likes={post.likes} />}
+          {userProfile && <LikeButton postId={post._id} postLikes={post.likes} />}
         </div>
         <Comments postId={post._id} />
       </div>
@@ -96,7 +84,7 @@ export const getServerSideProps = async ({ params: { id } }: { params: { id: str
 
   return {
     props: {
-      postDetails: data,
+      post: data,
     },
   }
 }

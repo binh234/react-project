@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
+import { v4 as uuidv4 } from 'uuid'
 
 export const client = createClient({
   projectId: 'vwi32sg5',
@@ -30,6 +31,24 @@ export const uploadAsset = async (file: File) => {
 
 export const subscribe = (query: string, params?: any) => {
   return client.listen(query, params)
+}
+
+export const likePost = async (like: boolean, userId: string, postId: string) => {
+  return like
+    ? client
+        .patch(postId)
+        .setIfMissing({ likes: [] })
+        .insert('after', 'likes[-1]', [
+          {
+            _key: uuidv4(),
+            _ref: userId,
+          },
+        ])
+        .commit()
+    : client
+        .patch(postId)
+        .unset([`likes[_ref=="${userId}"]`])
+        .commit()
 }
 
 export const urlFor = (source: any) => {

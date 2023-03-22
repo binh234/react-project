@@ -1,3 +1,24 @@
+const timeUnit = {
+  en: {
+    long: {
+      second: 'seconds',
+      minute: 'minutes',
+      hour: 'hours',
+      day: 'days',
+      month: 'months',
+      year: 'years',
+    },
+    short: {
+      second: 's',
+      minute: 'm',
+      hour: 'h',
+      day: 'd',
+      month: 'mth',
+      year: 'y',
+    },
+  },
+}
+
 export function shuffle(array: any[]) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -5,7 +26,8 @@ export function shuffle(array: any[]) {
   }
 }
 
-export function dateDiff(pastDate: Date) {
+export function dateDiff(pastDate: Date, lang: string = 'en', short: boolean = false) {
+  const selectedTimeUnit = short ? timeUnit['en']['short'] : timeUnit['en']['long']
   const now = new Date()
   const millisecondsPassed = now.getTime() - pastDate.getTime()
   const secondsPassed = Math.floor(millisecondsPassed / 1000)
@@ -17,17 +39,17 @@ export function dateDiff(pastDate: Date) {
   const yearsPassed = now.getFullYear() - pastDate.getFullYear()
 
   if (secondsPassed < 60) {
-    return `${secondsPassed} seconds`
+    return `${secondsPassed} ${selectedTimeUnit['second']}`
   } else if (minutesPassed < 60) {
-    return `${minutesPassed} minutes`
-  } else if (hoursPassed < 25) {
-    return `${hoursPassed} hours`
-  } else if (daysPassed < 32) {
-    return `${daysPassed} days`
+    return `${minutesPassed} ${selectedTimeUnit['minute']}`
+  } else if (hoursPassed < 24) {
+    return `${hoursPassed} ${selectedTimeUnit['hour']}`
+  } else if (daysPassed < 31) {
+    return `${daysPassed} ${selectedTimeUnit['day']}`
   } else if (monthsPassed < 12) {
-    return `${monthsPassed} months`
+    return `${monthsPassed} ${selectedTimeUnit['month']}`
   } else {
-    return `${yearsPassed} years`
+    return `${yearsPassed} ${selectedTimeUnit['year']}`
   }
 }
 
@@ -47,6 +69,12 @@ export function formatDate(date: Date) {
 }
 
 export function getCurrentDateTime(): string {
-  const currentDateTime = new Date().toISOString();
-  return currentDateTime;
+  const currentDateTime = new Date().toISOString()
+  return currentDateTime
+}
+
+export function getFutureDateTime(addition: number): string {
+  const currentDate = new Date()
+  const futureDateTime = new Date(currentDate.getTime() + addition).toISOString()
+  return futureDateTime
 }
