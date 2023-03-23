@@ -5,7 +5,7 @@ import { BASE_URL } from '@/utils'
 import axios, { AxiosResponse } from 'axios'
 import Head from 'next/head'
 import { MdOutlineVideocamOff } from 'react-icons/md'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { PropagateLoader } from 'react-spinners'
 import { MAX_RESULT } from '@/utils/config'
 // import { Inter } from 'next/font/google'
@@ -33,9 +33,9 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
     }
   }
 
-  const getVideos = async (override: boolean = false) => {
-    if (!isLoading && lastCreatedAt) {
-      setIsLoading((isLoading) => !isLoading)
+  const getVideos = useCallback(async (override: boolean = false, lastCreatedAt: string) => {
+    if (lastCreatedAt) {
+      setIsLoading(true)
       let response: AxiosResponse
       if (topic) {
         response = await axios.get(`${BASE_URL}/api/discover/${topic}`, {
@@ -54,9 +54,9 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
       }
       console.log(lastCreatedAt)
       setVideos((videos) => (override ? data : [...videos, ...data]))
-      setIsLoading((isLoading) => !isLoading)
+      setIsLoading(false)
     }
-  }
+  }, [topic])
 
   useEffect(() => {
     setVideos(baseVideos)
@@ -65,7 +65,7 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
 
   useEffect(() => {
     if (page > 0) {
-      getVideos()
+      getVideos(false, lastCreatedAt)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
