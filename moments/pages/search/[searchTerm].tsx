@@ -192,7 +192,6 @@ export const getServerSideProps = async ({
   const accountPromise = axios.get(`${BASE_URL}/api/search/${searchTerm.toLowerCase()}`, {
     params: { maxResults: MAX_RESULT, type: 'user' },
   })
-  // console.log(response)
   const [videos, accounts] = await Promise.all([videoPromise, accountPromise])
 
   return {

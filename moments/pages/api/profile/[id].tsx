@@ -11,9 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const users = await client.fetch(query)
-      res.status(200).json({
-        user: users[0],
-      })
+      res.status(200).json(users[0])
     } catch (e) {
       console.log('Error when retrieve user data: ', e)
       res.status(404).json(e)

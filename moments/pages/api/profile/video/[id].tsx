@@ -6,14 +6,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    let { id, maxResults, lastCreatedAt } = req.query
-    const parsedMaxResults = maxResults ? parseInt(maxResults as string, 10) : MAX_RESULT
-    if (Array.isArray(lastCreatedAt)) {
-      lastCreatedAt = lastCreatedAt[0]
-    }
-    const userVideosQuery = userCreatedPostsQuery(id!, parsedMaxResults, lastCreatedAt)
-
     try {
+      let { id, maxResults, lastCreatedAt } = req.query
+      const parsedMaxResults = maxResults ? parseInt(maxResults as string, 10) : MAX_RESULT
+      if (Array.isArray(lastCreatedAt)) {
+        lastCreatedAt = lastCreatedAt[0]
+      }
+      const userVideosQuery = userCreatedPostsQuery(id!, parsedMaxResults, lastCreatedAt)
+
       const userVideos = await client.fetch(userVideosQuery)
       res.status(200).json(userVideos)
     } catch (e) {
