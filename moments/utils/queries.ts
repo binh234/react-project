@@ -79,13 +79,13 @@ export const searchPostsQuery = (
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "post" && (
-      content match "${searchTerm}" || topic match "${searchTerm}"
+      content match "${searchTerm}*" || topic match "${searchTerm}*"
     ) && (
       _createdAt < '${lastCreatedAt}'
     )]`
   } else {
     query = `*[_type == "post" && (
-      content match "${searchTerm}" || topic match "${searchTerm}"
+      content match "${searchTerm}*" || topic match "${searchTerm}*"
     )]`
   }
   return `${query} | order(_createdAt desc) [0..${maxResults}]${post}`
@@ -98,9 +98,9 @@ export const searchUsersQuery = (
 ) => {
   let query = ''
   if (lastId) {
-    query = `*[_type == "user" && _id > '${lastId}' && userName match "${searchTerm}"]`
+    query = `*[_type == "user" && _id > '${lastId}' && userName match "${searchTerm}*"]`
   } else {
-    query = `*[_type == "user" && userName match "${searchTerm}"]`
+    query = `*[_type == "user" && userName match "${searchTerm}*"]`
   }
   return `${query} | order(_id)[0..${maxResults}]`
 }
@@ -141,9 +141,9 @@ export const userCreatedPostsQuery = (
 ) => {
   let query = ''
   if (lastCreatedAt) {
-    query = `*[ _type == 'post' && postedBy._ref == ${userId} && _createdAt < '${lastCreatedAt}']`
+    query = `*[ _type == 'post' && postedBy._ref == '${userId}' && _createdAt < '${lastCreatedAt}']`
   } else {
-    query = `*[_type == 'post' && postedBy._ref == ${userId}]`
+    query = `*[_type == 'post' && postedBy._ref == '${userId}']`
   }
 
   return `${query} | order(_createdAt desc)${post}[0..${maxResults}]`
