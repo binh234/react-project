@@ -10,15 +10,14 @@ import { GoVerified } from 'react-icons/go'
 import { MdOutlineVideocamOff } from 'react-icons/md'
 
 interface IProps {
-  data: {
-    user: IUser
-    userVideos: Video[]
-    userLikedVideos: Video[]
-  }
+  user: IUser
+  userVideos: Video[]
+  userLikedVideos: Video[]
 }
 
-const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
+const Profile = ({ user, userVideos, userLikedVideos }: IProps) => {
   const [displayTab, setDisplayTab] = useState('Videos')
+  const [videos, setVideos] = useState(userVideos)
   const [videoList, setVideoList] = useState<Video[]>([])
   const tabs = useMemo(() => ['Videos', 'Liked'], [])
   const active = 'border-b-2 border-black'
@@ -87,10 +86,17 @@ const Profile = ({ data: { user, userVideos, userLikedVideos } }: IProps) => {
 }
 
 export const getServerSideProps = async ({ params: { id } }: { params: { id: string } }) => {
-  const res = await axios.get(`${BASE_URL}/api/profile/${id}`)
+  const userPromise = axios.get(`${BASE_URL}/api/profile/${id}`)
+  const videosPromise = axios.get(`${BASE_URL}/api/profile/video/${id}`)
+
+  const [user, videos] = await Promise.all([userPromise, videosPromise])
 
   return {
-    props: { data: res.data },
+    props: { 
+      user: user,
+      userVideos: videos,
+      userLikedVideos: []
+    },
   }
 }
 

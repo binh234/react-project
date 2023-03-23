@@ -31,7 +31,7 @@ export interface Video {
 
 export interface IUser {
   _id: string
-  _type: string
+  _createdAt: string
   userName: string
   image: string
 }

@@ -1,7 +1,10 @@
 export const MAX_CONTENT = 60
 export const MAX_DETAIL_CONTENT = 40
 export const MAX_RESULT = 50
+export const MAX_SUGGEST_RESULT = 100
 export const MAX_COMMENT_RESULT = 30
 export const MAX_FILE_SIZE = 50
 export const MAX_IMAGE_SIZE = 5
 export const NUM_PLACEHOLDER = 3
+export const NUM_SUGGEST = 6
+export const EXPIRE_TIME = 15 * 60000

@@ -16,7 +16,7 @@ import { MAX_RESULT } from '@/utils/config'
 interface IProps {
   baseVideos: Video[]
   topic?: string
-  lastCreated?: string
+  lastCreated: string
 }
 
 export default function Home({ topic, baseVideos, lastCreated }: IProps) {
@@ -33,12 +33,9 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
     }
   }
 
-  const getVideos = async (override: boolean=false) => {
-    if (!isLoading) {
-      if (!lastCreatedAt) {
-        return
-      }
-      setIsLoading(true)
+  const getVideos = async (override: boolean = false) => {
+    if (!isLoading && lastCreatedAt) {
+      setIsLoading((isLoading) => !isLoading)
       let response: AxiosResponse
       if (topic) {
         response = await axios.get(`${BASE_URL}/api/discover/${topic}`, {
@@ -50,24 +47,27 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
         })
       }
       const { data } = response as { data: Video[] }
-      if (data.length > 0) {
-        if (data.length <= MAX_RESULT) {
-          setLastCreatedAt('')
-        } else {
-          setLastCreatedAt(data[data.length - 1]._createdAt)
-        }
+      if (data.length > MAX_RESULT) {
+        setLastCreatedAt(data[data.length - 1]._createdAt)
       } else {
         setLastCreatedAt('') // Reached the end
       }
+      console.log(lastCreatedAt)
       setVideos((videos) => (override ? data : [...videos, ...data]))
-      setIsLoading(false)
+      setIsLoading((isLoading) => !isLoading)
     }
   }
 
   useEffect(() => {
+    setVideos(baseVideos)
+    setLastCreatedAt(lastCreated)
+  }, [baseVideos, lastCreated])
+
+  useEffect(() => {
     if (page > 0) {
-      getVideos(false)
+      getVideos()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   useEffect(() => {
@@ -108,11 +108,7 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
             {lastCreatedAt &&
               (isLoading ? (
                 <div className="flex w-full justify-center">
-                  <PropagateLoader
-                    color="fuchsia"
-                    size={15}
-                    aria-label="Load more Spinner"
-                  />
+                  <PropagateLoader color="fuchsia" size={15} aria-label="Load more Spinner" />
                 </div>
               ) : (
                 <div ref={loaderRef} />
@@ -127,22 +123,25 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
 export const getServerSideProps = async ({ query: { topic } }: { query: { topic: string } }) => {
   let response = null
   if (topic) {
-    response = await axios.get(`${BASE_URL}/api/discover/${topic}`)
+    response = await axios.get(`${BASE_URL}/api/discover/${topic}`, {
+      params: { maxResults: MAX_RESULT },
+    })
   } else {
-    response = await axios.get(`${BASE_URL}/api/post`)
+    response = await axios.get(`${BASE_URL}/api/post`, {
+      params: { maxResults: MAX_RESULT },
+    })
   }
 
   const { data } = response
   let lastCreated = ''
-  if (data.length > 0) {
+  if (data.length >= MAX_RESULT + 1) {
     lastCreated = data[data.length - 1]._createdAt
   }
-
   return {
     props: {
       topic: topic || null,
       baseVideos: data,
-      lastCreated: lastCreated
+      lastCreated: lastCreated,
     },
   }
 }

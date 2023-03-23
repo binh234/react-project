@@ -51,7 +51,7 @@ const AccountCard = ({ user }: IProps) => {
               />
             </div>
 
-            <div className="hidden xl:block">
+            <div>
               <p className="flex gap-1 items-center text-base font-bold text-primary lowercase">
                 {user.userName.replaceAll(' ', '')} <GoVerified className="text-blue-400" />
               </p>

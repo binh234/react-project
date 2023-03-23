@@ -24,6 +24,7 @@ export function shuffle(array: any[]) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[array[i], array[j]] = [array[j], array[i]]
   }
+  return array
 }
 
 export function dateDiff(pastDate: Date, lang: string = 'en') {
@@ -100,8 +101,8 @@ export function getCurrentDateTime(): string {
   return currentDateTime
 }
 
-export function getFutureDateTime(addition: number): string {
+export function getFutureDateTime(addition: number): Date {
   const currentDate = new Date()
-  const futureDateTime = new Date(currentDate.getTime() + addition).toISOString()
+  const futureDateTime = new Date(currentDate.getTime() + addition)
   return futureDateTime
 }

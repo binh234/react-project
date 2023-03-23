@@ -3,7 +3,7 @@ import LikeButton from '@/components/LikeButton'
 import NoResults from '@/components/NoResults'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
-import { MAX_CONTENT } from '@/utils/config'
+import { MAX_DETAIL_CONTENT } from '@/utils/config'
 import { dateDiffShort } from '@/utils/helpers'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
@@ -36,9 +36,9 @@ const Detail = ({ post }: IProps) => {
   }
 
   const contentLength = post.content.split(' ').length
-  const shouldTruncate = contentLength > MAX_CONTENT
+  const shouldTruncate = contentLength > MAX_DETAIL_CONTENT
   const truncatedContent = shouldTruncate
-    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_CONTENT)) + '...'
+    ? post.content.slice(0, post.content.lastIndexOf(' ', MAX_DETAIL_CONTENT)) + '...'
     : post.content
 
   return (
