@@ -3,14 +3,14 @@ import { MAX_COMMENT_RESULT, MAX_RESULT, MAX_SUGGEST_RESULT } from "./config"
 const post = `{
   _id,
   _createdAt,
-   content,
-   topic,
-   video{
-      asset->{
-        _id,
-        url
-      }
-    },
+  content,
+  topic,
+  video{
+    asset->{
+      _id,
+      url
+    }
+  },
   postedBy->{
     _id,
     userName,
