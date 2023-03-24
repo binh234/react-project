@@ -1,6 +1,15 @@
 import { BsEmojiSunglasses } from 'react-icons/bs'
 import { FaPaw, FaCodepen } from 'react-icons/fa'
-import { MdAutoFixHigh, MdGamepad, MdMusicNote, MdOutlineAutoFixHigh, MdOutlineGamepad, MdOutlineMusicNote, MdOutlineSportsBasketball, MdSportsBasketball } from 'react-icons/md'
+import {
+  MdAutoFixHigh,
+  MdGamepad,
+  MdMusicNote,
+  MdOutlineAutoFixHigh,
+  MdOutlineGamepad,
+  MdOutlineMusicNote,
+  MdOutlineSportsBasketball,
+  MdSportsBasketball,
+} from 'react-icons/md'
 import { HiCake, HiOutlineCake } from 'react-icons/hi'
 import { IoNewspaper, IoNewspaperOutline, IoPawOutline } from 'react-icons/io5'
 import { ImCodepen } from 'react-icons/im'

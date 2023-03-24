@@ -54,11 +54,19 @@ const Navbar = () => {
 
   return (
     <div className="w-full flex justify-between items-center border-b-2 border-gray-200 py-2 px-2 md:px-4">
-      <Link href="/" className='flex items-center'>
+      <Link href="/" className="flex items-center">
         <div className="w-[48px] md:w-[56px]">
-          <Image className="cursor-pointer" src="/logo2.png" width={500} height={500} alt="tiktik" />
+          <Image
+            className="cursor-pointer"
+            src="/logo2.png"
+            width={500}
+            height={500}
+            alt="tiktik"
+          />
         </div>
-        <p className='font-bold text-xl text-transparent bg-clip-text bg-gradient-to-r to-pink-500 from-orange-400 hidden md:block'>Moments</p>
+        <p className="font-bold text-xl text-transparent bg-clip-text bg-gradient-to-r to-pink-500 from-orange-400 hidden md:block">
+          Moments
+        </p>
       </Link>
       <div className="relative">
         <form onSubmit={handleSearch} className="static top-10 -left-20 bg-white">

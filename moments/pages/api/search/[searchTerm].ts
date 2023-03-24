@@ -7,7 +7,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
-      let { searchTerm = '', type = 'post', maxResults='50', lastCreatedAt, lastId } = req.query
+      let { searchTerm = '', type = 'post', maxResults = '50', lastCreatedAt, lastId } = req.query
       const parsedMaxResults = maxResults ? parseInt(maxResults as string, 10) : MAX_RESULT
       if (type === 'post') {
         if (Array.isArray(lastCreatedAt)) {

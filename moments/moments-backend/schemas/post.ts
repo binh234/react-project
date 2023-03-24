@@ -1,4 +1,4 @@
-import { Rule } from "sanity";
+import {Rule} from 'sanity'
 
 export default {
   name: 'post',

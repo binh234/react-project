@@ -28,7 +28,9 @@ const Profile = ({ user, userVideos, userLikedVideos }: IProps) => {
   const [videoList, setVideoList] = useState<Video[]>([])
   const tabs = useMemo(() => ['video', 'liked'], [])
   const [displayTab, setDisplayTab] = useState(tabs[0])
-  const showMore = (displayTab === tabs[0] && videoLastCreatedAt) || (displayTab === tabs[1] && likedVideoLastCreatedAt)
+  const showMore =
+    (displayTab === tabs[0] && videoLastCreatedAt) ||
+    (displayTab === tabs[1] && likedVideoLastCreatedAt)
   const active = 'border-b-2 border-black'
   const inactive = 'text-gray-400'
 
@@ -106,7 +108,7 @@ const Profile = ({ user, userVideos, userLikedVideos }: IProps) => {
         getLikedVideos(false)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   useEffect(() => {
@@ -183,7 +185,9 @@ const Profile = ({ user, userVideos, userLikedVideos }: IProps) => {
         </div>
         <div className="flex gap-4 flex-col md:justify-start">
           {videoList.length > 0 ? (
-            videoList.map((post: Video) => <VideoCard post={post} key={post._id} deletePost={deletePost} />)
+            videoList.map((post: Video) => (
+              <VideoCard post={post} key={post._id} deletePost={deletePost} />
+            ))
           ) : (
             <NoResults text="No videos yet" icon={<MdOutlineVideocamOff />} />
           )}
@@ -210,7 +214,11 @@ export const getServerSideProps = async ({ params: { id } }: { params: { id: str
     params: { maxResults: MAX_RESULT },
   })
 
-  const [userResponse, videosResponse, likedResponse] = await Promise.all([userPromise, videosPromise, likedPromise])
+  const [userResponse, videosResponse, likedResponse] = await Promise.all([
+    userPromise,
+    videosPromise,
+    likedPromise,
+  ])
 
   if (!userResponse.data) {
     return {
@@ -222,10 +230,10 @@ export const getServerSideProps = async ({ params: { id } }: { params: { id: str
   }
 
   return {
-    props: { 
+    props: {
       user: userResponse.data,
       userVideos: videosResponse.data,
-      userLikedVideos: likedResponse.data
+      userLikedVideos: likedResponse.data,
     },
   }
 }

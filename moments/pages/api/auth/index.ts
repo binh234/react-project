@@ -18,7 +18,7 @@ import { NextApiHandler } from 'next/types'
 // }
 
 export function generateToken(payload: string | object | Buffer): string {
-  return jwt.sign(payload, process.env.NEXT_PUBLIC_SECRET_KEY!, {expiresIn: '7d'})
+  return jwt.sign(payload, process.env.NEXT_PUBLIC_SECRET_KEY!, { expiresIn: '7d' })
 }
 
 export function verifyToken(token: string): any {

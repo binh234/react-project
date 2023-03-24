@@ -58,14 +58,14 @@ const Comments = ({ postId }: IProps) => {
       setFirstLoad(true)
       getComments(true)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId])
 
   useEffect(() => {
     if (showMore) {
       getComments(false)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showMore])
 
   useEffect(() => {
@@ -94,13 +94,11 @@ const Comments = ({ postId }: IProps) => {
   return (
     <div className="border-gray-200 mt-4 pl-6 border-t-2 mb-2 lg:mb-12 h-4/5 md:h-1/2 lg:flex-grow overflow-scroll">
       {firstLoad ? (
-        [...Array(NUM_PLACEHOLDER)].map((_, i) => <CommentFavorite key={i}/>)
+        [...Array(NUM_PLACEHOLDER)].map((_, i) => <CommentFavorite key={i} />)
+      ) : comments?.length ? (
+        comments.map((comment) => <Comment key={comment._id} commentDetail={comment} />)
       ) : (
-        comments?.length ? (
-          comments.map((comment) => <Comment key={comment._id} commentDetail={comment} />)
-        ) : (
-          <NoResults text="No comments yet" icon={<BiCommentX />} />
-        )
+        <NoResults text="No comments yet" icon={<BiCommentX />} />
       )}
       {lastCreatedAt && (
         <button

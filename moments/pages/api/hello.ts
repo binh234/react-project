@@ -11,12 +11,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const session = await getServerSession(req, res, authOptions)
   if (session) {
     res.send({
-      message:
-        "This is protected content. You can access this content because you are signed in.",
+      message: 'This is protected content. You can access this content because you are signed in.',
     })
   } else {
     res.send({
-      message: "You must be signed in to view the protected content on this page.",
+      message: 'You must be signed in to view the protected content on this page.',
     })
   }
 }

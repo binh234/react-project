@@ -29,7 +29,8 @@ const Search = ({ videoResults, accountResults }: IProps) => {
   const { searchTerm } = router.query
   const active = 'border-b-2 border-black'
   const inactive = 'text-gray-400'
-  const showMore = (videoLastCreatedAt && displayTab === tabs[0]) || (accountLastId && displayTab === tabs[1])
+  const showMore =
+    (videoLastCreatedAt && displayTab === tabs[0]) || (accountLastId && displayTab === tabs[1])
 
   const handleObserver = (entries: any[]) => {
     const target = entries[0]
@@ -107,7 +108,7 @@ const Search = ({ videoResults, accountResults }: IProps) => {
         getAccounts(false)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   useEffect(() => {

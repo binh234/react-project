@@ -33,30 +33,33 @@ export default function Home({ topic, baseVideos, lastCreated }: IProps) {
     }
   }
 
-  const getVideos = useCallback(async (override: boolean = false, lastCreatedAt: string) => {
-    if (lastCreatedAt) {
-      setIsLoading(true)
-      let response: AxiosResponse
-      if (topic) {
-        response = await axios.get(`${BASE_URL}/api/discover/${topic}`, {
-          params: { maxResults: MAX_RESULT, lastCreatedAt: lastCreatedAt },
-        })
-      } else {
-        response = await axios.get(`${BASE_URL}/api/post`, {
-          params: { maxResults: MAX_RESULT, lastCreatedAt: lastCreatedAt },
-        })
+  const getVideos = useCallback(
+    async (override: boolean = false, lastCreatedAt: string) => {
+      if (lastCreatedAt) {
+        setIsLoading(true)
+        let response: AxiosResponse
+        if (topic) {
+          response = await axios.get(`${BASE_URL}/api/discover/${topic}`, {
+            params: { maxResults: MAX_RESULT, lastCreatedAt: lastCreatedAt },
+          })
+        } else {
+          response = await axios.get(`${BASE_URL}/api/post`, {
+            params: { maxResults: MAX_RESULT, lastCreatedAt: lastCreatedAt },
+          })
+        }
+        const { data } = response as { data: Video[] }
+        if (data.length > MAX_RESULT) {
+          setLastCreatedAt(data[data.length - 1]._createdAt)
+        } else {
+          setLastCreatedAt('') // Reached the end
+        }
+        console.log(lastCreatedAt)
+        setVideos((videos) => (override ? data : [...videos, ...data]))
+        setIsLoading(false)
       }
-      const { data } = response as { data: Video[] }
-      if (data.length > MAX_RESULT) {
-        setLastCreatedAt(data[data.length - 1]._createdAt)
-      } else {
-        setLastCreatedAt('') // Reached the end
-      }
-      console.log(lastCreatedAt)
-      setVideos((videos) => (override ? data : [...videos, ...data]))
-      setIsLoading(false)
-    }
-  }, [topic])
+    },
+    [topic]
+  )
 
   useEffect(() => {
     setVideos(baseVideos)
