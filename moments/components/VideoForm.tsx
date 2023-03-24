@@ -33,7 +33,6 @@ const VideoForm = ({ post }: IProps) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [savingPost, setSavingPost] = useState(false)
   const [content, setContent] = React.useState('')
-  const captionRef = useRef<HTMLInputElement>(null)
   const categoryRef = useRef<HTMLSelectElement>(null)
   const { data: session } = useSession()
   const fileTypes = ['mp4', 'webm', 'ogg']
@@ -42,9 +41,6 @@ const VideoForm = ({ post }: IProps) => {
   useEffect(() => {
     if (post) {
       setContent(post.content)
-      if (captionRef.current) {
-        captionRef.current.value = post.caption
-      }
       if (categoryRef.current) {
         categoryRef.current.value = post.topic
       }
@@ -91,7 +87,6 @@ const VideoForm = ({ post }: IProps) => {
   }
 
   const handleDiscard = async () => {
-    captionRef.current!.value = ''
     categoryRef.current!.value = topics[0].name
     setContent('')
     await discardVideo()
@@ -101,14 +96,12 @@ const VideoForm = ({ post }: IProps) => {
     e.preventDefault()
     if (
       content &&
-      captionRef.current!.value &&
       categoryRef.current!.value &&
       (videoAsset?._id || videoUrl !== '')
     ) {
       setSavingPost(true)
       const document = {
         _type: 'post',
-        caption: captionRef.current!.value,
         content: content,
         topic: categoryRef.current!.value,
         video: {
@@ -186,6 +179,7 @@ const VideoForm = ({ post }: IProps) => {
                 name="upload-video"
                 handleChange={handleUpload}
                 classes="w-full"
+                required={true}
               >
                 <div className="flex flex-col items-center justify-center h-full cursor-pointer">
                   <div className="flex flex-col items-center justify-center">
@@ -215,13 +209,6 @@ const VideoForm = ({ post }: IProps) => {
         )}
       </div>
       <div className="flex flex-col gap-3 pb-10">
-        <label className="text-base font-medium">Caption</label>
-        <input
-          type="text"
-          className="rounded outline-none text-base border-2 border-gray-200 p-2 w-full"
-          maxLength={100}
-          ref={captionRef}
-        />
         <div className="flex flex-row justify-between">
           <label className="text-base font-medium">Content</label>
           <Link

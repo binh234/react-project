@@ -240,7 +240,6 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
             )}
           </div>
 
-          {/* <div className="px-2 text-small md:text-base">{post.caption}</div> */}
           <div className="px-2 rounded-lg relative">
             <div className="text-small md:text-base">
               <ReactMarkdown

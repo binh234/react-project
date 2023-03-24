@@ -13,7 +13,6 @@ export interface IComment {
 export interface Video {
   _id: string
   _createdAt: string
-  caption: string
   content: string
   topic: string
   video: {

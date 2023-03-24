@@ -1,7 +1,6 @@
 const post = `{
   _id,
   _createdAt,
-   caption,
    content,
    topic,
    video{
