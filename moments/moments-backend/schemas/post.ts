@@ -6,11 +6,6 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'caption',
-      title: 'Caption',
-      type: 'string',
-    },
-    {
       name: 'content',
       title: 'Content',
       type: 'string',
@@ -22,6 +17,7 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: 'postedBy',
