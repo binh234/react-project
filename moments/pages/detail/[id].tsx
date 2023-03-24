@@ -4,7 +4,7 @@ import NoResults from '@/components/NoResults'
 import { Video } from '@/types'
 import { BASE_URL } from '@/utils'
 import { MAX_DETAIL_CONTENT } from '@/utils/config'
-import { dateDiffShort } from '@/utils/helpers'
+import { dateDiff } from '@/utils/helpers'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -27,7 +27,7 @@ const Detail = ({ post }: IProps) => {
   const { data: session } = useSession()
   const { user: userProfile } = session || {}
   const [showMore, setShowMore] = useState(false)
-  const publishedTime = useMemo(() => dateDiffShort(new Date(post._createdAt), 'en'), [post])
+  const publishedTime = useMemo(() => dateDiff(new Date(post._createdAt), 'en'), [post])
 
   if (!post) return <NoResults text="This post doesn't exist" icon={<MdErrorOutline />} />
 

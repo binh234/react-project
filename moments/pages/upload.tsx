@@ -13,7 +13,7 @@ const Upload = () => {
   }
 
   return (
-    <div className="flex w-full h-full pr-10">
+    <div className="flex w-full h-full">
       <Head>
         <title>Upload</title>
         <meta name="description" content="Upload video" />

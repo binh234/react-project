@@ -54,13 +54,11 @@ const VideoForm = ({ post }: IProps) => {
   const { user } = session
 
   const handleChange = (newContent: string | undefined) => {
-    if (newContent) {
-      setContent(newContent)
-    }
+    setContent(newContent || '')
   }
 
   const handleUpload = async (file: File) => {
-    const fileType = file.type.split("/")[1]
+    const fileType = file.type.split('/')[1]
     if (fileTypes.includes(fileType)) {
       uploadAsset(file).then((data) => {
         setVideoAsset(data)
@@ -94,11 +92,7 @@ const VideoForm = ({ post }: IProps) => {
 
   const handlePost = async (e: FormEvent) => {
     e.preventDefault()
-    if (
-      content &&
-      categoryRef.current!.value &&
-      (videoAsset?._id || videoUrl !== '')
-    ) {
+    if (content && categoryRef.current!.value && (videoAsset?._id || videoUrl !== '')) {
       setSavingPost(true)
       const document = {
         _type: 'post',
@@ -186,15 +180,19 @@ const VideoForm = ({ post }: IProps) => {
                     <p className="font-bold text-xl">
                       <FaCloudUploadAlt className="text-gray-300 text-6xl" />
                     </p>
-                    <p className="text-xl font-semibold">Drop your video here</p>
+                    <p className="text-xl font-semibold text-center">
+                      Drop your video here
+                      <br />
+                      Or browse from your device
+                    </p>
                   </div>
-                  <p className="text-gray-400 text-center mt-10 text-sm leading-10">
+                  <p className="text-gray-400 text-center mt-6 text-sm leading-10">
                     MP4 or WebM or ogg <br />
                     720x1280 or higher <br />
                     Up to 10 minutes <br />
                     Less then {MAX_FILE_SIZE}MB
                   </p>
-                  <p className="bg-[#F51997] text-center mt-10 rounded text-white text-base font-medium p-2 w-52 outline-none hover:bg-[#da1685]">
+                  <p className="bg-[#F51997] text-center mt-6 rounded text-white text-base font-medium p-2 w-52 outline-none hover:bg-[#da1685]">
                     Select File
                   </p>
                 </div>
@@ -220,6 +218,7 @@ const VideoForm = ({ post }: IProps) => {
           </Link>
         </div>
         <MDEditor
+          height={300}
           value={content}
           onChange={handleChange}
           className="ml-1"
