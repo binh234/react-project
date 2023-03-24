@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(data[0])
     } catch (e) {
       console.log('Error when retrieve post data: ', e)
-      res.status(404).json(e)
+      res.status(400).json(e)
     }
   }
 }

@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(users[0])
     } catch (e) {
       console.log('Error when retrieve user data: ', e)
-      res.status(404).json(e)
+      res.status(400).json(e)
     }
   }
 }

@@ -24,10 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const accounts = await client.fetch(usersQuery)
         res.status(200).json(accounts)
       } else {
-        res.status(404).json("Bad request. Set type to 'post' or 'user' to search")
+        res.status(400).json("Bad request. Set type to 'post' or 'user' to search")
       }
     }
   } catch (error: any) {
-    res.status(404).json(error)
+    res.status(400).json(error)
   }
 }

@@ -12,7 +12,7 @@ import { NextApiHandler } from 'next/types'
 //       res.status(200).json('Login successfully')
 //     } catch (e) {
 //       console.log('Login failed: ', e)
-//       res.status(404).json('Login failed')
+//       res.status(400).json('Login failed')
 //     }
 //   }
 // }

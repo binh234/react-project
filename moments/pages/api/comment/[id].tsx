@@ -18,6 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } catch (e) {
     console.log('Error when adding comment: ', e)
-    res.status(404).json(e)
+    res.status(400).json(e)
   }
 }

@@ -1,3 +1,5 @@
+import { MAX_COMMENT_RESULT, MAX_RESULT, MAX_SUGGEST_RESULT } from "./config"
+
 const post = `{
   _id,
   _createdAt,
@@ -31,7 +33,10 @@ const comment = `{
 
 `
 
-export const allPostsQuery = (maxResults: number = 50, lastCreatedAt?: string) => {
+export const allPostsQuery = (maxResults: number = MAX_RESULT, lastCreatedAt?: string) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "post" && _createdAt < '${lastCreatedAt}']`
@@ -51,9 +56,12 @@ export const postDetailQuery = (postId: string | string[], userId?: string | str
 
 export const postCommentsQuery = (
   postId: string | string[],
-  maxResults: number = 30,
+  maxResults: number = MAX_COMMENT_RESULT,
   lastCreatedAt?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "comment" && post._ref == '${postId}' && _createdAt < '${lastCreatedAt}']`
@@ -72,9 +80,12 @@ export const postCommentSubscriptionQuery = (postId: string | string[], lastCrea
 
 export const searchPostsQuery = (
   searchTerm: string | string[],
-  maxResults: number = 50,
+  maxResults: number = MAX_RESULT,
   lastCreatedAt?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "post" && (
@@ -92,9 +103,12 @@ export const searchPostsQuery = (
 
 export const searchUsersQuery = (
   searchTerm: string | string[],
-  maxResults: number = 50,
+  maxResults: number = MAX_RESULT,
   lastId?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastId) {
     query = `*[_type == "user" && _id > '${lastId}' && userName match "${searchTerm}*"]`
@@ -116,7 +130,10 @@ export const findUserWithEmailQuery = (email: string) => {
   return query
 }
 
-export const suggestedUsersQuery = (maxResults: number = 100, lastId?: string) => {
+export const suggestedUsersQuery = (maxResults: number = MAX_SUGGEST_RESULT, lastId?: string) => {
+  if (maxResults > MAX_SUGGEST_RESULT) {
+    maxResults = MAX_SUGGEST_RESULT
+  }
   let query = ''
   if (lastId) {
     query = `*[_type == "user" && _id > '${lastId}']`
@@ -129,9 +146,12 @@ export const suggestedUsersQuery = (maxResults: number = 100, lastId?: string) =
 
 export const userCreatedPostsQuery = (
   userId: string | string[],
-  maxResults: number = 50,
+  maxResults: number = MAX_RESULT,
   lastCreatedAt?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[ _type == 'post' && postedBy._ref == '${userId}' && _createdAt < '${lastCreatedAt}']`
@@ -144,9 +164,12 @@ export const userCreatedPostsQuery = (
 
 export const userLikedPostsQuery = (
   userId: string | string[],
-  maxResults: number = 50,
+  maxResults: number = MAX_RESULT,
   lastCreatedAt?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[ _type == 'post' && '${userId}' in likes[]._ref && _createdAt < '${lastCreatedAt}']`
@@ -159,9 +182,12 @@ export const userLikedPostsQuery = (
 
 export const topicPostsQuery = (
   topic: string | string[],
-  maxResults: number = 50,
+  maxResults: number = MAX_RESULT,
   lastCreatedAt?: string
 ) => {
+  if (maxResults > MAX_RESULT) {
+    maxResults = MAX_RESULT
+  }
   let query = ''
   if (lastCreatedAt) {
     query = `*[_type == "post" && topic match '${topic}*' && _createdAt < '${lastCreatedAt}']`
