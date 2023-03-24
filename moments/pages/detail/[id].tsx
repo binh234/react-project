@@ -84,7 +84,6 @@ const Detail = ({ post }: IProps) => {
           </div>
         </div>
 
-        {/* <p className="px-6 text-base text-gray-600">{post.caption}</p> */}
         <div className="pl-6 pr-4 rounded-lg relative">
           <div className="text-small md:text-base text-gray-800">
             <ReactMarkdown

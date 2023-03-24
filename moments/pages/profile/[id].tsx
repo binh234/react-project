@@ -140,9 +140,9 @@ const Profile = ({ user, userVideos, userLikedVideos }: IProps) => {
   }, [])
 
   async function deletePost(id: string) {
-    await deleteDocument(id)
-    userVideos = userVideos.filter((item) => item._id !== id)
-    userLikedVideos = userLikedVideos.filter((item) => item._id !== id)
+    deleteDocument(id)
+    setVideos((videos) => videos.filter((item) => item._id !== id))
+    setLikedVideos((likedVideos) => likedVideos.filter((item) => item._id !== id))
   }
 
   return (
