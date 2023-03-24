@@ -27,6 +27,19 @@ Moments is a social video sharing platform.
 - [x] Infinite loading
 - [x] Various APIs for fetching data
 
+## Demo
+
+![Detail](demo/post_detail.png)
+![Profile](demo/profile_page.png)
+![Drag](demo/drag_video.png)
+![Markdown](demo/mardown_content.png)
+![search](demo/search_page.png)
+
+**Mobile device**:
+
+![MobileHome](demo/surface_homepage.png)
+![MobileProfile](demo/mobile_profile_page.png)
+
 ## APIs
 
 `GET http://localhost:3000/api/hello`
