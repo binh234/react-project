@@ -1,7 +1,8 @@
 import { IComment } from '@/types'
 import { BASE_URL } from '@/utils'
 import { subscribe } from '@/utils/client'
-import { MAX_COMMENT_RESULT } from '@/utils/config'
+import CommentFavorite from '@/utils/CommentFavorite'
+import { MAX_COMMENT_RESULT, NUM_PLACEHOLDER } from '@/utils/config'
 import { getCurrentDateTime } from '@/utils/helpers'
 import { postCommentSubscriptionQuery, singleUserQuery } from '@/utils/queries'
 import axios from 'axios'
@@ -21,6 +22,7 @@ const commentSubscription = (postId: string) => {
 }
 
 const Comments = ({ postId }: IProps) => {
+  const [firstLoad, setFirstLoad] = useState(true)
   const [showMore, setShowMore] = useState(false)
   const [comments, setComments] = useState<IComment[]>([])
   const [lastCreatedAt, setLastCreatedAt] = useState<string | null>(null)
@@ -44,6 +46,7 @@ const Comments = ({ postId }: IProps) => {
     }
     if (first) {
       setComments(data)
+      setFirstLoad(false)
     } else {
       setComments((comments) => [...comments, ...data])
     }
@@ -52,14 +55,17 @@ const Comments = ({ postId }: IProps) => {
 
   useEffect(() => {
     if (postId) {
+      setFirstLoad(true)
       getComments(true)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId])
 
   useEffect(() => {
     if (showMore) {
       getComments(false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showMore])
 
   useEffect(() => {
@@ -87,10 +93,14 @@ const Comments = ({ postId }: IProps) => {
 
   return (
     <div className="border-gray-200 mt-4 pl-6 border-t-2 mb-2 lg:mb-12 h-4/5 md:h-1/2 lg:flex-grow overflow-scroll">
-      {comments?.length ? (
-        comments.map((comment) => <Comment key={comment._id} commentDetail={comment} />)
+      {firstLoad ? (
+        [...Array(NUM_PLACEHOLDER)].map((_, i) => <CommentFavorite key={i}/>)
       ) : (
-        <NoResults text="No comments yet" icon={<BiCommentX />} />
+        comments?.length ? (
+          comments.map((comment) => <Comment key={comment._id} commentDetail={comment} />)
+        ) : (
+          <NoResults text="No comments yet" icon={<BiCommentX />} />
+        )
       )}
       {lastCreatedAt && (
         <button

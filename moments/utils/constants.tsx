@@ -1,39 +1,55 @@
-import { BsCode, BsEmojiSunglasses } from 'react-icons/bs'
-import { GiCakeSlice, GiGalaxy, GiLipstick } from 'react-icons/gi'
-import { FaPaw, FaMedal, FaGamepad } from 'react-icons/fa'
+import { BsEmojiSunglasses } from 'react-icons/bs'
+import { FaPaw, FaCodepen } from 'react-icons/fa'
+import { MdAutoFixHigh, MdGamepad, MdMusicNote, MdOutlineAutoFixHigh, MdOutlineGamepad, MdOutlineMusicNote, MdOutlineSportsBasketball, MdSportsBasketball } from 'react-icons/md'
+import { HiCake, HiOutlineCake } from 'react-icons/hi'
+import { IoNewspaper, IoNewspaperOutline, IoPawOutline } from 'react-icons/io5'
+import { ImCodepen } from 'react-icons/im'
 
 export const topics = [
   {
-    name: 'Coding',
-    icon: <BsCode />,
+    name: 'news',
+    activeIcon: <IoNewspaper />,
+    icon: <IoNewspaperOutline />,
   },
   {
-    name: 'comedy',
+    name: 'funny',
+    activeIcon: <BsEmojiSunglasses />,
     icon: <BsEmojiSunglasses />,
   },
   {
-    name: 'gaming',
-    icon: <FaGamepad />,
+    name: 'animals',
+    activeIcon: <FaPaw />,
+    icon: <IoPawOutline />,
   },
   {
     name: 'food',
-    icon: <GiCakeSlice />,
-  },
-  {
-    name: 'dance',
-    icon: <GiGalaxy />,
-  },
-  {
-    name: 'beauty',
-    icon: <GiLipstick />,
-  },
-  {
-    name: 'animals',
-    icon: <FaPaw />,
+    activeIcon: <HiCake />,
+    icon: <HiOutlineCake />,
   },
   {
     name: 'sports',
-    icon: <FaMedal />,
+    activeIcon: <MdSportsBasketball />,
+    icon: <MdOutlineSportsBasketball />,
+  },
+  {
+    name: 'gaming',
+    activeIcon: <MdGamepad />,
+    icon: <MdOutlineGamepad />,
+  },
+  {
+    name: 'music',
+    activeIcon: <MdMusicNote />,
+    icon: <MdOutlineMusicNote />,
+  },
+  {
+    name: 'beauty',
+    activeIcon: <MdAutoFixHigh />,
+    icon: <MdOutlineAutoFixHigh />,
+  },
+  {
+    name: 'coding',
+    activeIcon: <FaCodepen />,
+    icon: <ImCodepen />,
   },
 ]
 

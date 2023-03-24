@@ -17,10 +17,21 @@ const Discover = () => {
       <div className="flex gap-3 flex-wrap justify-center xl:justify-start">
         {topics.map((item) => (
           <Link href={`/?topic=${item.name}`} key={item.name}>
-            <div className={topic === item.name ? activeTopicStyle : topicStyle}>
-              <span className="font-bold text-2l xl:text-base">{item.icon}</span>
-              <span className="font-medium text-base hidden xl:block capitalize">{item.name}</span>
-            </div>
+            {topic === item.name ? (
+              <div className={activeTopicStyle}>
+                <span className="font-bold text-2l xl:text-base">{item.activeIcon}</span>
+                <span className="font-medium text-base hidden xl:block capitalize">
+                  {item.name}
+                </span>
+              </div>
+            ) : (
+              <div className={topicStyle}>
+                <span className="font-bold text-2l xl:text-base">{item.icon}</span>
+                <span className="font-medium text-base hidden xl:block capitalize">
+                  {item.name}
+                </span>
+              </div>
+            )}
           </Link>
         ))}
       </div>

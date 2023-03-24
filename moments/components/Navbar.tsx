@@ -9,11 +9,6 @@ import { AiOutlineLogout } from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import { MdAccountCircle, MdLogout, MdSettings } from 'react-icons/md'
 
-// import { GoogleLogin, googleLogout } from '@react-oauth/google'
-// import Cookies from 'js-cookie'
-// import { createOrGetUser } from '@/utils'
-// import useAuthStore from '@/store/authStore'
-
 const Navbar = () => {
   // const { userProfile, addUser, removeUser }: any = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
@@ -25,9 +20,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsOpen(false)
-    // googleLogout()
-    // removeUser()
-    // Cookies.remove("auth-token")
     signOut()
   }
 
@@ -61,28 +53,29 @@ const Navbar = () => {
   }, [])
 
   return (
-    <div className="w-full flex justify-between items-center border-b-2 border-gray-200 py-2 px-4">
-      <Link href="/">
-        <div className="w-[100px] md:w-[130px]">
-          <Image className="cursor-pointer" src="/tiktik-logo.png" width={1809} height={512} alt="tiktik" />
+    <div className="w-full flex justify-between items-center border-b-2 border-gray-200 py-2 px-2 md:px-4">
+      <Link href="/" className='flex items-center'>
+        <div className="w-[48px] md:w-[56px]">
+          <Image className="cursor-pointer" src="/logo2.png" width={500} height={500} alt="tiktik" />
         </div>
+        <p className='font-bold text-xl text-transparent bg-clip-text bg-gradient-to-r to-pink-500 from-orange-400 hidden md:block'>Moments</p>
       </Link>
-      <div className="relative hidden md:block">
-        <form onSubmit={handleSearch} className="absolute md:static top-10 -left-20 bg-white">
+      <div className="relative">
+        <form onSubmit={handleSearch} className="static top-10 -left-20 bg-white">
           <input
             type="text"
             placeholder="Search"
             ref={searchInputRef}
-            className="p-2 px-3 md:text-base border-gray-200 rounded-full border-2 focus:outline-none focus:border-gray-500 w-[300px] md:w-[350px] md:top-0"
+            className="p-2 md:px-3 md:text-base border-gray-200 rounded-full border-2 focus:outline-none focus:border-gray-500 w-[200px] md:w-[350px] md:top-0"
           />
-          <button className="absolute md:right-5 right-6 top-4 border-l-2 pl-4 text-gray-800">
+          <button className="absolute right-4 top-4 border-l-2 pl-2 md:pl-4 text-gray-800">
             <BiSearch />
           </button>
         </form>
       </div>
       <div>
         {userProfile ? (
-          <div className="flex gap-5 md:gap-10">
+          <div className="flex gap-2 md:gap-6">
             <Link href="/upload">
               <button className="border-2 rounded-full md:rounded-lg p-2 md:px-4 text-base font-semibold flex items-center gap-2 hover:bg-primary hover:border-gray-400">
                 <IoMdAdd className="text-xl" /> {` `}
