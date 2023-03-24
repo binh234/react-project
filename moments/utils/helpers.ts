@@ -106,3 +106,10 @@ export function getFutureDateTime(addition: number): Date {
   const futureDateTime = new Date(currentDate.getTime() + addition)
   return futureDateTime
 }
+
+export function validateNumber(val: number, minVal: number, maxVal: number): number {
+  if (val < minVal || val > maxVal) {
+    return maxVal
+  }
+  return val
+}
