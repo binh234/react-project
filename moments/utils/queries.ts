@@ -1,5 +1,5 @@
-import { MAX_COMMENT_RESULT, MAX_RESULT, MAX_SUGGEST_RESULT } from "./config"
-import { validateNumber } from "./helpers"
+import { MAX_COMMENT_RESULT, MAX_RESULT, MAX_SUGGEST_RESULT } from './config'
+import { validateNumber } from './helpers'
 
 const post = `{
   _id,
