@@ -116,12 +116,6 @@ export const findUserWithEmailQuery = (email: string) => {
   return query
 }
 
-export const allUsersQuery = () => {
-  const query = `*[_type == "user"]`
-
-  return query
-}
-
 export const suggestedUsersQuery = (maxResults: number = 100, lastId?: string) => {
   let query = ''
   if (lastId) {

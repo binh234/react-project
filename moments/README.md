@@ -1,6 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Moments - Social video sharing platform
+
+![homepage](demo/homepage.png)
+
+Moments is a social video sharing platform.
+
+**Tech stacks**:
+
+- Next.js, TypeScript, TailwinCSS, Zustand, next-auth, OAuth2, JWT
+- Database: Sanity
+
+**Features**:
+
+- [x] Simple but secure login with Google/GitHub OAuth
+- [x] Suggested users using suggest pool
+- [x] Full security with next-auth session
+- [x] Drag and drop video uploading
+- [x] Upload new post
+- [x] Update/Delete existing post (post's owner only)
+- [x] Markdown supported for post content
+- [x] Like functionality
+- [x] View post comments
+- [x] Real-time comment
+- [x] Search functionality
+- [x] View profile
+- [x] Lazy loading
+- [x] Infinite loading
+- [x] Various APIs for fetching data
+
+## APIs
+
+`GET http://localhost:3000/api/hello`
+
+`GET http://localhost:3000/api/comment/{id}`
+
+`GET http://localhost:3000/api/discover/{topic}`
+
+`GET http://localhost:3000/api/post`
+
+`GET http://localhost:3000/api/post/{id}`
+
+`GET http://localhost:3000/api/profile/{id}`
+
+`GET http://localhost:3000/api/profile/liked/{id}`
+
+`GET http://localhost:3000/api/profile/video/{id}`
+
+`GET http://localhost:3000/api/search/{searchTerm}`
+
+`GET http://localhost:3000/api/suggested-user`
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
