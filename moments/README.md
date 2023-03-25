@@ -2,12 +2,12 @@
 
 ![homepage](demo/homepage.png)
 
-Moments is a social video sharing platform.
+Moments is a modern Social Media Website developed using React, Nextjs, TypeScript, and Sanity (database). This application includes the ability to upload, publish, share, comment on, and like videos; filter by categories and advanced search functionalities, profile pages, suggested accounts, custom responsive design, and much more. The user data is secure by default using [`next-auth`](https://next-auth.js.org/getting-started/introduction) session promoted with many OAuth services like Google/GitHub.
 
-**Tech stacks**:
+**Technologies**:
 
 - Next.js, TypeScript, TailwinCSS, Zustand, next-auth, OAuth2, JWT
-- Database: Sanity
+- Database: [Sanity](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
 
 **Features**:
 
@@ -26,13 +26,21 @@ Moments is a social video sharing platform.
 - [x] Lazy loading
 - [x] Infinite loading
 - [x] Various APIs for fetching data
+- [x] Mobile responsive
 
 ## Demo
 
+Post detail page:
 ![Detail](demo/post_detail.png)
+
+Profile detail page:
 ![Profile](demo/profile_page.png)
+
+Upload post:
 ![Drag](demo/drag_video.png)
 ![Markdown](demo/mardown_content.png)
+
+Search page:
 ![search](demo/search_page.png)
 
 **Mobile device**:
@@ -65,6 +73,18 @@ Moments is a social video sharing platform.
 ## Getting Started
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Setting up enviroment variables
+
+First, create a secret key for your application. You can quickly create a good value via this `openssl` command.
+
+```bash
+openssl rand -base64 32
+```
+
+For all the enviroment variables required, see `.env.sample` file
+
+## Start development
 
 First, run the development server:
 
