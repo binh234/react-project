@@ -67,7 +67,7 @@ export function dateDiffShort(pastDate: Date, lang: string = 'en') {
   const yearsPassed = now.getFullYear() - pastDate.getFullYear()
 
   if (secondsPassed < 60) {
-    return `right now`
+    return `Right now`
   } else if (minutesPassed < 60) {
     return `${minutesPassed}${selectedTimeUnit['minute']}`
   } else if (hoursPassed < 24) {

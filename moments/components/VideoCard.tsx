@@ -171,7 +171,7 @@ const VideoCard: NextPage<IProps> = ({ post, deletePost }) => {
                     </p>
                   </div>
                 </Link>
-                <p className="text-sm text-gray-600 hover:underline capitalize">{publishedTime}</p>
+                <p className="text-sm text-gray-600 hover:underline">{publishedTime}</p>
               </div>
             </div>
             {isOnHome && (
