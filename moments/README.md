@@ -1,5 +1,7 @@
 # Moments - Social video sharing platform
 
+[![Live](demo/live_button.png)](https://next-moments.vercel.app/)
+
 ![homepage](demo/homepage.png)
 
 Moments is a modern Social Media Website developed using React, Nextjs, TypeScript, and Sanity (database). This application includes the ability to upload, publish, share, comment on, and like videos; filter by categories and advanced search functionalities, profile pages, suggested accounts, custom responsive design, and much more. The user data is secure by default using [`next-auth`](https://next-auth.js.org/getting-started/introduction) session promoted with many OAuth services like Google/GitHub.
