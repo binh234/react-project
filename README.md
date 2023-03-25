@@ -1,7 +1,9 @@
 # react-project
+
 ReactJS pet projects
 
 ## Brief descriptions
+
 Each project has its own `README.md` file for more detailed information.
 
 1. [task-tracker](https://github.com/binh234/react-project/tree/main/task-tracker): Task tracker application with ReactJS and JSON-server (mainly CRUD)
@@ -16,4 +18,4 @@ Each project has its own `README.md` file for more detailed information.
 10. [metube](https://github.com/binh234/react-project/tree/main/metube): A Youtube clone application consisting of stunning video sections, custom categories, channel pages, video searching and, most importantly, video player. The video data are mainly fetched from [Rapid API](https://rapidapi.com/hub).
 11. [next-portfolio](https://github.com/binh234/react-project/tree/main/next-portfolio): A modern portfolio buit using Next.js.
 12. [musify](https://github.com/binh234/react-project/tree/main/musify): A Spotify clone application With modern homepage, fully-fledged music player, search, lyrics, song exploration features, search, popular music around us, worldwide top charts. (WIP)
-13. [moments](https://github.com/binh234/react-project/tree/main/moments): Modern Social Media Website using React, Nextjs, TypeScript and Sanity (backend). This application includes Google Auth, the ability to upload, publish, share, comment on, and like videos; filter by categories and advanced search functionalities, profile pages, suggested accounts, custom responsive design, and much more. The data are mainly fetched from [Rapid API](https://rapidapi.com/hub) (WIP)
+13. [moments](https://github.com/binh234/react-project/tree/main/moments): Modern Social Media Website using React, Nextjs, TypeScript and Sanity (backend). This application includes the ability to upload, publish, share, comment on, and like videos; filter by categories and advanced search functionalities, profile pages, suggested accounts, custom responsive design, and much more. The user data is secure by default using `next-auth` session promoted with many OAuth services like Google/GitHub.
