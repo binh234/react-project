@@ -8,7 +8,7 @@ Moments is a modern Social Media Website developed using React, Nextjs, TypeScri
 
 **Technologies**:
 
-- Next.js, TypeScript, TailwinCSS, Zustand, next-auth, OAuth2, JWT, GraphQL
+- Next.js, TypeScript, Tailwind CSS, Zustand, next-auth, OAuth2, JWT, GraphQL
 - Database: [Sanity](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
 
 **Features**:
