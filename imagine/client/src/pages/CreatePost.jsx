@@ -14,14 +14,78 @@ const CreatePost = () => {
   const [generatingImage, setGeneratingImage] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const generateImage = () => {}
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.targe.name]: e.target.value })
+  const generateImage = async () => {
+    if (form.prompt) {
+      try {
+        setGeneratingImage(true)
+        const response = await fetch('http://localhost:8080/api/v1/dall-e', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: form.prompt }),
+        })
+        const data = await response.json()
+        setForm({ ...form, photo: data.photo })
+      } catch (error) {
+        alert(error)
+      } finally {
+        setGeneratingImage(false)
+      }
+    } else {
+      alert('Please enter a prompt')
+    }
   }
 
-  const handleSubmit = (e) => {
+  const generateVariant = async () => {
+    if (form.prompt) {
+      try {
+        setGeneratingImage(true)
+        const response = await fetch('http://localhost:8080/api/v1/dall-e/variant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ b64: form.photo }),
+        })
+        const data = await response.json()
+        setForm({ ...form, photo: data.photo })
+      } catch (error) {
+        alert(error)
+      } finally {
+        setGeneratingImage(false)
+      }
+    } else {
+      alert('Please enter a prompt')
+    }
+  }
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    if (form.prompt && form.photo && form.name) {
+      try {
+        setLoading(true)
+        const response = await fetch('http://localhost:8080/api/v1/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        })
+        await response.json()
+        navigate('/')
+      } catch (error) {
+        alert(error)
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      alert('Please complete the form and generate an image')
+    }
   }
 
   const handleSurprise = () => {
@@ -46,6 +110,7 @@ const CreatePost = () => {
             placeholder="Your name"
             value={form.name}
             handleChange={handleChange}
+            required={true}
           />
           <FormField
             labelName="Prompt"
@@ -56,10 +121,15 @@ const CreatePost = () => {
             handleChange={handleChange}
             isSurpriseMe
             handleSurprise={handleSurprise}
+            required={true}
           />
           <div className="relative bg-gray-50 border-gray-3000 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 h-64 p-3 flex justify-center items-center">
             {form.photo ? (
-              <img src={form.photo} alt={form.prompt} className="w-full h-full object-contain" />
+              <img
+                src={`data:image/jpeg;base64,${form.photo}`}
+                alt={form.prompt}
+                className="w-full h-full object-contain"
+              />
             ) : (
               <img
                 src={preview}
@@ -82,10 +152,20 @@ const CreatePost = () => {
             disabled={generatingImage}
             className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            {generatingImage ? 'Generating...' : 'Generate'}
+            {generatingImage ? 'Generating...' : form.photo ? 'Regenerate' : 'Generate'}
           </button>
+          {form.photo && !generatingImage && (
+            <button
+              type="submit"
+              onClick={generateVariant}
+              disabled={generatingImage}
+              className="text-white bg-sky-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            >
+              {generatingImage ? 'Generating...' : 'Make variant'}
+            </button>
+          )}
         </div>
-        <div className="mt-10">
+        <div className="mt-6 border-t-2 pt-4">
           <p className="text-[#666e75] text-sm">
             Once you have created the image you want, you can share it with others in the community
           </p>
