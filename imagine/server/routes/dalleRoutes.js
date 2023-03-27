@@ -1,6 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
+import { IMAGE_SIZE } from "../config.js";
 
 dotenv.config();
 
@@ -13,17 +14,17 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 router.route("/").get((req, res) => {
-  res.send("Hellp from DALL-E");
+  res.json({ message: "Hello from DALL-E" });
 });
 
 // Image generation
-router.route("/").get(async (req, res) => {
+router.route("/").post(async (req, res) => {
   try {
     const { prompt } = req.body;
-    const aiReponse = await openai.Image.createImage({
+    const aiReponse = await openai.createImage({
       prompt: prompt,
       n: 1,
-      size: "1024x1024",
+      size: `${IMAGE_SIZE}x${IMAGE_SIZE}`,
       response_format: "b64_json",
     });
     const image = aiReponse.data.data[0].b64_json;
@@ -32,7 +33,7 @@ router.route("/").get(async (req, res) => {
     if (error.response) {
       console.log(error.response.status);
       console.log(error.response.data);
-      res.status(500).send(error.response.data);
+      res.status(500).json(error.response.data);
     } else {
       console.log(error.message);
       res.status(500).send(error.message);
@@ -40,15 +41,16 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-//   Image variations
-router.route("/variant").get(async (req, res) => {
+// Image variations
+router.route("/variant").post(async (req, res) => {
   try {
-    const { buffer } = req.body;
+    const { b64 } = req.body;
+    const buffer = Buffer.from(b64, "base64");
     buffer.name = "image.png";
-    const aiReponse = await openai.Image.createImageVariation(
+    const aiReponse = await openai.createImageVariation(
       buffer,
       1,
-      "1024x1024",
+      `${IMAGE_SIZE}x${IMAGE_SIZE}`,
       "b64_json"
     );
     const image = aiReponse.data.data[0].b64_json;
