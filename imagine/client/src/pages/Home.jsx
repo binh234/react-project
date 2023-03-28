@@ -30,7 +30,7 @@ const getKey = (pageIndex, previousPageData, prompt, name, tags, limit) => {
     limit: limit,
     cursor: cursor,
   })
-  tags.map((tag) => searchParams.append('tags', tag))
+  tags.map((item) => searchParams.append('tags', item.label))
   return `http://localhost:8080/api/v1/post?${searchParams.toString()}`
 }
 
@@ -77,10 +77,9 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault()
-    console.log('submit')
     setName(searchName)
     setPrompt(searchText)
-    setTags(searchTags.map((item) => item.label))
+    setTags(searchTags)
     setSize(1)
   }
 
