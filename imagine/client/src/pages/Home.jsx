@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ReactTags } from 'react-tag-autocomplete'
+import useSWRInfinite from 'swr/infinite'
 import Card from '../components/Card'
 import FormField from '../components/FormField'
 import Loader from '../components/Loader'
+import fetcher, { delay, isValidTag } from '../utils'
+import { tagSuggestions } from '../constants'
+import { PAGE_LIMIT } from '../../../server/config'
+import { useRef } from 'react'
+import useOnScreen from '../hooks/useOnScreen'
+
+const PAGE_SIZE = 1
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -11,53 +20,94 @@ const RenderCards = ({ data, title }) => {
   return <h2 className="mt-5 font-bold text-[#6469ff] text-xl uppercase">{title}</h2>
 }
 
-const Home = () => {
-  const [loading, setLoading] = useState(false)
-  const [allPost, setAllPost] = useState([])
+const getKey = (pageIndex, previousPageData, prompt, name, tags, limit) => {
+  if (previousPageData && previousPageData.length < PAGE_LIMIT) return null // reached the end
+
+  const cursor = previousPageData ? previousPageData[previousPageData.length - 1].date : ''
+  const searchParams = new URLSearchParams({
+    name: name,
+    prompt: prompt,
+    limit: limit,
+    cursor: cursor,
+  })
+  tags.map((tag) => searchParams.append('tags', tag))
+  return `http://localhost:8080/api/v1/post?${searchParams.toString()}`
+}
+
+export default function Home() {
   const [searchText, setSearchText] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [searchTimeout, setSearchTimeout] = useState(null)
+  const [searchName, setSearchName] = useState('')
+  const [searchTags, setSearchTags] = useState([])
+  const [prompt, setPrompt] = useState('')
+  const [name, setName] = useState('')
+  const [tags, setTags] = useState([])
+  const ref = useRef()
+
+  const isVisible = useOnScreen(ref)
+
+  const { data, error, size, setSize, isValidating } = useSWRInfinite(
+    (...args) => getKey(...args, prompt, name, tags, PAGE_LIMIT),
+    fetcher
+  )
+
+  const posts = data ? [].concat(...data) : []
+  const isLoadingInitialData = !data && !error
+  const isLoadingMore =
+    isLoadingInitialData || (size > 0 && data && typeof data[data.length - 1] === 'undefined')
+  const isReachingEnd = !isLoadingMore && size > 0 && data && !data[size - 1]?.length
+  const isRefreshing = isValidating && data && data.length === size
 
   const handleSearchChange = (e) => {
-    clearTimeout(searchTimeout)
     setSearchText(e.target.value)
-    setSearchTimeout(
-      setTimeout(() => {
-        const searchResults = allPost.filter(
-          (item) =>
-            item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.prompt.toLowerCase().includes(searchText.toLowerCase())
-        )
-        setSearchResults(searchResults)
-      }, 500)
-    )
   }
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true)
+  const handleNameChange = (e) => {
+    setSearchName(e.target.value)
+  }
 
-      try {
-        const response = await fetch('http://localhost:8080/api/v1/post', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/jon',
-          },
-        })
-        if (response.ok) {
-          const result = await response.json()
-          setAllPost(result.data.reverse())
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false)
-      }
+  const clearSearchForm = async () => {
+    setSearchName('')
+    setSearchText('')
+    setSearchTags([])
+    setName('')
+    setPrompt('')
+    setTags([])
+    setSize(1)
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    console.log('submit')
+    setName(searchName)
+    setPrompt(searchText)
+    setTags(searchTags.map((item) => item.label))
+    setSize(1)
+  }
+
+  const onAdd = useCallback(
+    (newTag) => {
+      setSearchTags([...searchTags, newTag])
+    },
+    [searchTags]
+  )
+
+  const onDelete = useCallback(
+    (tagIndex) => {
+      setSearchTags(searchTags.filter((_, i) => i !== tagIndex))
+    },
+    [searchTags]
+  )
+
+  const onValidate = useCallback((value) => isValidTag(value), [])
+
+  useEffect(() => {
+    if (isVisible && !isReachingEnd && !isRefreshing) {
+      setSize((size) => size + 1)
     }
-    fetchPosts()
-  }, [])
+  }, [isVisible, isRefreshing])
 
   return (
-    <section className="max-w-7xl mx-auto">
+    <div style={{ fontFamily: 'sans-serif' }}>
       <div>
         <h1 className="font-extrabold text-[#222328] text-3xl">The Community Showcase</h1>
         <p className="mt-2 text-[#666e75] text-base max-w-[500px]">
@@ -65,42 +115,98 @@ const Home = () => {
           DALL-E AI
         </p>
       </div>
-      <div className="mt-12">
-        <FormField 
-          labelName="Search post"
+      <form className="mt-12 flex flex-col gap-3" onSubmit={handleSearch}>
+        <FormField
+          labelName="Prompt"
           type="text"
           name="text"
-          placeholder="Search posts"
+          placeholder="Search prompt"
           value={searchText}
           handleChange={handleSearchChange}
         />
-
-      </div>
-
+        <div className="flex flex-col md:flex-row gap-4 w-full">
+          <FormField
+            labelName="User name"
+            type="text"
+            name="text"
+            placeholder="Username"
+            value={searchName}
+            handleChange={handleNameChange}
+          />
+          <div className="w-full">
+            <label htmlFor="tags" className="block text-sm font-semibold text-gray-900 mb-2">
+              Tags
+            </label>
+            <ReactTags
+              allowNew
+              id="tags"
+              selected={searchTags}
+              suggestions={tagSuggestions}
+              onAdd={onAdd}
+              onDelete={onDelete}
+              onValidate={onValidate}
+            />
+          </div>
+        </div>
+        <div className="flex flex-row gap-5 justify-end mt-2">
+          <button
+            type="button"
+            onClick={clearSearchForm}
+            className="inline-flex items-center text-white font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-cyan-600 hover:bg-cyan-700"
+          >
+            <svg
+              className="w-5 h-5 mr-2 -ml-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6H2V16C2 17.1046 2.89543 18 4 18H20C21.1046 18 22 17.1046 22 16V6H20V16H4V6Z"
+                fill="currentColor"
+              />
+              <path d="M6 12H18V14H6V12Z" fill="currentColor" />
+              <path d="M18 8H6V10H18V8Z" fill="currentColor" />
+            </svg>
+            Clear
+          </button>
+          <button
+            type="submit"
+            className="inline-flex items-center py-2.5 px-5 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={handleSearch}
+          >
+            <svg
+              aria-hidden="true"
+              className="w-5 h-5 mr-2 -ml-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            Search
+          </button>
+        </div>
+      </form>
       <div className="mt-10">
-        {loading ? (
+        {!isLoadingInitialData && (
+          <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3">
+            <RenderCards data={posts} title="No posts found" />
+          </div>
+        )}
+      </div>
+      <div ref={ref}>
+        {isLoadingMore && (
           <div className="flex justify-center items-center">
             <Loader />
           </div>
-        ) : (
-          <>
-            {searchText && (
-              <h2 className="font-medium text-[#666e75] text-xl mb-3">
-                Showing resutls for <span className="text-[$222328]">{searchText}</span>
-              </h2>
-            )}
-            <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3">
-              {searchText ? (
-                <RenderCards data={searchResults} title="No search results found" />
-              ) : (
-                <RenderCards data={allPost} title="No posts found" />
-              )}
-            </div>
-          </>
         )}
       </div>
-    </section>
+    </div>
   )
 }
-
-export default Home

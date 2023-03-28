@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ReactTags } from 'react-tag-autocomplete'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
-import { getRandomPrompt } from '../utils'
+import { getRandomPrompt, isValidTag } from '../utils'
+import { tagSuggestions } from '../constants'
+import { MAX_TAGS } from '../utils/config'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -11,6 +14,7 @@ const CreatePost = () => {
     prompt: '',
     photo: '',
   })
+  const [tags, setTags] = useState([])
   const [generatingImage, setGeneratingImage] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -74,7 +78,10 @@ const CreatePost = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(form),
+          body: JSON.stringify({
+            ...form,
+            tags: tags.map((items) => items.label)
+          }),
         })
         await response.json()
         navigate('/')
@@ -93,6 +100,22 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt })
   }
 
+  const onAdd = useCallback(
+    (newTag) => {
+      setTags([...tags, newTag])
+    },
+    [tags]
+  )
+
+  const onDelete = useCallback(
+    (tagIndex) => {
+      setTags(tags.filter((_, i) => i !== tagIndex))
+    },
+    [tags]
+  )
+
+  const onValidate = useCallback((value) => isValidTag(value), [])
+
   return (
     <section className="max-w-7xl mx-auto">
       <div>
@@ -101,7 +124,7 @@ const CreatePost = () => {
           Create your own imaginative and visually stunning images with DALL-E
         </p>
       </div>
-      <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
+      <form className="mt-12 max-w-3xl" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-5">
           <FormField
             labelName="Your name"
@@ -123,6 +146,28 @@ const CreatePost = () => {
             handleSurprise={handleSurprise}
             required={true}
           />
+          <div>
+            <label htmlFor="tags" className="block text-sm font-semibold text-gray-900 mb-2">
+              Tags
+            </label>
+            <ReactTags
+              allowNew
+              id="tags"
+              selected={tags}
+              suggestions={tagSuggestions}
+              onAdd={onAdd}
+              onDelete={onDelete}
+              onValidate={onValidate}
+              isInvalid={tags.length > MAX_TAGS}
+            />
+            <p id="custom-tags-description" className="text-gray-500 text-sm mt-2">
+              <em>
+                Custom tags must be between 4 and 12 characters in length and only contain the letters A-Z
+                <br />
+                Select a maximum of 10 tags
+              </em>
+            </p>
+          </div>
           <div className="relative bg-gray-50 border-gray-3000 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 h-64 p-3 flex justify-center items-center">
             {form.photo ? (
               <img
@@ -147,19 +192,19 @@ const CreatePost = () => {
         </div>
         <div className="mt-5 flex gap-5">
           <button
-            type="submit"
+            type="button"
             onClick={generateImage}
             disabled={generatingImage}
-            className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             {generatingImage ? 'Generating...' : form.photo ? 'Regenerate' : 'Generate'}
           </button>
           {form.photo && !generatingImage && (
             <button
-              type="submit"
+              type="button"
               onClick={generateVariant}
               disabled={generatingImage}
-              className="text-white bg-sky-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              className="text-white bg-sky-700 hover:bg-sky-800 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             >
               {generatingImage ? 'Generating...' : 'Make variant'}
             </button>
