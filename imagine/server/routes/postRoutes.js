@@ -79,6 +79,7 @@ router.route("/").post(async (req, res) => {
       file: photo, //required
       fileName: `${randomName}.png`, //required
       useUniqueFileName: true,
+      tags: tags
     });
 
     // const photoUrl = await cloudinary.uploader.upload(
