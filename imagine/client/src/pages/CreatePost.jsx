@@ -50,7 +50,7 @@ const CreatePost = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ b64: form.photo }),
+          body: JSON.stringify({ photo: form.photo }),
         })
         const data = await response.json()
         setForm({ ...form, photo: data.photo })

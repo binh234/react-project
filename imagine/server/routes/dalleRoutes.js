@@ -44,8 +44,8 @@ router.route("/").post(async (req, res) => {
 // Image variations
 router.route("/variant").post(async (req, res) => {
   try {
-    const { b64 } = req.body;
-    const buffer = Buffer.from(b64, "base64");
+    const { photo } = req.body;
+    const buffer = Buffer.from(photo, "base64");
     buffer.name = "image.png";
     const aiReponse = await openai.createImageVariation(
       buffer,
