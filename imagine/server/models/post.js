@@ -14,6 +14,8 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
+PostSchema.index({prompt: "text"})
+
 const Post = mongoose.model("Post", PostSchema);
 
 export default Post;

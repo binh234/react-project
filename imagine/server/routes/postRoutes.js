@@ -40,11 +40,11 @@ router.route("/").get(async (req, res) => {
       tags = [tags];
     }
     const search = [];
+    if (prompt) {
+      search.push({ $text : { $search : `"${prompt}"`}} ); // Search in prompt
+    }
     if (name) {
       search.push({ name: { $regex: name, $options: "i" } }); // Search in name
-    }
-    if (prompt) {
-      search.push({ prompt: { $regex: prompt, $options: "i" } }); // Search in prompt
     }
     if (tags) {
       search.push({ tags: { $in: tags } }); // Search in tags
@@ -54,7 +54,15 @@ router.route("/").get(async (req, res) => {
     if (search.length > 0) {
       query["$and"] = search
     }
-    const posts = await Post.find(query).sort({ date: "desc" }).limit(limit);
+    // 1 for ascending, -1 for descending
+    let sortOptions = { date: -1 }
+    if (prompt) {
+      sortOptions = {
+        score : { $meta : 'textScore' } ,
+        date: -1
+      }
+    }
+    const posts = await Post.find(query).sort(sortOptions).limit(limit);
 
     res.status(200).json(posts);
   } catch (error) {

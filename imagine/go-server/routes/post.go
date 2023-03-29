@@ -23,6 +23,8 @@ func RegisterPostRoutes(app *fiber.App) {
 }
 
 func getPost(c *fiber.Ctx) error {
+	// filter := bson.D{{Key: "type", Value: "Oolong"}}
+	// filter = append(filter, bson.E{Key: "price", Value: bson.D{{Key: "$gt", Value: 7}}})
 	return nil
 }
 
