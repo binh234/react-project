@@ -1,19 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"imagine/routes"
+	"log"
 
-	"github.com/goombaio/namegenerator"
+	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
-func main() {
-	seed := time.Now().UTC().UnixNano()
-	nameGenerator := namegenerator.NewNameGenerator(seed)
-
-	for i := 0; i < 10; i++ {
-		name := nameGenerator.Generate()
-
-		fmt.Println(name)
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
 	}
+}
+
+func main() {
+	app := fiber.New()
+	routes.RegisterDallERoutes(app)
+	routes.RegisterPostRoutes(app)
+
+	log.Fatal(app.Listen(":8080"))
 }
