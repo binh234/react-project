@@ -43,7 +43,7 @@ func getPost(c *fiber.Ctx) error {
 	collection := db.DB.Collection("posts")
 	req := NewSearchRequest()
 	if err := c.QueryParser(req); err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 	req.Limit = utils.ValidateNumber(req.Limit, 1, utils.PAGE_LIMIT)
 
@@ -62,11 +62,11 @@ func getPost(c *fiber.Ctx) error {
 	opts := options.Find().SetSort(sortOptions).SetLimit(int64(req.Limit))
 	cursor, err := collection.Find(context.TODO(), filter, opts)
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 	var posts []models.Post
 	if err = cursor.All(context.TODO(), &posts); err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 	return c.JSON(posts)
 }
@@ -77,7 +77,7 @@ func createPost(c *fiber.Ctx) error {
 	post := models.NewPost()
 
 	if err := c.BodyParser(post); err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	// Upload photo to imagekit
@@ -89,7 +89,7 @@ func createPost(c *fiber.Ctx) error {
 		UseUniqueFileName: utils.BoolPointer(true),
 	})
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	// Insert document to mongoDB
@@ -97,7 +97,7 @@ func createPost(c *fiber.Ctx) error {
 	post.ID = ""
 	insertionResult, err := collection.InsertOne(c.Context(), post)
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	post.ID = insertionResult.InsertedID.(primitive.ObjectID).Hex()

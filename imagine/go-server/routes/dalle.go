@@ -27,7 +27,7 @@ type ImageVariantRequest struct {
 }
 
 type ImageResponse struct {
-	Photo string
+	Photo string `json:"photo"`
 }
 
 func RegisterDallERoutes(app *fiber.App) {
@@ -41,7 +41,7 @@ func generateImage(c *fiber.Ctx) error {
 	req := new(ImageRequest)
 	err := c.BodyParser(req)
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	// Example image as base64
@@ -55,7 +55,7 @@ func generateImage(c *fiber.Ctx) error {
 	respBase64, err := client.CreateImage(ctx, reqBase64)
 	if err != nil {
 		fmt.Printf("Image creation error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	response := &ImageResponse{Photo: respBase64.Data[0].B64JSON}
@@ -67,35 +67,36 @@ func generateVariant(c *fiber.Ctx) error {
 	req := new(ImageVariantRequest)
 	err := c.BodyParser(req)
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	imgBytes, err := base64.StdEncoding.DecodeString(req.Photo)
 	if err != nil {
 		fmt.Printf("Base64 decode error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
 	r := bytes.NewReader(imgBytes)
 	imgData, err := png.Decode(r)
 	if err != nil {
 		fmt.Printf("PNG decode error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
-	file, err := os.CreateTemp("", "temp")
+	file, err := os.CreateTemp("", "temp-*.png")
 	if err != nil {
 		fmt.Printf("File creation error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 	defer file.Close()
+	defer os.Remove(file.Name())
 
 	if err := png.Encode(file, imgData); err != nil {
 		fmt.Printf("PNG encode error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 
-	fmt.Println("The image was saved as example.png")
+	fmt.Printf("The image was saved as %s\n", file.Name())
 
 	variantRequest := openai.ImageVariRequest{
 		Image: file,
@@ -105,7 +106,7 @@ func generateVariant(c *fiber.Ctx) error {
 	variantResponse, err := client.CreateVariImage(ctx, variantRequest)
 	if err != nil {
 		fmt.Printf("File creation error: %v\n", err)
-		return c.Status(500).SendString(err.Error())
+		return c.Status(500).JSON(err)
 	}
 	return c.JSON(ImageResponse{
 		Photo: variantResponse.Data[0].B64JSON,
