@@ -2,9 +2,8 @@ package mongodb
 
 import (
 	"context"
-	"fmt"
+	"imagine/utils"
 	"log"
-	"os"
 	"sync"
 	"time"
 
@@ -20,26 +19,33 @@ type MongoInstance struct {
 var mg *MongoInstance
 var once sync.Once
 
-var dbName string
-var mongoURI string
 var serverAPIOptions = options.ServerAPI(options.ServerAPIVersion1)
 
 func connect() {
-	mongoURI = os.Getenv("MONGODB_URL")
-	dbName = os.Getenv("DB_NAME")
-	clientOptions := options.Client().ApplyURI(mongoURI).SetServerAPIOptions(serverAPIOptions)
+	config := utils.GetConfig()
+	clientOptions := options.Client().ApplyURI(config.DB.URI).SetServerAPIOptions(serverAPIOptions)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		fmt.Println(err.Error())
 		log.Fatal(err)
 	}
 
-	db := client.Database(dbName)
+	db := client.Database(config.DB.DBName)
 	mg = &MongoInstance{
 		Client: client,
 		DB:     db,
+	}
+	// Create index for date field for filtering and sorting
+	err = mg.CreateIndex("posts", "date", -1)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create text index on prompt field for full text search
+	err = mg.CreateTextIndex("posts", "prompt")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -48,7 +54,7 @@ func GetMongoInstance() *MongoInstance {
 	return mg
 }
 
-func Disconnect() {
+func (mg *MongoInstance) Disconnect() {
 	if mg.Client != nil {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()

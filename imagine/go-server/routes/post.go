@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"imagine/models"
 	"imagine/mongodb"
 	"imagine/storage"
@@ -11,27 +12,69 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/goombaio/namegenerator"
 	"github.com/imagekit-developer/imagekit-go/api/uploader"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var db = mongodb.GetMongoInstance()
 
+type SearchRequest struct {
+	Date   time.Time `json:"cursor"`
+	Limit  int       `json:"limit"`
+	Prompt string    `json:"prompt"`
+	Name   string    `json:"name"`
+	Tags   []string  `json:"tags"`
+}
+
+func NewSearchRequest() *SearchRequest {
+	return &SearchRequest{
+		Date: time.Now(),
+	}
+}
+
 func RegisterPostRoutes(app *fiber.App) {
-	api := app.Group("post")
+	api := app.Group("api/v1/post")
 	api.Get("/", getPost)
 	api.Post("/", createPost)
 }
 
 func getPost(c *fiber.Ctx) error {
-	// filter := bson.D{{Key: "type", Value: "Oolong"}}
-	// filter = append(filter, bson.E{Key: "price", Value: bson.D{{Key: "$gt", Value: 7}}})
-	return nil
+	collection := db.DB.Collection("posts")
+	req := NewSearchRequest()
+	if err := c.QueryParser(req); err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+	req.Limit = utils.ValidateNumber(req.Limit, 1, utils.PAGE_LIMIT)
+
+	sortOptions := bson.D{{Key: "date", Value: -1}}
+	filter := bson.D{{Key: "date", Value: bson.D{{Key: "$lt", Value: req.Date}}}}
+	if req.Prompt != "" {
+		filter = append(filter, bson.E{Key: "$text", Value: bson.M{"$search": fmt.Sprintf("\"%s\"", req.Prompt)}})
+		sortOptions = bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}, {Key: "date", Value: -1}}
+	}
+	if req.Name != "" {
+		filter = append(filter, bson.E{Key: "name", Value: bson.M{"$regex": req.Name, "$options": "i"}})
+	}
+	if len(req.Tags) > 0 {
+		filter = append(filter, bson.E{Key: "tags", Value: bson.M{"$in": req.Tags}})
+	}
+	opts := options.Find().SetSort(sortOptions).SetLimit(int64(req.Limit))
+	cursor, err := collection.Find(context.TODO(), filter, opts)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+	var posts []models.Post
+	if err = cursor.All(context.TODO(), &posts); err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+	return c.JSON(posts)
 }
 
 func createPost(c *fiber.Ctx) error {
 	ik := storage.GetImageKitInstance()
-	collection := db.DB.Collection("post")
-	post := new(models.Post)
+	collection := db.DB.Collection("posts")
+	post := models.NewPost()
 
 	if err := c.BodyParser(post); err != nil {
 		return c.Status(500).SendString(err.Error())

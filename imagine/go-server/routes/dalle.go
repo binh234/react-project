@@ -13,6 +13,9 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
+var config = utils.GetConfig()
+var client = openai.NewClient(config.OpenAI.ApiKey)
+
 type ImageRequest struct {
 	Prompt string `json:"prompt,omitempty"`
 	Photo  string `json:"photo"`
@@ -28,13 +31,12 @@ type ImageResponse struct {
 }
 
 func RegisterDallERoutes(app *fiber.App) {
-	api := app.Group("dall-e")
+	api := app.Group("api/v1/dall-e")
 	api.Post("/", generateImage)
 	api.Post("/variant", generateVariant)
 }
 
 func generateImage(c *fiber.Ctx) error {
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	ctx := context.Background()
 	req := new(ImageRequest)
 	err := c.BodyParser(req)
@@ -61,7 +63,6 @@ func generateImage(c *fiber.Ctx) error {
 }
 
 func generateVariant(c *fiber.Ctx) error {
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	ctx := context.Background()
 	req := new(ImageVariantRequest)
 	err := c.BodyParser(req)
