@@ -35,7 +35,7 @@ router.route("/").get(async (req, res) => {
     let { prompt, name, tags, cursor, limit } = req.query;
     // const page = parseInt(req.query.page) || 1;
     cursor = cursor || new Date().toISOString();
-    limit = validateNumber(parseInt(limit) || PAGE_LIMIT);
+    limit = validateNumber(parseInt(limit) || PAGE_LIMIT, 1, 50);
     if (tags && typeof tags === "string") {
       tags = [tags];
     }
