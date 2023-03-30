@@ -10,8 +10,6 @@ import { PAGE_LIMIT } from '../../../server/config'
 import { useRef } from 'react'
 import useOnScreen from '../hooks/useOnScreen'
 
-const PAGE_SIZE = 1
-
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
     return data.map((post) => <Card key={post._id} {...post} />)

@@ -30,7 +30,11 @@ const CreatePost = () => {
           body: JSON.stringify({ prompt: form.prompt }),
         })
         const data = await response.json()
-        setForm({ ...form, photo: data.photo })
+        if (response.ok) {
+          setForm({ ...form, photo: data.photo })
+        } else {
+          alert("Something went wrong, please try again")
+        }
       } catch (error) {
         alert(error)
       } finally {
@@ -53,7 +57,11 @@ const CreatePost = () => {
           body: JSON.stringify({ photo: form.photo }),
         })
         const data = await response.json()
-        setForm({ ...form, photo: data.photo })
+        if (response.ok) {
+          setForm({ ...form, photo: data.photo })
+        } else {
+          alert("Something went wrong, please try again")
+        }
       } catch (error) {
         alert(error)
       } finally {
@@ -80,7 +88,7 @@ const CreatePost = () => {
           },
           body: JSON.stringify({
             ...form,
-            tags: tags.map((items) => items.label)
+            tags: tags.map((items) => items.label),
           }),
         })
         await response.json()
@@ -162,7 +170,8 @@ const CreatePost = () => {
             />
             <p id="custom-tags-description" className="text-gray-500 text-sm mt-2">
               <em>
-                Custom tags must be between 4 and 12 characters in length and only contain the letters A-Z
+                Custom tags must be between 4 and 12 characters in length and only contain the
+                letters A-Z
                 <br />
                 Select a maximum of 10 tags
               </em>

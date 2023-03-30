@@ -16,7 +16,7 @@ const Card = ({ _id, name, prompt, photo, tags }) => {
       </IKContext>
       <div className="group-hover:flex flex-col gap-4 max-h-[94.5%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md">
         <p className="text-white text-base overflow-y-auto prompt">{prompt}</p>
-        {tags.length > 0 && (
+        {tags?.length > 0 && (
           <div className="flex flex-row gap-2 items-center">
             {tags.map((tag) => (
               <p
