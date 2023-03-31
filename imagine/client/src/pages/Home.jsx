@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite'
 import Card from '../components/Card'
 import FormField from '../components/FormField'
 import Loader from '../components/Loader'
-import fetcher, { delay, isValidTag } from '../utils'
+import fetcher, { isValidTag } from '../utils'
 import { tagSuggestions } from '../constants'
 import { PAGE_LIMIT } from '../../../server/config'
 import { useRef } from 'react'
@@ -28,7 +28,7 @@ const getKey = (pageIndex, previousPageData, prompt, name, tags, limit) => {
     limit: limit,
     cursor: cursor,
   })
-  tags.map((item) => searchParams.append('tags', item.label))
+  tags.map((item) => searchParams.append('tags', item.label.toLowerCase()))
   return `http://localhost:8080/api/v1/post?${searchParams.toString()}`
 }
 
@@ -45,7 +45,8 @@ export default function Home() {
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (...args) => getKey(...args, prompt, name, tags, PAGE_LIMIT),
-    fetcher
+    fetcher,
+    { errorRetryCount: 10 }
   )
 
   const posts = data ? [].concat(...data) : []

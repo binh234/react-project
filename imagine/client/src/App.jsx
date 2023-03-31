@@ -1,14 +1,16 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import { logo } from './assets'
+import { logo2 } from './assets'
 import { CreatePost, Home } from './pages'
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
-        <Link to="/">
-          <img src={logo} alt="logo" className="w-28 object-contain" />
+        <Link to="/" className="flex gap-2 items-center">
+          <img src={logo2} alt="logo" className="h-12 object-contain" />
+          <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 font-bold text-2xl">
+            Imagine
+          </p>
         </Link>
         <Link
           to="/create-post"

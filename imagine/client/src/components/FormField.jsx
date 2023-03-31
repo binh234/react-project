@@ -1,11 +1,21 @@
 import React from 'react'
 
-const FormField = ({ value, labelName, type, name, placeholder, handleChange, isSurpriseMe, handleSurprise, required }) => {
+const FormField = ({
+  value,
+  labelName,
+  type,
+  name,
+  placeholder,
+  handleChange,
+  isSurpriseMe,
+  handleSurprise,
+  required,
+}) => {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
         <label htmlFor={name} className="block text-sm font-semibold text-gray-900">
-          {labelName} {required && <span className='text-sm text-red-500'>*</span>}
+          {labelName} {required && <span className="text-sm text-red-500">*</span>}
         </label>
         {isSurpriseMe && (
           <button

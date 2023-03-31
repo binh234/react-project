@@ -54,6 +54,7 @@ export const defaultTags = [
   'architecture',
   'art',
   'autumn',
+  'balloon',
   'beach',
   'celebrity',
   'city',

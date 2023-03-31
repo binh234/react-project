@@ -33,7 +33,7 @@ const CreatePost = () => {
         if (response.ok) {
           setForm({ ...form, photo: data.photo })
         } else {
-          alert("Something went wrong, please try again")
+          alert('Something went wrong, please try again')
         }
       } catch (error) {
         alert(error)
@@ -60,7 +60,7 @@ const CreatePost = () => {
         if (response.ok) {
           setForm({ ...form, photo: data.photo })
         } else {
-          alert("Something went wrong, please try again")
+          alert('Something went wrong, please try again')
         }
       } catch (error) {
         alert(error)
@@ -88,7 +88,7 @@ const CreatePost = () => {
           },
           body: JSON.stringify({
             ...form,
-            tags: tags.map((items) => items.label),
+            tags: tags.map((items) => items.label.toLowerCase()),
           }),
         })
         await response.json()
