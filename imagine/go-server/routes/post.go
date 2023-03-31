@@ -7,6 +7,7 @@ import (
 	"imagine/mongodb"
 	"imagine/storage"
 	"imagine/utils"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -64,7 +65,7 @@ func getPost(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(err)
 	}
-	var posts []models.Post
+	posts := []models.Post{}
 	if err = cursor.All(context.TODO(), &posts); err != nil {
 		return c.Status(500).JSON(err)
 	}
@@ -77,6 +78,7 @@ func createPost(c *fiber.Ctx) error {
 	post := models.NewPost()
 
 	if err := c.BodyParser(post); err != nil {
+		log.Printf("Error while uploading image: %s", err.Error())
 		return c.Status(500).JSON(err)
 	}
 

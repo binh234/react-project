@@ -13,8 +13,8 @@ var once sync.Once
 func connect() {
 	config := utils.GetConfig()
 	ik = imagekit.NewFromParams(imagekit.NewParams{
-		PrivateKey:  config.ImageKit.ApiKey,
-		PublicKey:   config.ImageKit.PrivateKey,
+		PrivateKey:  config.ImageKit.PrivateKey,
+		PublicKey:   config.ImageKit.ApiKey,
 		UrlEndpoint: config.ImageKit.Endpoint,
 	})
 }
