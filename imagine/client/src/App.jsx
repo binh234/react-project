@@ -8,7 +8,7 @@ const App = () => {
       <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
         <Link to="/" className="flex gap-2 items-center">
           <img src={logo2} alt="logo" className="h-12 object-contain" />
-          <p className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 font-bold text-2xl">
+          <p className="hidden md:block text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 font-bold text-2xl">
             Imagine
           </p>
         </Link>
@@ -19,7 +19,7 @@ const App = () => {
           Create
         </Link>
       </header>
-      <main className="sm:px-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
+      <main className="sm:px-10 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-post" element={<CreatePost />} />
