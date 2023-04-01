@@ -39,35 +39,37 @@ router.route("/").get(async (req, res) => {
     if (tags && typeof tags === "string") {
       tags = [tags];
     }
-    const search = [];
+
+
+    let query = { date: { $lt: cursor } };
     if (prompt) {
-      search.push({ $text : { $search : `"${prompt}"`}} ); // Search in prompt
+      query["$text"] = { $search: `"${prompt}"` }; // Search in prompt
     }
     if (name) {
-      search.push({ name: { $regex: name, $options: "i" } }); // Search in name
+      query["name"] = { $regex: name, $options: "i" }; // Search in name
     }
     if (tags) {
-      search.push({ tags: { $in: tags } }); // Search in tags
+      query["tags"] = { $in: tags }; // Search in tags
     }
 
-    let query = {date: { $lt: cursor }};
-    if (search.length > 0) {
-      query["$and"] = search
-    }
     // 1 for ascending, -1 for descending
-    let sortOptions = { date: -1 }
-    if (prompt) {
-      sortOptions = {
-        score : { $meta : 'textScore' } ,
-        date: -1
-      }
-    }
+    let sortOptions = { date: -1 };
+    // if (prompt) {
+    //   sortOptions = {
+    //     // ToDo: Optimize text search, steps to cover
+    //     // Step 1: Split data to chunks based on date
+    //     // Step 2: Perform text search on each chunk
+    //     // Step 3 (optional): Estimated count results with full text search on first query
+    //     // Step 4: Return search results with cursor point to last chunk (maybe on last date proccessed)
+    //     score: { $meta: "textScore" },
+    //   };
+    // }
     const posts = await Post.find(query).sort(sortOptions).limit(limit);
 
     res.status(200).json(posts);
   } catch (error) {
     console.log(error);
-    res.status(500).json({message: error });
+    res.status(500).json({ message: error });
   }
 });
 
@@ -87,7 +89,7 @@ router.route("/").post(async (req, res) => {
       file: photo, //required
       fileName: `${randomName}.png`, //required
       useUniqueFileName: true,
-      tags: tags
+      tags: tags,
     });
 
     // const photoUrl = await cloudinary.uploader.upload(
