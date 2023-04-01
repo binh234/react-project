@@ -52,7 +52,12 @@ func getPost(c *fiber.Ctx) error {
 	filter := bson.D{{Key: "date", Value: bson.D{{Key: "$lt", Value: req.Date}}}}
 	if req.Prompt != "" {
 		filter = append(filter, bson.E{Key: "$text", Value: bson.M{"$search": fmt.Sprintf("\"%s\"", req.Prompt)}})
-		sortOptions = bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}, {Key: "date", Value: -1}}
+		// ToDo: Optimize text search, steps to cover
+		// Step 1: Split data to chunks based on date
+		// Step 2: Perform text search on each chunk
+		// Step 3 (optional): Estimated count results with full text search on first query
+		// Step 4: Return search results with cursor point to last chunk (maybe on last date proccessed)
+		// sortOptions = bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}, {Key: "date", Value: -1}}
 	}
 	if req.Name != "" {
 		filter = append(filter, bson.E{Key: "name", Value: bson.M{"$regex": req.Name, "$options": "i"}})
