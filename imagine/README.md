@@ -1,5 +1,7 @@
 # Imagine
 
+[*Live demo*](https://imagine-ai.vercel.app/)
+
 ![demo](demo/homepage.png)
 
 Imagine is an AI image generation application using DALL-E 2 API allows users to generate beautiful and surprising images based on specified prompt. Users can also share their images to the community showcases.
