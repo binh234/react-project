@@ -1,6 +1,5 @@
-import express, { response } from "express";
+import express from "express";
 import * as dotenv from "dotenv";
-import { v2 as cloudinary } from "cloudinary";
 import ImageKit from "imagekit";
 import {
   uniqueNamesGenerator,
@@ -16,12 +15,6 @@ import { validateNumber } from "../utils/helpers.js";
 dotenv.config();
 
 const router = express.Router();
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 var imagekit = new ImageKit({
   publicKey: process.env.IMAGEKIT_API_KEY,
@@ -91,10 +84,6 @@ router.route("/").post(async (req, res) => {
       useUniqueFileName: true,
       tags: tags,
     });
-
-    // const photoUrl = await cloudinary.uploader.upload(
-    //   "data:image/jpeg;base64," + photo
-    // );
 
     const newPost = await Post.create({
       name,
