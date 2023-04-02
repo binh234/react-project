@@ -6,9 +6,9 @@ Imagine is an AI image generation application using DALL-E 2 API allows users to
 
 **Techologies**:
 
-- [Vite](https://vitejs.dev/guide/)
+- [Vite](https://vitejs.dev/guide/) (react)
 - [OpenAI](https://openai.com/api)
-- [Express.js](https://expressjs.com/)
+- [Express.js](https://expressjs.com/) (node)
 - [Go Fiber](https://gofiber.io/)
 - [MongoDB](https://mongodb.com/)
 - [ImageKit](https://imagekit.io/)
