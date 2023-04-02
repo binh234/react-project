@@ -22,6 +22,7 @@ Imagine is an AI image generation application using DALL-E 2 API allows users to
 - [x] Image tags
 - [x] Image search
 - [x] Download your favorite images
+- [x] API caching
 
 ## Setup development
 

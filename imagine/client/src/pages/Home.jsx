@@ -9,6 +9,7 @@ import { tagSuggestions } from '../constants'
 import { PAGE_LIMIT } from '../../../server/config'
 import { useRef } from 'react'
 import useOnScreen from '../hooks/useOnScreen'
+import { BASE_URL } from '../utils/config'
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -29,7 +30,7 @@ const getKey = (pageIndex, previousPageData, prompt, name, tags, limit) => {
     cursor: cursor,
   })
   tags.map((item) => searchParams.append('tags', item.label.toLowerCase()))
-  return `http://localhost:8080/api/v1/post?${searchParams.toString()}`
+  return `${BASE_URL}/api/v1/post?${searchParams.toString()}`
 }
 
 export default function Home() {

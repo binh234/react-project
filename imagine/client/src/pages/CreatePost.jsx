@@ -5,7 +5,7 @@ import { preview } from '../assets'
 import { FormField, Loader } from '../components'
 import { getRandomPrompt, isValidTag } from '../utils'
 import { tagSuggestions } from '../constants'
-import { MAX_TAGS } from '../utils/config'
+import { BASE_URL, MAX_TAGS } from '../utils/config'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImage(true)
-        const response = await fetch('http://localhost:8080/api/v1/dall-e', {
+        const response = await fetch(`${BASE_URL}/api/v1/dall-e`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImage(true)
-        const response = await fetch('http://localhost:8080/api/v1/dall-e/variant', {
+        const response = await fetch(`${BASE_URL}/api/v1/dall-e/variant`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const CreatePost = () => {
     if (form.prompt && form.photo && form.name) {
       try {
         setLoading(true)
-        const response = await fetch('http://localhost:8080/api/v1/post', {
+        const response = await fetch(`${BASE_URL}/api/v1/post`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
