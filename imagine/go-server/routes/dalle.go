@@ -65,6 +65,7 @@ func generateImage(c *fiber.Ctx) error {
 // Bug: Unable to upload PNG file
 // Bug: Current supported openai.ImageVariRequest doesn't have ResponseFormat field,
 // which lead to return image URL in response, not base64 string
+// Error message: File creation error: error, status code: 400, message: Uploaded image must be a PNG and less than 4 MB.
 func generateVariant(c *fiber.Ctx) error {
 	ctx := context.Background()
 	req := new(ImageVariantRequest)
