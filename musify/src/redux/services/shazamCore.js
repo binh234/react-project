@@ -36,6 +36,45 @@ export const shazamCoreApi = createApi({
   }),
 });
 
+// export const shazamCoreApi = createApi({
+//   reducerPath: 'shazamCoreApi',
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: 'https://shazam.p.rapidapi.com/',
+//     prepareHeaders: (headers) => {
+//       headers.set(
+//         'X-RapidAPI-Key',
+//         import.meta.env.VITE_SHAZAM_RAPID_API_KEY,
+//       );
+
+//       return headers;
+//     },
+//   }),
+//   endpoints: (builder) => ({
+//     getTopCharts: builder.query({ query: () => 'charts/track?list_id=genre-global-chart-12' }),
+//     getSongsByGenre: builder.query({
+//       query: (genre) => `charts/track?list_id=${genre}`,
+//     }),
+//     getSongsByCountry: builder.query({
+//       query: (countryCode) => `charts/track?list_id=ip-country-chart-${countryCode}`,
+//     }),
+//     getSongsBySearch: builder.query({
+//       query: (searchTerm) => `search?term=${searchTerm}`,
+//     }),
+//     getArtistDetails: builder.query({
+//       query: (artistId) => `artists/get-details?id=${artistId}`,
+//     }),
+//     getArtistSongs: builder.query({
+//       query: (artistId) => `artists/get-top-songs?id=${artistId}`,
+//     }),
+//     getSongDetails: builder.query({
+//       query: ({ songid }) => `songs/v2/get-details?id=${songid}`,
+//     }),
+//     getSongRelated: builder.query({
+//       query: ({ songid }) => `songs/list-recommendations?key=${songid}`,
+//     }),
+//   }),
+// });
+
 export const {
   useGetTopChartsQuery,
   useGetSongsByGenreQuery,
