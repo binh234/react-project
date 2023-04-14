@@ -4,7 +4,6 @@ import { useSnapshot } from 'valtio';
 import {
   headContainerAnimation,
   headContentAnimation,
-  headTextAnimation,
   slideAnimation,
 } from '../config/motion';
 import state from '../store';
@@ -22,7 +21,7 @@ const Home = () => {
           </motion.header>
 
           <motion.div className="home-content" {...headContainerAnimation}>
-            <motion.div {...headTextAnimation}>
+            <motion.div>
               <h1 className="head-text uppercase">
                 Let's <br className="xl:block hidden" /> do it.
               </h1>

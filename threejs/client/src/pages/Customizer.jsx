@@ -22,6 +22,14 @@ const Customizer = () => {
     stylishShirt: false,
   });
 
+  const handleEditorTabClick = (tabName) => {
+    if (tabName === activeEditorTab) {
+      setActiveEditorTab('');
+    } else {
+      setActiveEditorTab(tabName)
+    }
+  }
+
   // show tab content depending on the active tab
   const generateTabContent = () => {
     switch (activeEditorTab) {
@@ -48,7 +56,7 @@ const Customizer = () => {
             <div className="flex items-center min-h-screen">
               <div className="editortabs-container tabs">
                 {EditorTabs.map((tab) => (
-                  <Tab key={tab.name} tab={tab} handleClick={() => setActiveEditorTab(tab.name)} />
+                  <Tab key={tab.name} tab={tab} handleClick={() => handleEditorTabClick(tab.name)} />
                 ))}
                 {generateTabContent()}
               </div>

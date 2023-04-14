@@ -57,8 +57,8 @@ export const headContentAnimation = {
     damping: 7,
     stiffness: 30,
     restDelta: 0.001,
-    duration: 0.6,
-    delay: 0.2,
+    duration: 1,
+    delay: 0.1,
     delayChildren: 0.2,
   },
 };
