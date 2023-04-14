@@ -1,0 +1,23 @@
+# Ignore artifacts:
+build
+out
+coverage
+node_modules
+.next
+.sanity
+
+# Ignore generated files:
+*.json
+*.md
+*.lock
+*.log
+*.gz
+*.tgz
+
+# Ignore static files:
+public/
+static/
+You can customize this file to fit your specific needs by adding or removing file patterns as necessary.
+
+# Ignore all HTML files:
+# *.html

@@ -4,7 +4,7 @@ import { Customizer, Home } from "./pages"
 function App() {
 
   return (
-    <main className="aapp transition-all ease-in">
+    <main className="app transition-all ease-in">
       <Home />
       <Canvas />
       <Customizer />
