@@ -20,7 +20,7 @@ const Shirt = () => {
     <group key={stateString}>
       <mesh
         castShadow
-        geometry={nodes.T_shirt_male.geometry}
+        geometry={nodes.T_Shirt_male.geometry}
         material={materials.lambert1}
         dispose={null}
       >
