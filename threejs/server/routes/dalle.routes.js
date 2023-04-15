@@ -1,14 +1,14 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
-import { IMAGE_SIZE } from '../config';
+import { IMAGE_SIZE } from '../config/index.js';
 
 dotenv.config();
 
-const config = Configuration({
+const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = OpenAIApi(config);
+const openai = new OpenAIApi(config);
 
 const router = express.Router();
 
