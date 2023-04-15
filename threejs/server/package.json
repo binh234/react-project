@@ -19,5 +19,11 @@
   },
   "devDependencies": {
     "prettier": "^2.8.7"
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 100,
+    "bracketSpacing": true,
+    "singleQuote": true
   }
 }
