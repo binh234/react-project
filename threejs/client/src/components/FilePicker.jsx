@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import CustomButton from './CustomButton';
 
-const FilePicker = ({ file, setFile, readFile }) => {
+const FilePicker = ({ readFile }) => {
   const [file, setFile] = useState('');
 
   return (

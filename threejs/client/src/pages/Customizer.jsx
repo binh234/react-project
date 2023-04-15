@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import state from '../store';
-import { download, stylishShirt } from '../assets';
+import { download } from '../assets';
 import { downloadCanvasToImage, reader } from '../config/helpers';
 import { EditorTabs, FilterTabs, DecalTypes } from '../config/constants';
-import config from '../config/config';
 import { fadeAnimation, slideAnimation } from '../config/motion';
 import { useSnapshot } from 'valtio';
 import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../components';
@@ -13,8 +12,6 @@ import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../compone
 const Customizer = () => {
   const snap = useSnapshot(state);
 
-  const [prompt, setPrompt] = useState('');
-  const [generatingImg, setGeneratingImg] = useState(false);
   const [activeEditorTab, setActiveEditorTab] = useState('');
   const [activeFilterTab, setActiveFilterTab] = useState({
     logoShirt: true,
@@ -37,7 +34,7 @@ const Customizer = () => {
       case 'filepicker':
         return <FilePicker readFile={readFile} />;
       case 'aipicker':
-        return <AIPicker prompt={prompt} setPrompt={setPrompt} />;
+        return <AIPicker handleDecals={handleDecals} onFinal={() => setActiveFilterTab('')} />;
       default:
         return null;
     }
@@ -56,8 +53,10 @@ const Customizer = () => {
     switch (tabName) {
       case 'logoShirt':
         state.isLogoTexture = !activeFilterTab[tabName];
+        break;
       case 'stylishShirt':
         state.isFullTexture = !activeFilterTab[tabName];
+        break;
       default:
         state.isLogoTexture = true;
         state.isFullTexture = false;
@@ -67,9 +66,9 @@ const Customizer = () => {
     setActiveFilterTab((prevState) => {
       return {
         ...prevState,
-        [tabName]: !prevState[tabName]
-      }
-    })
+        [tabName]: !prevState[tabName],
+      };
+    });
   };
 
   const readFile = (file, type) => {
@@ -119,6 +118,13 @@ const Customizer = () => {
                 handleClick={() => handleActiveFilterTab(tab.name)}
               />
             ))}
+            <button
+              className="download-btn"
+              style={{ backgroundColor: 'transparent', opacity: 1 }}
+              onClick={downloadCanvasToImage}
+            >
+              <img src={download} alt="download_image" className="p-2.5 object-contain" />
+            </button>
           </motion.div>
         </>
       )}
