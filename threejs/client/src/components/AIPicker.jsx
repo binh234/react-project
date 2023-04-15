@@ -14,7 +14,7 @@ const AIPicker = ({ handleDecals, onFinal }) => {
       // Call DALL-E from backend
       setGeneratingImg(true);
       const response = await axios.post(
-        'http://localhost:8080/api/v1/dalle',
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/dalle`,
         { prompt: prompt },
       );
       const {data} = response;
