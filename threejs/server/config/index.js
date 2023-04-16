@@ -1,1 +1,1 @@
-export const IMAGE_SIZE="512x512"
+export const IMAGE_SIZE = '512x512';
