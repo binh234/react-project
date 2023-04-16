@@ -22,7 +22,7 @@ const Tab = ({ tab, isFilterTab, isActiveTab, handleClick }) => {
       onClick={handleClick}
       style={activeStyle}
     >
-      <img src={tab.icon} alt={tab.name} className='object-contain' />
+      <img src={tab.icon} alt={tab.name} className="object-contain" />
     </div>
   );
 };

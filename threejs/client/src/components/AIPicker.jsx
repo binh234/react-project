@@ -48,7 +48,7 @@ const AIPicker = ({ handleDecals, onFinal }) => {
       </div>
       <textarea
         id="prompt"
-      placeholder="Ask AI..."
+        placeholder="Ask AI..."
         rows={5}
         ref={promptRef}
         className="aipicker-textarea"

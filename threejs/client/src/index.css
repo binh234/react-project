@@ -1,17 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,600;1,900&display=swap");
-@import url("https://rsms.me/inter/inter.css");
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,600;1,900&display=swap');
+@import url('https://rsms.me/inter/inter.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 @supports (font-variation-settings: normal) {
   html {
-    font-family: "Inter var", sans-serif;
+    font-family: 'Inter var', sans-serif;
   }
 }
 
@@ -71,7 +71,7 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-input[type="file"] {
+input[type='file'] {
   z-index: -1;
   position: absolute;
   opacity: 0;
