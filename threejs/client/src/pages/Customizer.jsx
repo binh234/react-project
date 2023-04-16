@@ -34,13 +34,14 @@ const Customizer = () => {
       case 'filepicker':
         return <FilePicker readFile={readFile} />;
       case 'aipicker':
-        return <AIPicker handleDecals={handleDecals} onFinal={() => setActiveFilterTab('')} />;
+        return <AIPicker handleDecals={handleDecals} onFinal={() => setActiveEditorTab('')} />;
       default:
         return null;
     }
   };
 
   const handleDecals = (type, result) => {
+    console.log(type);
     const decalType = DecalTypes[type];
 
     state[decalType.stateProperty] = result;
