@@ -1,15 +1,24 @@
 import { useRef, useState } from 'react'
 import { copy, linkIcon, loader, tick } from '../assets'
+import { useLazyGetSummaryQuery } from '../services/article'
 
 const Demo = () => {
   const urlRef = useRef()
   const [article, setArticle] = useState({
     url: '',
-    summary: ''
+    summary: '',
   })
+  const [getSumary, { error, isFetching }] = useLazyGetSummaryQuery()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setArticle((article) => ({ ...article, url: urlRef.current.value }))
+    const { data } = await getSumary({
+      articleUrl: article.url,
+    })
+    if (data?.summary) {
+      setArticle((article) => ({ ...article, summary: data.summary }))
+    }
   }
 
   return (
@@ -33,7 +42,6 @@ const Demo = () => {
         </form>
 
         {/* Browse URL history */}
-
       </div>
     </section>
   )
