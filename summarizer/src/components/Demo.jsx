@@ -9,6 +9,7 @@ const Demo = () => {
     summary: '',
   })
   const [allArticles, setAllArticles] = useState([])
+  const [copied, setCopied] = useState('')
   const [getSumary, { error, isFetching }] = useLazyGetSummaryQuery()
 
   useEffect(() => {
@@ -18,11 +19,18 @@ const Demo = () => {
     }
   }, [])
 
+  const handleCopy = (copyUrl) => {
+    setCopied(copyUrl);
+    navigator.clipboard.writeText(copyUrl)
+    setTimeout(() => setCopied(""), 3000)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setArticle((article) => ({ ...article, url: urlRef.current.value }))
+    const url = urlRef.current.value
+    setArticle({ ...article, url: url })
     const { data } = await getSumary({
-      articleUrl: article.url,
+      articleUrl: url,
     })
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary }
@@ -55,6 +63,42 @@ const Demo = () => {
         </form>
 
         {/* Browse URL history */}
+        <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
+          {allArticles.map((item, idx) => (
+            <div key={`link-${idx}`} onClick={() => setArticle(item)} className="link_card">
+              <div className="copy_btn" onClick={() => handleCopy(item.url)}>
+                <img src={copied === item.url ? tick : copy} alt="copy_icon" className="w-2/5 h-2/5 object-contain" />
+              </div>
+              <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">
+                {item.url}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Display Result */}
+      <div className="my-10 max-w-full flex justify-center items-center">
+        {isFetching ? (
+          <img src={loader} alt="loader" className="w-20 h-20 object-contain" />
+        ) : error ? (
+          <p className="font-inter font-bold text-black text-center">
+            Something went wrong, please try again later!
+            <br />
+            <span className="font-satoshi font-normal text-gray-700">{error?.data?.error}</span>
+          </p>
+        ) : (
+          article.summary && (
+            <div className="flex flex-col gap-3">
+              <h2 className="font-satoshi font-bold text-gray-600 text-xl">
+                Article <span className="blue_gradient">Summary</span>
+              </h2>
+              <div className="summary_box">
+                <p className="font-inter font-medium text-sm text-gray-700">{article.summary}</p>
+              </div>
+            </div>
+          )
+        )}
       </div>
     </section>
   )
