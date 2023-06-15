@@ -145,7 +145,7 @@ function App() {
                   name: 'dashboard',
                   list: '/',
                   meta: {
-                    icon: <DashboardOutlined />
+                    icon: <DashboardOutlined />,
                   },
                 },
                 {
@@ -153,7 +153,7 @@ function App() {
                   list: '/properties',
                   meta: {
                     canDelete: true,
-                    icon: <VillaOutlined />
+                    icon: <VillaOutlined />,
                   },
                 },
                 {
@@ -161,21 +161,21 @@ function App() {
                   list: '/agents',
                   meta: {
                     canDelete: true,
-                    icon: <PeopleAltOutlined />
+                    icon: <PeopleAltOutlined />,
                   },
                 },
                 {
                   name: 'review',
                   list: '/reviews',
                   meta: {
-                    icon: <StarOutlineRounded />
+                    icon: <StarOutlineRounded />,
                   },
                 },
                 {
                   name: 'message',
                   list: '/messages',
                   meta: {
-                    icon: <ChatBubbleOutline />
+                    icon: <ChatBubbleOutline />,
                   },
                 },
                 {
@@ -183,7 +183,7 @@ function App() {
                   list: '/profile',
                   meta: {
                     label: 'My Profile',
-                    icon: <AccountCircleOutlined />
+                    icon: <AccountCircleOutlined />,
                   },
                 },
                 {

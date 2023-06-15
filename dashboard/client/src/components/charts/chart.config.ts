@@ -1,4 +1,4 @@
-import { ApexOptions } from 'apexcharts';
+import { ApexOptions } from 'apexcharts'
 
 export const TotalRevenueSeries = [
   {
@@ -9,7 +9,7 @@ export const TotalRevenueSeries = [
     name: 'Running Month',
     data: [95, 84, 72, 44, 108, 108, 47],
   },
-];
+]
 
 export const TotalRevenueOptions: ApexOptions = {
   chart: {
@@ -54,8 +54,8 @@ export const TotalRevenueOptions: ApexOptions = {
   tooltip: {
     y: {
       formatter(val: number) {
-        return `$ ${val} thousands`;
+        return `$ ${val} thousands`
       },
     },
   },
-};
+}
