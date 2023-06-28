@@ -9,7 +9,7 @@ export const DashboardPage: React.FC = () => {
       <Typography variant="h4" color="primary">
         Dashboard
       </Typography>
-      <Box margin="16px" display="flex" flexWrap="wrap" gap={4}>
+      <Box mt={4} display="flex" flexWrap="wrap" gap={4}>
         <PieChart
           title="Properties for Sale"
           value={684}
@@ -36,7 +36,7 @@ export const DashboardPage: React.FC = () => {
         />
       </Box>
 
-      <Stack mt={6} width="100%" direction={{xs: "column", lg: "row"}} gap={4}>
+      <Stack mt={4} width="100%" direction={{xs: "column", lg: "row"}} gap={4}>
         <TotalRevenue />
         <PropertyReferrals />
       </Stack>

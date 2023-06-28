@@ -1,7 +1,7 @@
 export interface CustomButtonProps {
   type?: string
   title: string
-  backgroundColor: string
+  bgcolor: string
   color: string
   fullWidth?: boolean
   icon?: ReactNode

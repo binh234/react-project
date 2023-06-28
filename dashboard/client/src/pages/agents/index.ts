@@ -1,1 +1,1 @@
-export { AgentProfile } from './show'
+export { AgentProfile } from './list'

@@ -18,10 +18,10 @@ const TotalRevenue = () => {
         Total Revenue
       </Typography>
       <Stack my={4} direction="row" gap={4} flexWrap="wrap">
-        <Typography variant="h2">$236,535</Typography>
+        <Typography variant="h3">$236,535</Typography>
         <Stack direction="row" alignItems="center" gap={1}>
-          <ArrowCircleUpRounded sx={{ fontSize: 25, color: '#475be8' }} />
-          <Stack direction="column">
+          <ArrowCircleUpRounded sx={{ fontSize: 32, color: '#475be8' }} />
+          <Stack direction="column" justifyContent="space-around">
             <Typography variant="subtitle1">0.8%</Typography>
             <Typography variant="subtitle2" color="#808191">
               Than last month
