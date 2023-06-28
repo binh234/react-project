@@ -32,9 +32,11 @@ import { ColorModeContextProvider } from './contexts/color-mode'
 import { CredentialResponse } from './interfaces/google'
 import { DashboardPage } from './pages/dashboard'
 import { BlogPostCreate, BlogPostEdit, BlogPostList, BlogPostShow } from './pages/blog-posts'
-import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from './pages/categories'
+import { PropertyCreate, PropertyEdit, PropertyList, PropertyShow } from './pages/properties'
 import { Login } from './pages/login'
 import { parseJwt } from './utils/parse-jwt'
+import { AgentProfile } from './pages/agents'
+import { ProfilePage } from './pages/profile'
 
 const axiosInstance = axios.create()
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
@@ -219,12 +221,18 @@ function App() {
                     <Route path="edit/:id" element={<BlogPostEdit />} />
                     <Route path="show/:id" element={<BlogPostShow />} />
                   </Route>
-                  <Route path="/categories">
-                    <Route index element={<CategoryList />} />
-                    <Route path="create" element={<CategoryCreate />} />
-                    <Route path="edit/:id" element={<CategoryEdit />} />
-                    <Route path="show/:id" element={<CategoryShow />} />
+                  <Route path="/properties">
+                    <Route index element={<PropertyList />} />
+                    <Route path="create" element={<PropertyCreate />} />
+                    <Route path="edit/:id" element={<PropertyEdit />} />
+                    <Route path="show/:id" element={<PropertyShow />} />
                   </Route>
+                  <Route path="/agents">
+                    <Route index element={<AgentProfile />} />
+                  </Route>
+                  <Route path="/reviews" element={<DashboardPage />} />
+                  <Route path="/messages" element={<DashboardPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
                 <Route

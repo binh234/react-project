@@ -21,6 +21,7 @@
     "apexcharts": "^3.41.0",
     "axios": "^0.26.1",
     "react": "^18.0.0",
+    "react-apexcharts": "^1.4.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.30.0",
     "react-router-dom": "^6.8.1"
