@@ -1,7 +1,74 @@
-import React from 'react'
+import { Tilt } from 'react-tilt'
+import { motion } from 'framer-motion'
+import { styles } from '../styles'
+import { github } from '../assets'
+import { SectionWrapper } from '../hoc'
+import { projects } from '../constants'
+import { fadeIn, textVariant } from '../utils/motion'
 
-const Works = () => {
-  return <div>Works</div>
+const ProjectCard = ({ index, name, description, tags, image, source_code_link }) => {
+  return (
+    <motion.div variants={fadeIn('right', 'spring', 0.3 * index, 0.75)}>
+      <Tilt
+        className="w-full bg-tertiary p-4 rounded-2xl"
+        options={{ max: 45, scale: 1, speed: 450 }}
+      >
+        <div className="relative w-full h-[230px] rounded-2xl">
+          <img src={image} alt="thumbnail" className="w-full h-full object-cover rounded-2xl" />
+          <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
+            <div
+              onClick={() => window.open(source_code_link, '_blank')}
+              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+            >
+              <img src={github} alt="github" className="w-3/5 h-3/5 object-contain" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <h3 className="text-white text-lg font-bold">{name}</h3>
+          <p className="mt-2 text-secondary text-sm">{description}</p>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {tags.map((tag, idx) => (
+            <p key={idx} className={`text-sm ${tag.color || 'text-white'}`}>
+              #{tag.name}
+            </p>
+          ))}
+        </div>
+      </Tilt>
+    </motion.div>
+  )
 }
 
-export default Works
+const Works = () => {
+  return (
+    <>
+      <motion.div variants={textVariant()}>
+        <p className={styles.sectionSubText}>My work</p>
+        <h2 className={styles.sectionHeadText}>Projects</h2>
+      </motion.div>
+
+      <div className="w-full flex">
+        <motion.p
+          variants={fadeIn('', '', 0.1, 1)}
+          className="mt-4 text-base max-w-3xl text-secondary"
+        >
+          Following projects showcases my skills and experience through real-world examples of my
+          work. Each project is briefly described with links to code repositories and live demos in
+          it. It reflects my ability to solve complex problems, work with different technologies,
+          and manage projects effectively.
+        </motion.p>
+      </div>
+
+      <div className="mt-10 grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+        {projects.map((project, idx) => (
+          <ProjectCard key={idx} index={idx} {...project} />
+        ))}
+      </div>
+    </>
+  )
+}
+
+const WorksWrapper = SectionWrapper(Works, 'works')
+
+export default WorksWrapper
