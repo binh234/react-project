@@ -14,17 +14,19 @@ const ExperienceCard = ({ title, company_name, icon, iconBg, date, points }) => 
     date={date}
     iconStyle={{ background: iconBg }}
     icon={
-      <div className='flex justify-center items-center w-full h-full'>
+      <div className="flex justify-center items-center w-full h-full">
         <img src={icon} alt={company_name} className="w-3/5 h-3/5 object-contain" />
       </div>
     }
   >
     <div>
-      <h3 className='text-white text-2xl font-bold'>{title}</h3>
-      <p className='text-secondary text-sm font-semibold' style={{margin: 0}}>{company_name}</p>
-      <ul className='mt-4 list-disc ml-4 space-y-2'>
+      <h3 className="text-white text-2xl font-bold">{title}</h3>
+      <p className="text-secondary text-sm font-semibold" style={{ margin: 0 }}>
+        {company_name}
+      </p>
+      <ul className="mt-4 list-disc ml-4 space-y-2">
         {points.map((point, idx) => (
-          <li key={idx} className='text-white-100 text-sm pl-1 tracking-wider'>
+          <li key={idx} className="text-white-100 text-sm pl-1 tracking-wider">
             {point}
           </li>
         ))}

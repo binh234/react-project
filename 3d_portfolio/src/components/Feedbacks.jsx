@@ -18,11 +18,11 @@ const FeedbackCard = ({ index, testimonial, name, designation, company, image })
             <p className="text-white font-medium text-base">
               <span className="blue-text-gradient">@</span> {name}
             </p>
-            <p className='text-secondary text-xs'>
+            <p className="text-secondary text-xs">
               {designation} of {company}
             </p>
           </div>
-          <img src={image} alt="photo" className='rounded-full w-12 h-12 object-cover' />
+          <img src={image} alt="photo" className="rounded-full w-12 h-12 object-cover" />
         </div>
       </div>
     </motion.div>
@@ -31,7 +31,7 @@ const FeedbackCard = ({ index, testimonial, name, designation, company, image })
 
 const Feedbacks = () => {
   return (
-    <div className=' bg-tertiary rounded-2xl px-4 py-6'>
+    <div className=" bg-tertiary rounded-2xl px-4 py-6">
       <motion.div variants={textVariant()}>
         <p className={styles.sectionSubText}>What others say</p>
         <h2 className={styles.sectionHeadText}>Testinomials</h2>
