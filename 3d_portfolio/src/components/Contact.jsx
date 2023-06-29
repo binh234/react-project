@@ -16,10 +16,43 @@ const Contact = () => {
   })
   const [loading, setLoading] = useState(false)
 
-  const handleChange = (e) => {}
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setLoading(true)
+    emailjs
+      .send(
+        'service_zqs1bfd',
+        'template_712rude',
+        {
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+          to_name: 'Binh Le',
+          to_email: 'binhnd234@gmail.com',
+        },
+        'gn8N21y125VArIPGh'
+      )
+      .then(
+        () => {
+          setLoading(false)
+          alert('Thank you. I will get bakc to you as soon as possible')
+          setForm({
+            name: '',
+            email: '',
+            message: '',
+          })
+        },
+        (error) => {
+          console.log(error)
+          setLoading(false)
+          alert('Something went wrong. Please try again later!')
+        }
+      )
   }
 
   return (
