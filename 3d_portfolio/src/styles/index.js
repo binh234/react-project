@@ -8,8 +8,8 @@ const styles = {
   heroSubText:
     'font-medium lg:text-2xl sm:text-xl text-base text-white-100',
 
-  sectionHeadText: 'text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]',
-  sectionSubText: 'sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider',
+  sectionHeadText: 'text-white font-bold lg:text-6xl sm:text-5xl text-4xl',
+  sectionSubText: 'sm:text-lg text-sm text-secondary uppercase tracking-wider',
 }
 
 export { styles }

@@ -7,7 +7,7 @@ import { experiences } from '../constants'
 import { SectionWrapper } from '../hoc'
 import { textVariant } from '../utils/motion'
 
-const ExperienceCard = ({ title, company_name, icon, iconBg, date, points }) => {
+const ExperienceCard = ({ title, company_name, icon, iconBg, date, points }) => (
   <VerticalTimelineElement
     contentStyle={{ background: '#1d1836', color: '#fff' }}
     contentArrowStyle={{ borderRight: '7px solid #232631' }}
@@ -21,7 +21,7 @@ const ExperienceCard = ({ title, company_name, icon, iconBg, date, points }) => 
   >
     <div>
       <h3 className='text-white text-2xl font-bold'>{title}</h3>
-      <p className='text-secondary text-sm font-semibold'>{company_name}</p>
+      <p className='text-secondary text-sm font-semibold' style={{margin: 0}}>{company_name}</p>
       <ul className='mt-4 list-disc ml-4 space-y-2'>
         {points.map((point, idx) => (
           <li key={idx} className='text-white-100 text-sm pl-1 tracking-wider'>
@@ -31,13 +31,13 @@ const ExperienceCard = ({ title, company_name, icon, iconBg, date, points }) => 
       </ul>
     </div>
   </VerticalTimelineElement>
-}
+)
 
 const Experience = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionHeadText}>What I have done so far</p>
+        <p className={styles.sectionSubText}>What I have done so far</p>
         <h2 className={styles.sectionHeadText}>Work Experience</h2>
       </motion.div>
       <div className="mt-10 flex flex-col">
