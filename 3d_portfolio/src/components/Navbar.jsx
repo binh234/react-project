@@ -8,7 +8,7 @@ const Navbar = () => {
   const [toggle, setToggle] = useState(false)
 
   return (
-    <nav className="px-4 py-6 w-full flex items-center top-0 z-20 bg-primary">
+    <nav className="px-4 py-4 w-full flex items-center top-0 z-20 bg-primary">
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
         <Link
           to="/"
@@ -28,7 +28,7 @@ const Navbar = () => {
               key={link.id}
               className={`${
                 active === link.title ? 'text-white' : 'text-secondary'
-              } hover:text-white text-lg font-medium cursor-pointer`}
+              } hover:text-white text-base font-medium cursor-pointer`}
               onClick={() => setActive(link.title)}
             >
               <a href={`${link.id}`}>{link.title}</a>
