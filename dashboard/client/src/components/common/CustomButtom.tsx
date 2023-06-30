@@ -15,7 +15,7 @@ const CustomButtom = ({
     <Button
       sx={{
         flex: fullWidth ? 1 : 'unset',
-        padding: '10px 12px',
+        padding: '10px 16px',
         width: fullWidth ? '100%' : 'fit-content',
         minWIdth: 130,
         backgroundColor: bgcolor,

@@ -1,4 +1,4 @@
-import { IResourceComponentsProps, useList } from '@refinedev/core'
+import { useList } from '@refinedev/core'
 import { MuiListInferencer } from '@refinedev/inferencer/mui'
 import { Add } from '@mui/icons-material'
 import { Box, Stack, Typography } from '@mui/material'
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { PropertyCard, CustomButtom } from '../../components'
 
-export const PropertyList: React.FC<IResourceComponentsProps> = () => {
+export const PropertyList = () => {
   const navigate = useNavigate()
 
   return (
