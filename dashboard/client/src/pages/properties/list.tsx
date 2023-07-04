@@ -1,7 +1,6 @@
 import { useTable } from '@refinedev/core'
-import { MuiListInferencer } from '@refinedev/inferencer/mui'
 import { Add } from '@mui/icons-material'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 import { PropertyCard, CustomButtom, Loader } from '../../components'
@@ -11,6 +10,14 @@ export const PropertyList = () => {
 
   const {
     tableQueryResult: { data, isLoading, isError },
+    current,
+    setCurrent,
+    setPageSize,
+    pageCount,
+    sorters,
+    setSorters,
+    filters,
+    setFilters,
   } = useTable()
   const allProperties = data?.data ?? []
 
@@ -21,7 +28,7 @@ export const PropertyList = () => {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
         <Typography variant="h4" color="#11142d">
           All Properties
         </Typography>
@@ -34,11 +41,18 @@ export const PropertyList = () => {
         />
       </Stack>
 
-      <Box mt={4} display="flex" flexWrap="wrap" gap={3}>
+      <Grid container spacing={2} mt={2}>
         {allProperties.map((property) => (
-          <PropertyCard key={property._id} {...property} />
+          <PropertyCard
+            key={property._id}
+            id={property._id}
+            title={property.title}
+            location={property.location}
+            price={property.price}
+            photo={property.photo}
+          />
         ))}
-      </Box>
+      </Grid>
     </Box>
   )
 }
