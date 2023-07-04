@@ -45,3 +45,7 @@ export interface UserProps {
   fullName: string
   email: string
 }
+
+export interface LoaderProps {
+  text?: string
+}

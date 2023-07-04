@@ -6,7 +6,7 @@ import { Box, Stack, Typography } from '@mui/material'
 export const DashboardPage: React.FC = () => {
   return (
     <Box>
-      <Typography variant="h4" color="primary">
+      <Typography variant="h4">
         Dashboard
       </Typography>
       <Box mt={4} display="flex" flexWrap="wrap" gap={4}>

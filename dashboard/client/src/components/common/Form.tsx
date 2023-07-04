@@ -9,9 +9,9 @@ import {
   FormControl,
   InputLabel,
 } from '@mui/material'
-import { TextareaAutosize } from '@mui/base'
 import { FormProps } from '../../interfaces/common'
 import CustomButtom from './CustomButtom'
+import Loader from './Loader'
 
 const Form = ({
   type,
@@ -25,6 +25,7 @@ const Form = ({
 }: FormProps) => {
   return (
     <Box>
+      {formLoading && <Loader />}
       <Typography variant="h4" color="#11142d">
         {type} a Property
       </Typography>
@@ -59,7 +60,7 @@ const Form = ({
             variant="outlined"
             {...register('description', { required: true })}
           />
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 2}}>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 2 }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Type</InputLabel>
               <Select
@@ -69,7 +70,7 @@ const Form = ({
                 displayEmpty
                 required
                 defaultValue="apartment"
-                {...register('property', { required: true })}
+                {...register('propertyType', { required: true })}
               >
                 <MenuItem value="apartment">Apartment</MenuItem>
                 <MenuItem value="villa">Villa</MenuItem>
@@ -128,12 +129,7 @@ const Form = ({
             <Typography variant="subtitle1" color="#808191" mb={2} sx={{ wordBreak: 'break-all' }}>
               {propertyImage?.name}
             </Typography>
-            <CustomButtom
-              type="submit"
-              title={formLoading ? 'Submitting...' : 'Submit'}
-              bgcolor="#475be8"
-              color="#fcfcfc"
-            />
+            <CustomButtom type="submit" title="Submit" bgcolor="#475be8" color="#fcfcfc" />
           </Stack>
         </form>
       </Box>

@@ -31,7 +31,6 @@ import { Header, Title } from './components'
 import { ColorModeContextProvider } from './contexts/color-mode'
 import { CredentialResponse } from './interfaces/google'
 import { DashboardPage } from './pages/dashboard'
-import { BlogPostCreate, BlogPostEdit, BlogPostList, BlogPostShow } from './pages/blog-posts'
 import { PropertyCreate, PropertyEdit, PropertyList, PropertyShow } from './pages/properties'
 import { Login } from './pages/login'
 import { parseJwt } from './utils/parse-jwt'
@@ -57,14 +56,36 @@ function App() {
     login: async ({ credential }: CredentialResponse) => {
       const profileObj = credential ? parseJwt(credential) : null
 
+      // Save user to mongoDB
       if (profileObj) {
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            ...profileObj,
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: profileObj.name,
+            email: profileObj.email,
             avatar: profileObj.picture,
-          })
-        )
+          }),
+        })
+
+        const data = await response.json()
+        if (response.status === 200) {
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              ...profileObj,
+              avatar: profileObj.picture,
+              userid: data._id,
+            })
+          )
+        } else {
+          return {
+            success: false,
+            redirectTo: '/login'
+          }
+        }
 
         localStorage.setItem('token', `${credential}`)
 
@@ -138,7 +159,7 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: 'auto' } }} />
           <RefineSnackbarProvider>
             <Refine
-              dataProvider={dataProvider('https://api.fake-rest.refine.dev')}
+              dataProvider={dataProvider(import.meta.env.VITE_BACKEND_API)}
               notificationProvider={notificationProvider}
               routerProvider={routerBindings}
               authProvider={authProvider}
@@ -151,15 +172,18 @@ function App() {
                   },
                 },
                 {
-                  name: 'property',
+                  name: 'properties',
                   list: '/properties',
+                  create: '/properties/create',
+                  edit: '/properties/edit/:id',
+                  show: '/properties/show/:id',
                   meta: {
                     canDelete: true,
                     icon: <VillaOutlined />,
                   },
                 },
                 {
-                  name: 'agent',
+                  name: 'agents',
                   list: '/agents',
                   meta: {
                     canDelete: true,
@@ -167,14 +191,14 @@ function App() {
                   },
                 },
                 {
-                  name: 'review',
+                  name: 'reviews',
                   list: '/reviews',
                   meta: {
                     icon: <StarOutlineRounded />,
                   },
                 },
                 {
-                  name: 'message',
+                  name: 'messages',
                   list: '/messages',
                   meta: {
                     icon: <ChatBubbleOutline />,
@@ -205,12 +229,6 @@ function App() {
                   }
                 >
                   <Route index element={<DashboardPage />} />
-                  <Route path="/blog-posts">
-                    <Route index element={<BlogPostList />} />
-                    <Route path="create" element={<BlogPostCreate />} />
-                    <Route path="edit/:id" element={<BlogPostEdit />} />
-                    <Route path="show/:id" element={<BlogPostShow />} />
-                  </Route>
                   <Route path="/properties">
                     <Route index element={<PropertyList />} />
                     <Route path="create" element={<PropertyCreate />} />

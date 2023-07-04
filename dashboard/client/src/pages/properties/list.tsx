@@ -1,13 +1,23 @@
-import { useList } from '@refinedev/core'
+import { useTable } from '@refinedev/core'
 import { MuiListInferencer } from '@refinedev/inferencer/mui'
 import { Add } from '@mui/icons-material'
 import { Box, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-import { PropertyCard, CustomButtom } from '../../components'
+import { PropertyCard, CustomButtom, Loader } from '../../components'
 
 export const PropertyList = () => {
   const navigate = useNavigate()
+
+  const {
+    tableQueryResult: { data, isLoading, isError },
+  } = useTable()
+  const allProperties = data?.data ?? []
+
+  if (isLoading) {
+    return <Loader text="Loading..." />
+  }
+  if (isError) return <Typography variant="h4">Error...</Typography>
 
   return (
     <Box>
@@ -23,6 +33,12 @@ export const PropertyList = () => {
           icon={<Add />}
         />
       </Stack>
+
+      <Box mt={4} display="flex" flexWrap="wrap" gap={3}>
+        {allProperties.map((property) => (
+          <PropertyCard key={property._id} {...property} />
+        ))}
+      </Box>
     </Box>
   )
 }

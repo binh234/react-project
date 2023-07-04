@@ -1,6 +1,7 @@
 import React from 'react'
+import { Place } from '@mui/icons-material'
 
-const PropertyCard = () => {
+const PropertyCard: React.FC = () => {
   return (
     <div>PropertyCard</div>
   )
