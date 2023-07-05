@@ -25,3 +25,5 @@ export const propertyReferralsInfo = [
     color: '#F45252',
   },
 ]
+
+export const propertyTypes = ['Apartment', 'Villa', 'Farm', 'Condos', 'Townhouse', 'Studio', "Chalet"]

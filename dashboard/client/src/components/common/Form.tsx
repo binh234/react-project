@@ -12,6 +12,7 @@ import {
 import { FormProps } from '../../interfaces/common'
 import CustomButtom from './CustomButtom'
 import Loader from './Loader'
+import { propertyTypes } from '../../constants'
 
 const Form = ({
   type,
@@ -72,14 +73,11 @@ const Form = ({
                 defaultValue="apartment"
                 {...register('propertyType', { required: true })}
               >
-                <MenuItem value="apartment">Apartment</MenuItem>
-                <MenuItem value="villa">Villa</MenuItem>
-                <MenuItem value="farmhouse">Farmhouset</MenuItem>
-                <MenuItem value="condos">Condos</MenuItem>
-                <MenuItem value="townhouse">Townhouse</MenuItem>
-                <MenuItem value="duplex">Duplex</MenuItem>
-                <MenuItem value="studio">Studio</MenuItem>
-                <MenuItem value="challet">Challet</MenuItem>
+                {propertyTypes.map((type) => (
+                  <MenuItem key={type} value={type.toLowerCase()}>
+                    {type}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <TextField
@@ -121,7 +119,7 @@ const Form = ({
                   accept="image/*"
                   type="file"
                   onChange={(e) => {
-                    handleImageChange(e.target.files[0])
+                    handleImageChange(e.target.files ? e.target.files[0] : null)
                   }}
                 />
               </Button>
