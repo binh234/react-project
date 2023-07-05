@@ -44,74 +44,6 @@ export const PropertyList = () => {
 
   return (
     <Box>
-      <Box mt={4}>
-        <Stack direction="column" width="100%">
-          <Typography variant="h4">
-            {allProperties.length ? 'All Properties' : 'There are no properties'}
-          </Typography>
-          <Box
-            mb={2}
-            mt={3}
-            display="flex"
-            width="84%"
-            justifyContent="space-between"
-            flexWrap="wrap"
-          >
-            <Box display="flex" flexWrap="wrap" gap={2} mb={{ xs: 4, sm: 0 }}>
-              <CustomButtom
-                title={`Sort price ${currentPrice === 'asc' ? '↑' : '↓'}`}
-                handleClick={() => toggleSort('price')}
-                bgcolor="#475be8"
-                color="#fcfcfc"
-              />
-              <TextField
-                variant="outlined"
-                color="info"
-                placeholder="Search by title"
-                value={currentFilterValues.title}
-                onChange={(e) => {
-                  setFilters([
-                    {
-                      field: 'title',
-                      operator: 'contains',
-                      value: e.currentTarget.value ? e.currentTarget.value : undefined,
-                    },
-                  ])
-                }}
-              />
-              <Select
-                variant="outlined"
-                color="info"
-                displayEmpty
-                required
-                inputProps={{ 'aria-label': 'Without label' }}
-                defaultValue=""
-                value={currentFilterValues.propertyType}
-                onChange={(e) => {
-                  setFilters(
-                    [
-                      {
-                        field: 'propertyType',
-                        operator: 'eq',
-                        value: e.target.value ? e.target.value : undefined,
-                      },
-                    ],
-                    'replace'
-                  )
-                }}
-              >
-                <MenuItem value="">"All</MenuItem>
-                {propertyTypes.map((type) => (
-                  <MenuItem key={type} value={type.toLowerCase()}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
-          </Box>
-        </Stack>
-      </Box>
-
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
         <Typography variant="h4" color="#11142d">
           All Properties
@@ -124,21 +56,86 @@ export const PropertyList = () => {
           icon={<Add />}
         />
       </Stack>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        mt={2}
+        spacing={2}
+      >
+        <CustomButtom
+          title={`Sort price ${currentPrice === 'asc' ? '↑' : '↓'}`}
+          handleClick={() => toggleSort('price')}
+          bgcolor="#475be8"
+          color="#fcfcfc"
+        />
+        <TextField
+          variant="outlined"
+          color="info"
+          placeholder="Search by title"
+          value={currentFilterValues.title}
+          onChange={(e) => {
+            setFilters([
+              {
+                field: 'title',
+                operator: 'contains',
+                value: e.currentTarget.value ? e.currentTarget.value : undefined,
+              },
+            ])
+          }}
+        />
+        <Select
+          variant="outlined"
+          color="info"
+          displayEmpty
+          required
+          inputProps={{ 'aria-label': 'Without label' }}
+          defaultValue=""
+          value={currentFilterValues.propertyType}
+          onChange={(e) => {
+            setFilters(
+              [
+                {
+                  field: 'propertyType',
+                  operator: 'eq',
+                  value: e.target.value ? e.target.value : undefined,
+                },
+              ],
+              'replace'
+            )
+          }}
+        >
+          <MenuItem value="">"All</MenuItem>
+          {propertyTypes.map((type) => (
+            <MenuItem key={type} value={type.toLowerCase()}>
+              {type}
+            </MenuItem>
+          ))}
+        </Select>
+      </Stack>
 
-      <Grid container spacing={2} mt={2}>
-        {allProperties.map((property) => (
-          <PropertyCard
-            key={property._id}
-            id={property._id}
-            title={property.title}
-            location={property.location}
-            price={property.price}
-            photo={property.photo}
-          />
-        ))}
-      </Grid>
+      {allProperties.length > 0 ? (
+        <Grid container spacing={2} mt={2}>
+          {allProperties.map((property) => (
+            <PropertyCard
+              key={property._id}
+              id={property._id}
+              title={property.title}
+              location={property.location}
+              price={property.price}
+              photo={property.photo}
+            />
+          ))}
+        </Grid>
+      ) : (
+        <Typography color="secondary" variant="body1">
+          There are no properties yet!
+        </Typography>
+      )}
+
       {allProperties.length > 0 && (
-        <Stack direction="row" spacing={2} mt={3}>
+        <Stack direction="row" spacing={2} mt={2}>
           <CustomButtom
             title="Previous"
             handleClick={() => setCurrent((prev) => prev - 1)}
